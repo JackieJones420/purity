@@ -1,0 +1,96 @@
+<section id="main-module-{{section.id}}" class="main-module m-b-xlg wrapper">
+	{% unless section.settings.module_headline == null or section.settings.module_headline == '' %}
+		<h2 class="section_title_text m-t-lg text-center">
+			{{ section.settings.module_headline }}
+		</h2>
+	{% endunless %}
+	<div class="grid">
+		<div class="init-carousel large--one-whole text-center no-border no-padding">
+			{% for block in section.blocks %}
+				<div class="grid__item large--one-third text-center main-module-block">
+					<a {% if block.settings.module_link != blank %}
+						href="{{ block.settings.module_link }}"
+					{% endif %}>
+						<img
+							src="https://cdn.no-toxic.com/{{ settings.cloudinary_image_version }}/pure_temporary/placeholder2022"
+							data-src="https://cdn.no-toxic.com/image/fetch/q_auto:good,f_auto,fl_lossy,w_auto,c_limit/https:{{ block.settings.module_image | img_url: 'master' | format: 'pjpg' }}"
+							data-sizes="auto"
+							class="cld-prepare image-hover-zoom"
+							alt="Home Page Main Module: {{ block.settings.module_name }}" />
+						<h4 class="callout_text p-t-md no-margin text-center text-u-c">
+							 {{ block.settings.module_dek }}
+						</h4>
+						<h4 class="module_title_text p-b-md no-margin text-center p-t-sm">
+							 {{ block.settings.module_name }}
+						</h4>
+					</a>
+					{%- if block.settings.module_link != blank -%}
+						<a href="{{ block.settings.module_link }}" class="btn m-b btn-secondary">
+							<span>{{ block.settings.module_cta }}</span>
+						</a>
+					{%- endif -%}
+				</div>
+	    {% else %}
+	      {% include 'onboarding-featured-products' %}
+	    {% endfor %}
+		</div>
+	</div>
+</section>
+
+{% schema %}
+{
+  "name": "Main Modules",
+  "class": "index-main-modules",
+	"settings": [
+		{
+			"type": "paragraph",
+			"content": "Main Module Headline and DEK"
+		},
+		{
+			"type": "text",
+			"id": "module_headline",
+			"label": "Main Module Headline"
+		}
+	],
+	"blocks": [
+    {
+      "type": "image",
+      "name": "Product",
+      "settings": [
+				{
+					"type": "image_picker",
+					"id": "module_image",
+					"label": "Main Module Image",
+					"info": "1160 x 1020 px recommended"
+				},
+				{
+					"type": "text",
+					"id": "module_dek",
+					"label": "Main Module Type"
+				},
+				{
+					"type": "text",
+					"id": "module_name",
+					"label": "Main Module Name"
+				},
+				{
+					"type": "text",
+					"id": "module_cta",
+					"label": "Main Module CTA"
+				},
+				{
+					"type": "url",
+					"id": "module_link",
+					"label": "Main Module Link"
+				}
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Main Modules",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

@@ -1,0 +1,25 @@
+<!-- /templates/index.liquid -->
+
+{% include '_date-time' %}
+
+{% comment %}
+  This is the homepage of your site.
+  More info on global variables (available on all templates):
+    - http://docs.shopify.com/themes/liquid-variables/global
+{% endcomment %}
+
+<div class="index-sections">
+  {{ content_for_index }}
+</div>
+
+{% if shop.name == '100% PURE' %}
+  {% comment %} *** Frontpage Social Blocks ***
+    {% include "_frontpage-social-blocks" %}
+  {% endcomment %}
+{% endif %}
+{% comment %} * Index Page Javscript *
+{% include '_scripts-index-page' %}
+{% endcomment %}
+<!-- integration Conversion Pixel for [content]- DO NOT MODIFY -->
+<img src="https://data.adxcel-ec2.com/pixel/?ad_log=referer&action=content&pixid=97619b83-8ae4-4272-b9fd-16c7edc1062a" width="1" height="1" border="0" alt="Conversion Pixel" aria-hidden="true">
+<!-- End of Conversion Pixel -->

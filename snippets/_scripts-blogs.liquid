@@ -1,0 +1,118 @@
+{% comment %}/*
+**------------------------------------------------------------------------**
+* Blogs Page Private Object
+* Able to use liquid
+**------------------------------------------------------------------------**
+*/{% endcomment %}
+<script type="text/javascript">
+'use strict';
+var BlogsObj = BlogsObj || {};
+
+BlogsObj = {
+  init: function() {
+    this.setPage();
+    this.initHashChange();
+  },
+  initHashChange: function(){
+    var self = this;
+    $(window).bind( 'hashchange', function(e) {
+      self.setPage();
+    });
+  },
+  nextPage: 2,
+  setPage: function(){
+    self = this
+    if(location.hash == "#cover"){
+      $("#blog-cover").css("display","block");
+      $("#blog-all").css("display","none");
+      this.coverPageData();
+    }else{
+      $("#blog-all").css("display","block");
+      $("#blog-cover").css("display","none");
+      // check if all content showed
+      let nextPageContent = "";
+      let checkLastPage = function(){
+        {% if current_tags %}
+          let targetURL = "/blogs/feed/tagged/{{ current_tags | first | handle }}?page="+self.nextPage;
+        {% else %}
+          let targetURL = "/blogs/feed?page="+self.nextPage;
+        {% endif %}
+        $.ajax({
+          url: targetURL,
+          context: document.body
+        }).done(function(data) {
+          var items = data.split("<!-- ajax stone point -->")[1];
+          if(items.split("<!-- ajax item spliter -->").length > 1){
+            $(".ajax-load-trigger").html("SEE MORE").removeClass("disabled");
+            nextPageContent = `<div class="page${self.nextPage} o-f-hid grid__item">${items}</div>`;
+            $(".tags-ajax-loader").append(nextPageContent);
+            $(".page"+self.nextPage).addClass("hide");
+          }else{
+            $(".ajax-load-trigger").html("NO MORE").addClass("disabled");
+          }
+        });
+      }
+      checkLastPage();
+      $(".ajax-load-trigger").click(function(){
+        if(!$(this).hasClass("disabled")){
+          $(".page"+self.nextPage).removeClass("hide");
+          $(this).addClass("disabled");
+          self.nextPage++;
+          checkLastPage();
+        }
+      })
+    }
+  },
+  coverPageData: function(){
+    {% for blogtitle in blogsInCover %}
+      $.ajax({
+        url: "/blogs/feed/tagged/{{ blogtitle | split: ':' | last | handle }}",
+        context: document.body
+      }).done(function(data) {
+        var items = data.split("<!-- ajax stone point -->")[1].split("<!-- ajax item spliter -->");
+        for (var i = 0; i < 10; i++) {
+          $(".ajax-content-{{ blogtitle | split: ':' | last | handle }}").append(items[i]);
+        }
+        BlogsObj.SlickCarousel("#blog-cover .ajax-content-{{ blogtitle | split: ':' | last | handle }}");
+      });
+    {% endfor %}
+  },
+  SlickCarousel: function(target) {
+    $(target).slick({
+      lazyLoad: 'ondemand',
+      slidesToShow: 3,
+      dots: true,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            arrows: false,
+            slidesToShow: 2
+          }
+        },
+        {
+          breakpoint: 480,
+          settings: {
+            arrows: false,
+            slidesToShow: 1
+          }
+        }
+      ]
+    })
+  },
+
+}
+{% comment %}/* Init Function hurrr */{% endcomment %}
+$(document).ready(function(){
+  // console.log('Blogs Private', BlogsObj);
+
+  BlogsObj.init();
+});
+{% comment %}/*
+**------------------------------------------------------------------------**
+* END
+**------------------------------------------------------------------------**
+*/{% endcomment %}
+
+</script>

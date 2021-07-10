@@ -1,0 +1,22 @@
+<!-- /templates/page.liquid -->
+<div class="grid">
+
+  <div class="grid__item large--one-whole">
+
+    <h1 class="m-t-md text-center">{{ page.title }}</h1>
+
+
+    {% comment %}
+      Regular page content goes here.
+    {% endcomment %}
+    <div class="rte">
+      {{ page.content }}
+
+      <p><a href="{{ pages['pages-sitemap'].url }}" title="{{ pages['pages-sitemap'].title }}">{{ pages['pages-sitemap'].title }}</a></p>
+      <p><a href="{{ pages['blog-sitemap'].url }}" title="{{ pages['blog-sitemap'].title }}">{{ pages['blog-sitemap'].title }}</a></p>
+      <p><a href="{{ pages['collections-sitemap'].url }}" title="{{ pages['collections-sitemap'].title }}">{{ pages['collections-sitemap'].title }}</a></p>
+      <p><a href="{{ pages['products-sitemap'].url }}" title="{{ pages['products-sitemap'].title }}">{{ pages['products-sitemap'].title }}</a></p>
+    </div>
+  </div>
+
+</div>

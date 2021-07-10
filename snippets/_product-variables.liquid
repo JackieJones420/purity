@@ -1,0 +1,16 @@
+{% comment %} Variables {% endcomment %}
+
+{% assign inventory_countdown = false %}
+{% assign discontinued_soldout = false %}
+
+{% for variant in product.variants %}
+  {% assign buffer_inventory = variant.inventory_quantity | minus: 50 %}
+{% endfor %}
+
+{% if buffer_inventory < 300 and buffer_inventory > 0 %}
+  {% assign inventory_countdown = true %}
+{% endif %}
+
+{% if product.tags contains "Discontinued" and product.variants.first.inventory_quantity < 50 %}
+  {% assign discontinued_soldout = true %}
+{% endif %}

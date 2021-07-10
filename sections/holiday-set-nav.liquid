@@ -1,0 +1,79 @@
+{% if section.blocks.size > 0 %}
+  <section id="homepage_navigation-{{section.id}}" class="m-b-xlg wrapper">
+    <div class="grid grid-uniform holiday-set-carousel">
+      {% for block in section.blocks %}
+        <div class="large--one-third medium-down--one-half text-center grid__item m-t m-b-sm medium-down--m-v-xs">
+          <a href="{{ block.settings.url }}" class="inline w-full callout_text bg-img text-u-c l-h">
+            <img
+							src="https://cdn.no-toxic.com/{{ settings.cloudinary_image_version }}/pure_temporary/placeholder2022"
+							data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ block.settings.image | img_url: 'master' }}"
+							data-sizes="auto"
+							class="cld-prepare image-hover-zoom"
+							alt="Holiday Set: {{ block.settings.title }}" />
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    var holidaySetCal = ()=>{
+      if (window.innerWidth > 480) {
+        if ($(".holiday-set-carousel").hasClass('slick-initialized')) {
+          $(".holiday-set-carousel").addClass('grid-uniform').slick('unslick');
+        }
+
+      }else{
+        if (!$(".holiday-set-carousel").hasClass('slick-initialized')) {
+          $(".holiday-set-carousel").removeClass('grid-uniform').slick({
+            lazyLoad: 'ondemand',
+            slidesToShow: 1,
+            dots: true,
+            arrows: false,
+            centerMode: true
+          });
+        }
+      }
+    };
+    holidaySetCal();
+    $(window).resize(holidaySetCal);
+  });
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Holiday Set Nav",
+  "class": "holiday-set-nav-section",
+  "settings":[],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Nav Background image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link to page"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Holiday Set Nav",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

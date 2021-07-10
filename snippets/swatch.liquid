@@ -1,0 +1,120 @@
+{% comment %}
+  Set the extension of your color files below. Use 'png', 'jpeg', 'jpg' or 'gif'.
+{% endcomment %}
+
+{% assign file_extension = 'png' %}
+
+{% if swatch == blank %}
+<div class="swatch error">
+  <p>You must include the snippet swatch.liquid with the name of a product option.</p>
+  <p>Use: <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+</div>
+{% else %}
+
+{% assign found_option = false %}
+{% assign is_color = false %}
+{% assign option_index = 0 %}
+
+{% for option in product.options %}
+  {% if option == swatch %}
+    {% assign found_option = true %}
+    {% assign option_index = forloop.index0 %}
+    {% assign downcased_option = swatch | downcase %}
+    {% if downcased_option contains 'color' or downcased_option contains 'colour' %}
+      {% assign is_color = true %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% unless found_option %}
+<div class="swatch error">
+  <p>You included the snippet swatch.liquid with the name of a product option — <code>'{{ swatch }}'</code> — that does not belong to your product.</p>
+  <p>Use <code>{% raw %}{% include 'swatch' with 'name of your product option here' %}{% endraw %}</code></p>
+  <p>Example: <code>{% raw %}{% include 'swatch' with 'Color' %}{% endraw %}</code></p>
+  <p><strong>This is case-sensitive!</strong> Do not put in <code>'color'</code> if your product option name is <code>'Color'</code>.</p>
+</div>
+{% else %}
+<div class="swatch clearfix" data-option-index="{{ option_index }}">
+  {% assign values = '' %}
+  {% assign animate-delay = 0 %}
+  {% for variant in product.variants %}
+    {% assign value = variant.options[option_index] %}
+    {% unless values contains value %}
+      {% assign values = values | join: ',' %}
+      {% assign values = values | append: ',' | append: value %}
+      {% assign values = values | split: ',' %}
+      {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+      <div class=" swatch-element {{ value | handle }} {% if is_color %}color {% endif %} {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}soldout{% else %}available{% endif %} {% if variant.metafields.purity-toolbox.animate_img %}animated{% endif %}"
+          data-value="{{ value | escape }}"
+          image-data="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+          variant-id="{{variant.id}}"
+          variant-sku="{{variant.sku}}"
+          product-title="{{product.title | escape}}"
+          variant-title="{{variant.title | escape}}"
+          variant-price="{{variant.price}}"
+          variant-compare-price="{{variant.compare_at_price}}"
+          variant-available="{{productVariantsAvailableState}}"
+          track-data="{{variant.inventory_quantity}}-variant.available"
+          {% if variant.metafields.purity-toolbox.animate_img %}
+            style="-webkit-animation-delay:{{animate-delay}}s;animation-delay:{{animate-delay}}s;"
+            {% assign animate-delay = animate-delay|plus:0.1 %}
+          {% endif %}>
+        {% if is_color %}
+          <div class="tooltip medium-down--hide">{{ value }}</div>
+        {% endif %}
+        {% if is_color %}
+          {%- assign swatchColorRed = '#' | append: variant.metafields.purity-toolbox.hex_color_code | color_extract: 'red' -%}
+          {%- assign swatchColorGreen = '#' | append: variant.metafields.purity-toolbox.hex_color_code | color_extract: 'green' -%}
+          {%- assign swatchColorBlue = '#' | append: variant.metafields.purity-toolbox.hex_color_code | color_extract: 'blue' -%}
+          {%- assign swatchColorRange = 765 | minus: swatchColorRed | minus: swatchColorGreen | minus: swatchColorBlue -%}
+          <label class="z{{ value | handle }}-{{variant.id}} {% if swatchColorRange < 60 %}b-a{% endif %}" style="background-color:#{{variant.metafields.purity-toolbox.hex_color_code}}">
+            <input class="rdio01" type="radio" name="option-{{ option_index }}-{{product.id}}" value="{{ value | escape }}"{% if forloop.first %} data="frst" checked{% endif %}/>
+            {%- if variant.metafields.purity-toolbox.label -%}
+              <div class="label-text">{{variant.metafields.purity-toolbox.label}}</div>
+            {%- elsif variant.metafields.purity-toolbox.animate_img -%}
+              <div class="label-text">New</div>
+            {%- elsif variant.compare_at_price > variant.price -%}
+              <div class="label-text">Sale</div>
+            {%- elsif settings.display_gwp == "variant" -%}
+              {% assign gwpVariantArray = ','| append: settings.gwp_variant_id_2 | append: ',' %}
+              {% assign gwpVarian = ',' | append: variant.id | append: ','  %}
+              {%- if gwpVariantArray contains gwpVarian -%}
+                <div class="label-text">GWP</div>
+              {%- endif -%}          
+            {%- endif -%}
+            {%- unless product.type == "Gift Cards" -%}
+              <img class="crossed-out" alt="Out of stock overlay" src="{{ 'soldout.png' | asset_url }}" />
+            {%- endunless -%}
+          </label>
+        {% else %}
+          <label class="{{ value | handle }}-{{variant.id}} no-shadow no-radius with-value">
+            <input class="rdio01"  type="radio" name="option-{{ option_index }}-{{product.id}}" value="{{ value | escape }}"{% if forloop.first %} data="frst" checked{% endif %}/>
+            {%- if variant.metafields.purity-toolbox.label -%}
+              <div class="label-text">{{variant.metafields.purity-toolbox.label}}</div>
+            {%- elsif variant.metafields.purity-toolbox.animate_img -%}
+              <div class="label-text">NEW</div>
+            {%- endif -%}
+            {{ value }}
+            {%- unless product.type == "Gift Card" -%}
+              <img class="crossed-out" alt="Out of stock overlay" src="{{ 'soldout.png' | asset_url }}" />
+            {%- endunless -%}
+          </label>
+        {% endif %}
+      </div>
+    {% endunless %}
+  {% endfor %}
+</div>
+
+{% endunless %}
+
+{% endif %}
+
+
+<script>
+$('.swatch-element').click(function(){
+
+  $('.cpr_price').html("$" + (Number($(this).attr("variant-compare-price"))/100).toFixed(2)+"   ");
+});
+
+</script>

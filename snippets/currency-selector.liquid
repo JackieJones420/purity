@@ -1,0 +1,49 @@
+{% assign currencyArray = 'USD|United States dollar||CAD|Canadian dollar||BGN|Bulgarian lev||DKK|Danish krone||EUR|Euro||HUF|Forint||PLN|Polish złoty||GBP|Pound sterling||SEK|Swedish krona||CHF|Swiss franc' %}
+{% assign currencyArray = currencyArray | split: '||' %}
+{% assign mainCurrencyArray = 'USD|United States dollar||CAD|Canadian dollar||GBP|Pound sterling' %}
+{% assign mainCurrencyArray = mainCurrencyArray | split: '||' %}
+<div class="currency-selector">
+  {%- for item in mainCurrencyArray -%}
+    {% assign itemArray = item | split: '|' %}
+    <span class="currency-selector-trigger" data-currency="{{itemArray[0]}}" id="{{itemArray[0]}}-currency">
+      {%- assign svgLink = 'icon-currency-' | append: itemArray[0] | append: '.svg' -%}
+      {%- include svgLink, additionalClass: "b-a", svgHeight: 12 -%}
+      <span>{{itemArray[0]}}</span>
+    </span>
+  {%- endfor -%}
+  <span data-currency="" id="" class="currency-selector-trigger hide additional-currency"></span>
+  <a href="#currencyPopWindow" class="purity-pop text-black-lt" pop-width="750px"><span class="currency-selector-trigger" id="more-currency">MORE</span></a>
+</div>
+<div id="currencyPolicyPopWindow" class="none">
+  <div class="p-v text-center">
+    <p class="currency-policy-text text-md m-h-lg p-h-lg l-h-2x"></p>
+    <p class="text-u-l text-xs"><a href="/pages/help-faq#CaShipping">See Details</a></p>
+    <span class="btn m-v-md no-borders text-md btn-secondary purity-pop-window-close">Got it</span>
+  </div>
+</div>
+<div id="currencyPopWindow" class="hide">
+  <p class="text-center text-md-lg m-b-lg p-t">Choose Your Currency</p>
+  <div class="upsell-content o-f-hid p-h-lg grid grid-uniform p-b">
+    {%- for item in currencyArray -%}
+      {% assign itemArray = item | split: '|' %}
+      <div class="grid__item currency-selector-trigger large--one-half pointer left m-b p-l-lg purity-pop-window-close" data-currency="{{itemArray[0]}}">
+        {%- assign svgLink = 'icon-currency-' | append: itemArray[0] | append: '.svg' -%}
+        {%- include svgLink, additionalClass: "b-a v-a-mid", svgHeight: 20 -%}
+        <span class="m-l v-a-mid">{{itemArray[1]}} ({{itemArray[0]}})</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<!-- United States  / US / United States dollar / USD
+Canada         / CA / Canadian dollar      / CAD
+United Kingdom / UK / Pound sterling       / GBP
+Bulgaria       / BG / Bulgarian lev        / BGN
+Denmark        / DK / Danish krone         / DKK
+Hungary        / HU / Forint               / HUF
+Poland         / PL / Polish złoty         / PLN
+Sweden         / SE / Swedish krona        / SEK
+Switzerland    / CH / Swiss franc          / CHF
+Czech Republic / CZ / Czech Koruna         / CZK  => EUR
+Croatia        / HR / Croatian Kuna        / HRK  => EUR
+countries use euro  / Euro                 / EUR -->

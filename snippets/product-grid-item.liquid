@@ -1,0 +1,257 @@
+<!-- /snippets/product-grid-item.liquid -->
+{% comment %}
+  This snippet is used to showcase each product during the loop,
+  'for product in collection.products' in collection.liquid.
+  A liquid variable (grid_item_width) is set just before the this
+  snippet is included to change the size of the container.
+  Once the variable is set on a page, all future instances of this
+  snippet will use that width. Overwrite the variable to adjust this.
+  Example
+    - assign grid_item_width = 'large--one-quarter medium--one-half'
+{% endcomment %}
+
+{% include 'product-metafields' %}
+{%- include 'product-add-badges' -%}
+{% comment %}
+  Set the default grid_item_width if no variable is set
+{% endcomment %}
+{% unless grid_item_width %}
+  {% assign grid_item_width = 'large--one-quarter medium--one-half small--one-half' %}
+{% endunless %}
+{%- unless iten_index_num -%}
+  {% assign iten_index_num = 0 %}
+{%- endunless -%}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+<div
+  id="item-{{product.id}}"
+  class="grid__item {{ grid_item_width }} productGrid m-v-lg pos-rlt {{' '}}
+  {%- if collection.handle contains 'gemmed-luminizer' or collection.handle contains 'green-tea-fiber-brow-builder' -%}
+    push--large--one-quarter
+  {%- elsif collection.handle contains 'self-care-kit' -%}
+    push--large--one-eighth
+  {%- endif -%}
+  {{' '}}
+  {%- for tag in product.tags -%}
+    {%- for step in steps -%}
+      {%- case tag -%}
+        {%- when step -%}
+        {{step}}
+      {%- endcase -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {{' '}}
+  {%- if collection.metafields.collection_setting.ads -%}
+
+  {%- else -%}
+    "
+  {%- endif -%}
+  data-productpostion="{{iten_index_num}}"
+  >
+  {% assign productLabel = "" %}
+  {%- if product.compare_at_price > product.price -%}
+    {% assign productLabel = "Sale" %}
+  {%- endif -%}
+  {% for tag in product.tags %}
+    {% case tag %}
+      {% when "New Product" %}
+        {% assign productLabel = "New" %}
+      {% break %}
+      {% when "holiday saving" %}
+        {% assign productLabel = "Extra 40% OFF" %}
+      {% break %}
+      {% when "New Shade" %}
+        {% assign productLabel = "New Shades" %}
+      {% break %}
+    {% endcase %}
+  {% endfor %}
+  {%- if productLabel != "" -%}
+    <span class="label label-new brand-primary text-u-c alt-font l-s">{{ productLabel }}</span>
+  {%- endif -%}
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+  {% endcomment %}
+  <div class="product-img__container">
+    <a href="{{ product.url | within: collection }}" class="grid__image no-margin">
+      <img
+       src="https://cdn.no-toxic.com/q_auto:good,c_limit,w_300,f_auto,fl_lossy{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+       data-src="https://cdn.no-toxic.com/q_auto:good,c_limit,w_300,f_auto,fl_lossy{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+       class="cld-responsive w-full"
+        alt="Product Grid - {{ product.title | escape }}" />
+    </a>
+  </div>
+  {% assign hideReview = false %}
+  {%- if product.tags contains "Beauty Deal 10" or product.tags contains "Beauty Deal 5" and settings.beauty_start -%}
+    {% assign hideReview = true %}
+  {%- endif -%}
+  {%- if product.tags contains "hide_review" -%}
+    {% assign hideReview = true %}
+  {%- endif -%}
+  {%- if hideReview -%}
+    <div class="m-t"></div>
+  {%- else -%}
+    <div class="m-t collection-review--container">
+      <span class="stamped-product-reviews-badge text-center block caption_text" data-id="{{ product.id }}">{{ product.metafields.stamped.badge }}</span>
+    </div>
+  {%- endif -%}
+  <div class="product-bottom">
+    <span class="text-center m-t-sm flex j-c-center caption_text">
+      <a href="{{ product.url | within: collection }}">
+        <span class="inline">{{ product.title }}</span>
+      </a>
+    </span>
+    {%- unless template contains "article" and product.tags contains "Super Gift" -%}
+      <div class="text-center module_title_text m-t-xs">
+        {% comment %}
+          You can show a leading 'from' or 'up to' by checking 'product.price_varies'
+          if your variants have different prices.
+        {% endcomment %}
+
+        
+          {% if product.price_varies %}
+          
+            <span class="min-price">{{ product.price_min | money }}</span>
+                      <span class="min-max-price">-</span>
+            <span class="max-price">{{ product.price_max | money }}</span>
+            
+          {% else %}
+            {%- if product.compare_at_price > product.price -%}
+              {%- if product.tags contains "BundleProduct" -%}
+                <span class="original_price">{{ product.price | money }}</span>
+                <span class="caption_s_text">({{ product.compare_at_price | money }} value)</span>
+              {%- else -%}
+                <span class="min-price brand-primary">{{ product.price | money }}</span>
+                <span class="max-price text-l-t">{{ product.compare_at_price | money }}</span>
+              {%- endif -%}
+            {%- else condition -%}
+                <span  class="original_price">{{ product.price | money }}</span>
+              {%- if settings.beauty_start -%}
+                {%- for tag in product.tags -%}
+                  {%- if tag == 'Beauty Deal 5' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price5 | money }} <span class="text-l-t">{{ product.price | money }}</span> </span>
+                  {%- elsif tag == 'Beauty Deal 10' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price10 | money }} <span class="text-l-t">{{ product.price | money }}</span></span>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endif -%}
+          {% endif %}
+
+
+      </div>
+    {%- endunless -%}
+  </div>
+ 
+  <div class="text-center m-t-sm collection__add-to-cart-btn">
+    {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+    <form
+      action="/cart/add"
+      method="post"
+      enctype="multipart/form-data"
+      id="AddToCartForm"
+      class="form-horizontal {% unless product.variants.size == 1 or productVariantsAvailableState contains 'release' or productVariantsAvailableState contains 'login' %} hide {% endunless %} {% if product.tags contains "PowerBuy" %}hide{% endif %}">
+      <!-- options -->
+      <select name="id" id="productSelect" class="product-single__variants" aria-label="product {{product.handle}} variant selector">
+        {%- for variant in product.variants -%}
+          {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+          {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}
+            <option disabled="disabled" data-sku="{{ variant.sku }}">
+              {{ variant.title }} - <span>{{productVariantsAvailableState}}</span>
+            </option>
+          {% else %}
+            <option {% if forloop.index == 1 %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endif %}
+        {%- endfor -%}
+      </select>
+      <!-- Variants Swatch -->
+      {% if product.variants.size > 1 %}
+        <div class="collection-swatch p-h-lg m-b">
+          {% assign selectedOption = product.options | first %}
+          <p>{{selectedOption}}: <span class="variant-container"></span> </p>
+          {% include 'swatch' with selectedOption %}
+        </div>
+      {% endif %}
+      <div class="submit-btn-container">
+        {%- capture add_button -%}
+          <button
+            type="submit" name="add" id="AddToCart{{ product.handle}}"
+            class="btn btn-secondary add-to-cart-modal no-m-v-gutter w-full"
+            data-productname="{{ product.title | escape }}"
+            data-productprice="{{product.price_max | money_without_currency | remove: ","}}"
+            data-productpostion="{{iten_index_num}}">
+            <span id="AddToCartText{{ product.handle}}"">Add To Tote</span>
+          </button>
+        {%- endcapture -%}
+        {%- capture notify_me -%}
+          <a href="#-{{product.id}}" data-product-handle="{{ product.handle }}"
+            class="btn BIS_trigger in-stock-modal BIS-collection-btn w-full"
+            >NOTIFY ME</a>
+        {%- endcapture -%}
+        {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+        {%- case productVariantsAvailableState -%}
+          {%- when 'add' -%}
+            {%- if product.type == "Sample" -%}
+              <a href="/pages/sample" class="btn btn-secondary no-m-v-gutter w-full">Select Sample</a>
+            {%- else -%}
+              {{ add_button }}
+            {%- endif -%}
+          {%- when 'email' -%}
+            {{ notify_me }}
+          {%- when 'release' -%}
+            <ul class="no-bullets">
+              {%- if product_meta.standard_release_date -%}
+                <li class="caption_s_text m-b-xs">
+                  Estimated Release Date:
+                  <br>
+                  {{ product_meta.standard_release_date | date: "%A, %b %d, %Y" }}
+                </li>
+              {%- endif -%}
+            </ul>
+          {%- when 'soon' -%}
+            {{ notify_me }}
+          {%- when 'login' -%}
+            <a href="{{ product.url | within: collection }}"
+              class="btn btn-secondary w-full no-m-v-gutter"
+              >Coming soon</a>
+          {%- when 'discontinued' -%}
+            <button type="submit" name="add" class="btn no-borders disabled w-full" disabled="disabled">
+              <span>Discontinued</span>
+            </button>
+          {%- when 'alert' -%}
+            {{ add_button }}
+          {%- when 'alertBuffer' -%}
+            {{ add_button }}
+          {%- when 'out' -%}
+            <button type="submit" name="add" class="btn no-borders disabled w-full" disabled="disabled">
+              <span>Sold Out</span>
+            </button>
+          {%- else -%}
+            <script type="text/javascript">
+              console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+            </script>
+        {%- endcase -%}
+      </div>
+    </form>
+    {% unless product.variants.size == 1 or productVariantsAvailableState contains 'release' or productVariantsAvailableState contains 'login' %}
+      <span class="btn btn-secondary collection-show-form w-full">
+        CHOOSE {{selectedOption}}
+      </span>
+    {% endunless %}
+  </div>
+</div>
+{% assign iten_index_num = iten_index_num | plus: 1 %}

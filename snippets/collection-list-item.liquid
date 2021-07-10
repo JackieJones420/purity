@@ -1,0 +1,305 @@
+{% include 'product-metafields' %}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+<div class="grid__item">
+
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+  {% endcomment %}
+
+  <!-- LIST COLLECTION 1 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/fruit-pigmented-water-foundation">
+        <img
+        data-src="{{ 'fruit_pigmented_water_foundation_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'fruit_pigmented_water_foundation_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'fruit_pigmented_water_foundation_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'fruit_pigmented_water_foundation_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/fruit-pigmented-water-foundation" class="h2 m-t-md">Fruit Pigmented Water Foundation</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/fruit-pigmented-water-foundation" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Our Water Foundation is a gloriously dewy, barely-there thirst quencher for your skin. Water drenching coverage leaves complexion radiant and glowing, while plumping and hydrating skin with sheer, skin-calming coverage from aloe and calendula. Instilled with purifying herbs for cleaner pores and anti-aging resveratrol, this natural foundation offers a multi-tasking, fruit pigmented wash of color perfect for dry skin, no-makeup looks, and those who enjoy light coverage.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 2 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/fruit-pigmented-foundation-powder">
+        <img
+        data-src="{{ 'fruit_pigmented_powder_foundation_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'fruit_pigmented_powder_foundation_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'fruit_pigmented_powder_foundation_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'fruit_pigmented_powder_foundation_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/fruit-pigmented-foundation-powder" class="h2 m-t-md">Fruit Pigmented Foundation Powder</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/fruit-pigmented-foundation-powder" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Instead of using talc or synthetic chemicals, we use finely pressed rice powder and healthy fruit oils to create a wonderfully rich, superfine powder with medium coverage. Pigments of peach, apricot, cocoa beans, and crannude create a full spectrum range of 8 masterfully matched shades. Can be layered over tinted moisturizers, BB cream, or bare skin for a glowing matte finish; darker shades can even be used as warming, matte finish bronzers. Effectively keeps shine under control for normal to oily skin types.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 3 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/fruit-pigmented-tinted-moisturizer">
+        <img
+        data-src="{{ 'fruit_pigmented_tinted_moisturizer_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'fruit_pigmented_tinted_moisturizer_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'fruit_pigmented_tinted_moisturizer_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'fruit_pigmented_tinted_moisturizer_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/fruit-pigmented-tinted-moisturizer" class="h2 m-t-md">Fruit Pigmented Tinted Moisturizer</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/fruit-pigmented-tinted-moisturizer" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Aloe and cucumber juice offer intense hydration in our natural tinted moisturizers, while luscious, antioxidant packed fruit oils of acai and pomegranate support softer, more comfortable skin. Pigments like carrot, cocoa bean, and tomato instill naturally occurring vitamins into skin while purifying oregano and rosemary keep skin fresh while you wear. Formula applies as a liquid cream and settles with an ultra light, dewy finish and light to medium coverage. A wonderful option for normal to dry skin types.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+
+  <!-- LIST COLLECTION 4 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/bamboo-blur-tinted-moisturizer-list">
+        <img
+        data-src="{{ 'bamboo_blur_tinted_moisturizer_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'bamboo_blur_tinted_moisturizer_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'bamboo_blur_tinted_moisturizer_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'bamboo_blur_tinted_moisturizer_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/bamboo-blur-tinted-moisturizer-list" class="h2 m-t-md">Bamboo Blur Tinted Moisturizer</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/bamboo-blur-tinted-moisturizer-list" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">A formula living effortlessly in the realm between moisturizer and foundation, our Bamboo Blur Tinted Moisturizer offers a truly unique combo of dewy feel and soft focused, radiantly matte finish. Masterful fruit pigments of peach, carrot, and cocoa beans create healthy, vitamin enriched color that can be built from medium to full coverage. Aloe, avocado, and pomegranate oil deeply moisturize while you wear, and bamboo silica works round the clock to absorb excess oil. This ‘insta-filter for your skin’ is best applied with makeup sponge or Kabuki brush.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 5 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/2nd-skin-foundation">
+        <img
+        data-src="{{ '2nd_skin_foundation_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ '2nd_skin_foundation_all.png' | file_img_url: '540x' }} 540w,
+        {{ '2nd_skin_foundation_all.png' | file_img_url: '400x' }} 400w,
+        {{ '2nd_skin_foundation_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/2nd-skin-foundation" class="h2 m-t-md">2nd Skin Foundation</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/2nd-skin-foundation" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Aptly named “2nd Skin”, this lighter than air foundation glides onto skin like water and absorbs like a serum. Pigments of pomegranate, wild cherry, and coffee beans offer an expanded range of 7 stunning shades; addition of light refracting bamboo silica softens a remarkably smooth, satin finish. Applies well with Kabuki brush or makeup sponge for adjustable medium to full coverage, and is a nourishing foundation option for any skin type. For drier skin types, layer over your favorite 100% Pure moisturizer.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 6 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/bb-cream">
+        <img
+        data-src="{{ 'bb_cream_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'bb_cream_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'bb_cream_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'bb_cream_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/bb-cream" class="h2 m-t-md">BB Cream</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/bb-cream" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Our creamy BB Cream is a true fan favorite, offering ultra lightweight wear, soothing coverage, and built-in SPF 15 protection. Can be applied with Kabuki brush or fingers as an illuminating primer beneath other natural foundations, or alone to achieve luminous medium coverage. Antiseptic lavender and rosemary leave skin refreshed, while responsibly sourced mica gives complexion a sunlit shimmer. Additions of aloe, vitamin E, and shea make this formula a nourishing choice for normal to dry skin types.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 7 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/fruit-pigmented-cream-foundation">
+        <img
+        data-src="{{ 'fruit_pigmented_cream_foundation_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'fruit_pigmented_cream_foundation_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'fruit_pigmented_cream_foundation_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'fruit_pigmented_cream_foundation_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/fruit-pigmented-cream-foundation" class="h2 m-t-md">Fruit Pigmented Cream Foundation</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/fruit-pigmented-cream-foundation" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">Light, nourishing avocado butter and pomegranate oil make this pan foundation a sumptuous treat for skin. Free radical fighting, antioxidant packed pigments from peach, apricot, cherry, strawnude, and raspnude maximize pigment range while fortifying skin against daily environmental damage. Our cream foundation is great for normal to dry skin types, and applies best when dabbed into skin with a damp makeup sponge. Can be layered to achieve medium to full coverage and a rich, satin finish with a glow.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+
+  <!-- LIST COLLECTION 8 -->
+  <div class="grid">
+    <div class="grid__item large--one-half medium--one-third">
+      <a href="/collections/fruit-pigmented-healthy-foundation">
+        <img
+        data-src="{{ 'fruit_pigmented_healthy_foundation_all.png' | file_img_url: '1024x' }}"
+        data-sizes="auto"
+        class="lazyload grid__image"
+        data-srcset="{{ 'fruit_pigmented_healthy_foundation_all.png' | file_img_url: '540x' }} 540w,
+        {{ 'fruit_pigmented_healthy_foundation_all.png' | file_img_url: '400x' }} 400w,
+        {{ 'fruit_pigmented_healthy_foundation_all.png' | file_img_url: '330x' }} 330w"/>
+      </a>
+    </div>
+    <div class="grid__item large--one-half large--display-table-cell medium--two-thirds">
+      <div class="text-container text-center">
+        <a href="/collections/fruit-pigmented-healthy-foundation" class="h2 m-t-md">Fruit Pigmented Healthy Foundation</a>
+
+        <hr class="b-t-dark w-xs margin-auto m-v-md">
+
+        <a href="/collections/fruit-pigmented-healthy-foundation" class="btn">Find Your Shades</a>
+
+        <div class="m-v-lg">
+          <p class="small--text-left p-h">A soothing aloe base with antioxidant packed fruit oils gives our full coverage foundation a creamy, liquid body that applies easily with Kabuki brush, makeup sponge, or fingers. Instead of industrial grade dyes, we choose to formulate with natural pigments from peach, apricot, and cocoa beans to color match 9 gorgeous shades. Formulated with high potency super fruits like acai, goji, and acerola, this truly skin healthy foundation settles with a matte finish and impeccable full coverage, making it a fan favorite for normal to oily skin types.</p>
+        </div>
+
+        <a href="/blogs/feed/how-to-choose-the-best-natural-foundation">
+          <span class="alt-font l-s text-xs text-u-c text-u-l">Learn More</span>
+          <span class="caret-right"></span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <hr class="p-v m-v-lg">
+</div>

@@ -1,0 +1,126 @@
+<!-- Solution brought to you by Caroline Schnapp -->
+<!-- See this: https://docs.shopify.com/support/your-store/products/can-i-recommend-related-products#finding-a-relevant-collecitons -->
+
+{% comment %}
+  Number of related items per row,
+  and number of rows.
+{% endcomment %}
+{%- if per_row != null -%}
+  {% assign number_of_related_products_per_row = per_row %}
+{%- else -%}
+  {% assign number_of_related_products_per_row = 4 %}
+{%- endif -%}
+
+{% assign number_of_rows = 1 %}
+
+{% comment %}
+  Heading.
+  Leave blank if you don't need one.
+{% endcomment %}
+
+
+{%- if product.tags contains "Teaser" -%}
+  {% assign heading = 'Other Customers Also Viewed' %}
+{%- elsif discontinued_soldout -%}
+  {% assign heading = 'Related Products' %}
+{%- else -%}
+  {% assign heading = 'Other Customers Also Bought' %}
+{%- endif -%}
+
+{% comment %}
+  Set either or both to true, if you want
+  to limit yourself to items with same vendor, and/or type.
+{% endcomment %}
+
+{% assign same_vendor = false %}
+{% assign same_type = false %}
+
+{% comment %}
+  Collections to ignore.
+  Never pick related items from those.
+{% endcomment %}
+
+{% assign exclusions = 'frontpage,all,100-points,300-points,purist-rewards,discontinued,20pure,not-discontinued,no-discount,il-state-tax-items' | split: ',' %}
+
+{% comment %}
+  Looking for a relevant collection.
+{% endcomment %}
+
+{% if product.metafields.c_f['Related Products'] %}
+  {% assign collection = collections[product.metafields.c_f['Related Products']] %}
+{% endif %}
+
+{% assign found_a_collection = false %}
+{% if collection and collection.all_products_count > 1 %}
+  {% unless exclusions contains collection.handle %}
+    {% assign found_a_collection = true %}
+  {% endunless %}
+{% endif %}
+{% unless found_a_collection %}
+  {% for c in product.collections %}
+    {% unless exclusions contains c.handle or c.all_products_count < 2 %}
+      {% assign found_a_collection = true %}
+      {% assign collection = c %}
+      {% break %}
+    {% endunless %}
+  {% endfor %}
+{% endunless %}
+
+{% comment %}
+  If we have a relevant collection.
+{% endcomment %}
+
+{% if found_a_collection %}
+
+  {% assign counter = 0 %}
+  {% assign break_at = number_of_rows | times: number_of_related_products_per_row %}
+  {% assign current_product = product %}
+
+  {% capture related_items %}
+    {% for product in collection.products %}
+      {% unless product.handle == current_product.handle %}
+         {% unless same_vendor and current_product.vendor != product.vendor %}
+           {% unless same_type and current_product.type != product.type %}
+             {% include 'product-grid-item' %}
+             {% assign counter = counter | plus: 1 %}
+             {% if counter == break_at %}
+               {% break %}
+             {% endif %}
+           {% endunless %}
+        {% endunless %}
+      {% endunless %}
+    {% endfor %}
+  {% endcapture %}
+
+  {% assign related_items = related_items | trim %}
+
+  {% unless related_items == blank %}
+
+  <aside class="grid grid-uniform">
+    <div class="grid__item">
+      {% unless heading == blank %}
+      <header class="section-header">
+        <div class="h4
+          {% if product.variants.first.inventory_quantity < 50 and product.tags contains 'Discontinued' %}
+            large--text-left
+          {% else %}
+            text-center  m-b-lg
+          {% endif %}">
+          {{ heading }}
+        </div>
+      </header>
+      {% endunless %}
+      <div class="
+      {%- if product.variants.first.inventory_quantity < 50 and product.tags contains 'Discontinued' -%}
+        carousel
+      {%- else -%}
+        related-products
+      {%- endif -%}">
+        {{ related_items }}
+      </div>
+    </div>
+  </aside>
+
+  {% endunless %}
+
+{% endif %}

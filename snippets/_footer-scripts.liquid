@@ -1,0 +1,257 @@
+{% comment %} Date Time Logic {% endcomment %}
+{% include '_date-time' %}
+{% comment %} Close Chat from 6pm to 7 am {% endcomment %}
+{% assign close_chat = false %}
+{% if hour > 17 and hour <= 23 %}
+  {% assign close_chat = true %}
+{% elsif hour >= 0 and hour < 8 %}
+  {% assign close_chat = true %}
+{% else %}
+  {% assign close_chat = false %}
+{% endif %}
+{% comment %} Vendors ***
+<script src="{{ 'jquery.cookie.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'lazysizes.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'modernizr.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'slick.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'masonry.pkgd.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'jquery.scrollstop.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'jquery.lazyload.min.js' | asset_url  }}" defer></script>
+<script src="{{ 'handlebars.min.js' | asset_url  }}" defer></script>
+{% endcomment %}
+
+{% comment %}
+<script src="{{ 'vendor.min.js' | asset_url  }}" defer></script>
+{% endcomment %}
+
+{% comment %}
+*** Required for FB SOCIAL APP
+{% endcomment %}
+<!-- <div id="fb-root"></div> -->
+
+<script>
+{% comment %} START Loyalty Lion {% endcomment %}
+(function(t,e){window.lion=e;var n,i=t.getElementsByTagName("script")[0];n=t.createElement("script"),n.type="text/javascript",n.async=!0,n.src="//dg1f2pfrgjxdq.cloudfront.net/libs/ll.sdk-1.1.js",i.parentNode.insertBefore(n,i),e.init=function(n){function i(t,e){var n=e.split(".");2===n.length&&(t=t[n[0]],e=n[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}var r,o=t.getElementsByTagName("script")[0];r=t.createElement("script"),r.type="text/javascript",r.async=!0,r.src="//platform.loyaltylion.com/sdk/configuration/"+n+".js",o.parentNode.insertBefore(r,o),e.ui=e.ui||[];for(var a="_push configure track_pageview identify_customer auth_customer identify_product on off ui.refresh".split(" "),c=0;a.length>c;c++)i(e,a[c]);e._token=n}})(document,window.lion||[]);
+lion.init('9124f5cc071fd5c02dc14e2c431c8be2');
+lion.configure({ platform: 'shopify' });
+{% if customer != nil %}
+  {% assign now = 'now' | date: "%Y-%m-%dT%H:%M:%S%z" %}
+  lion.identify_customer({
+    id: "{{ customer.id }}",
+    email: "{{ customer.email }}",
+    name: "{{ customer.name }}"
+  });
+  lion.auth_customer({
+    date: "{{ now }}",
+    auth_token: "{{ customer.id | append: now | append: '7af1c8384b5376e3b24d593a7a63a38a' | sha1 }}"
+  });
+{% endif %}
+{% comment %} END Loyalty Lion {% endcomment %}
+
+{% comment %}
+  Template-specific js
+{% endcomment %}
+{% if resetPassword %}
+  $(function() {
+    timber.resetPasswordSuccess();
+  });
+{% endif %}
+
+/*** START FB SOCIAL APP
+* SHARE DEBUG TOOL: https://developers.facebook.com/tools/debug/
+* OG OBJECT DEBUG TOOL: https://developers.facebook.com/tools/debug/og/object/
+*/
+{% comment %}
+(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=616481905219792";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+// END FB SOCIAL APP
+{% endcomment %}
+
+{% comment %} START ZenDesk Chat {% endcomment %}
+{%- unless template contains 'page.bot-opt-in' -%}
+/*<![CDATA[*/window.zEmbed||function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function(){a.push(arguments)},window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try{o=s}catch(e){n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}o.open()._l=function(){var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="100pure.zendesk.com",this.zEQueue=a,this.body.appendChild(e)},o.write('<body onload="document._l();">'),o.close()}();
+/*]]>*/
+{%- endunless -%}
+{% comment %} END ZenDesk Chat {% endcomment %}
+</script>
+
+{%- if shop.name == "100% PURE" -%}
+<script type="text/javascript">
+{% comment %} //back in store config {% endcomment %}
+var _BISConfig = _BISConfig || {};
+_BISConfig.instock_qty_level = 51;
+{% if product %}
+  _BISConfig.product = {{ product | json }};
+{% endif %}
+{% if customer %}
+  _BISConfig.customer = { email: {{ customer.email | json }} };
+{% endif %}
+{% comment %} //end back in store config {% endcomment %}
+{% comment %} // change swatch {% endcomment %}
+var changeSwatch= function(){
+  $(document).on('click', '.collection-show-form', function(event) {
+    event.preventDefault();
+    let variantValue = $(this).prev('.form-horizontal').find('.swatch-element').attr('variant-title');
+    $(this).closest('.productGrid').css('height','auto');
+    $(this).closest('.productGrid').find('.max-price, .min-max-price').addClass('hide text-l-t');
+    $(this).addClass('hide').prev('.form-horizontal').removeClass('hide').find('.swatch-element').eq(0).trigger('click');
+    try {
+      $(this).parent().prev('.form-horizontal').find('.money').parent().html($(this).parent().prev().find('.money').parent().html().replace('From ',''));
+    } catch (err) {
+      // console.log(err)
+    }
+
+    return false;
+  })
+  $(document).on('click','.productGrid .swatch-element',function(event){
+    event.preventDefault();
+    let form = $(this).closest('.form-horizontal');
+    let $dyFormContainer = $(this).closest('.dy-recommendation-product__detail--atc-form');
+    let url = '';
+
+    // if product form is nested inside dynamic yield component
+    // use the url attribute from the `.dy-recommendation-product__detail--atc-form` element
+    if ($dyFormContainer.length) {
+      url = $dyFormContainer.data('url').split('products/')[1];
+    } else {
+      url = $(this).closest('.productGrid').find('.grid__image').attr('href').split('products/')[1];
+    }
+
+    let loopIndex = $(this).closest('.productGrid').attr('data-slick-index')+1;
+    $(this).addClass('active').siblings().removeClass('active');
+    form.find('.variant-container').html($(this).attr('variant-title'));
+    form.parent().prev().find('.min-price .money').html(Shopify.formatMoney($(this).attr('variant-price')));
+    form.parent().find('.min-price .money').html(Shopify.formatMoney($(this).attr('variant-price')));
+    if ( +$(this).attr('variant-price') < +$(this).attr('variant-compare-price') ) {
+      form.parent().prev().find('.min-price').addClass('brand-primary');
+      form.parent().find('.min-price').addClass('brand-primary');
+      form.parent().prev().find('.max-price').removeClass('hide').find('.money').html(Shopify.formatMoney($(this).attr('variant-compare-price')));
+      form.parent().find('.max-price').removeClass('hide').find('.money').html(Shopify.formatMoney($(this).attr('variant-compare-price')));
+    }else{
+      form.parent().prev().find('.min-price').removeClass('brand-primary');
+      form.parent().find('.min-price').removeClass('brand-primary');
+      form.parent().prev().find('.max-price').addClass('hide');
+      form.parent().find('.max-price').addClass('hide')
+    }
+    form.closest('.productGrid').find('.product-img__container img, .product-single__photos img').attr('data-src',`${$(this).attr('image-data')}`);
+    form.find('select').val($(this).attr('variant-id'));
+    $(this).hasClass('available') ? form.find('.gwp-add-btn').attr('product-id',$(this).attr('variant-id')).removeClass('disabled').addClass('available').removeAttr('disabled').html('ADD TO TOTE') : form.find('.gwp-add-btn').removeClass('available').addClass('disabled').attr('disabled','disabled').html('SOLD OUT');
+    cloudinaryimg.responsive();
+    if($(this).attr('variant-available') == 'email'){
+      form.find('.submit-btn-container').html(`
+        <a href="#-${$(this).attr('variant-id')}" data-product-handle="${url}" data-variant-id="${$(this).attr('variant-id')}"
+            class="btn BIS_trigger in-stock-modal BIS-collection-btn w-full
+              ${$(this).closest('.product-card').length>0 ? 'w-full big-add-to-cart' : ''}"
+        >NOTIFY ME</a>
+      `);
+    }else if($(this).attr('variant-available') == 'discontinued'){
+      form.find('.submit-btn-container').html(`
+        <button type="submit" name="add" class="btn no-borders disabled w-full
+          ${$(this).closest('.product-card').length>0 ? 'w-full big-add-to-cart' : ''}"
+           disabled="disabled">
+          <span>Discontinued</span>
+        </button>
+      `);
+    }else if($(this).attr('variant-available') == 'out'){
+      form.find('.submit-btn-container').html(`
+        <button type="submit" name="add" class="btn no-borders disabled w-full
+          ${$(this).closest('.product-card').length>0 ? 'w-full big-add-to-cart' : ''}"
+           disabled="disabled">
+          <span>Sold Out</span>
+        </button>
+      `);
+    }else if($(this).attr('variant-available') == 'login' || $(this).attr('variant-available') == 'release' || $(this).attr('variant-available') == 'soon'){
+    }else{
+      form.find('.submit-btn-container').html(
+        `<button type="submit" name="add" id="AddToCart"
+          class="btn add-to-cart-modal no-m-v-gutter w-full ${$(this).closest('.product-card').length>0 ? 'btn__bg-filled--secondary' : 'btn-secondary'}"
+          data-productname="${$(this).attr('product-title')}"
+          data-productprice="${$(this).attr('variant-price')}"
+          data-productpostion="${$(this).closest('.productGrid').attr('data-productpostion')}"
+          >
+          <span id="AddToCartText">Add To Tote</span>
+        </button>
+      `);
+    }
+  })
+
+  return false;
+}
+{% comment %} // end change swatch {% endcomment %}
+$(document).ready(function(){
+  changeSwatch();
+  window.dispatchEvent(new CustomEvent('scroll'));
+});
+</script>
+{%- endif -%}
+
+<script type="text/javascript">
+  {% comment %} beauty deal promotion start {% endcomment %}
+  {%- if settings.beauty_start -%}
+    $.ajax({
+      url: `/pages/cart-ajax`,
+      context: document.body
+    }).done(function(data) {
+      let cart = JSON.parse(data);
+      if ((typeof callback) === 'function') {
+        callback(cart);
+      }
+      else {
+        if (cart.total_price_exclude_gift >= {{ settings.beauty_deal_treshold }} ) {
+          $('.beauty_deal_price').prev('.original_price').addClass('hide');
+          $('.beauty_deal_price').removeClass('hide');
+        }
+      }
+    });
+  {%- endif -%}
+  {% comment %} beauty deal promotion start {% endcomment %}
+  {% comment %} international and us difference start {% endcomment %}
+    var notUS = ()=>{
+      setTimeout(()=>{
+        if (typeof OneTrust == "undefined") {
+          notUS();
+        }else{
+          let country = OneTrust.getGeolocationData().country;
+          let state = OneTrust.getGeolocationData().state;
+          if(country == "GB"){
+            console.log('GB')
+            $('.gb-only').removeClass('hide');
+            $('#TopBannerMessage').append(`<p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full pos-abt top-0"><a href="/pages/help-faq">Temporarily pausing shipments to the UK on 12/21 due to Brexit. Orders must be placed by 12/20 11:59 PM PST.</a></p>`);
+            if (localStorage.ukShipping != '1') {
+              Purity.popwindow.open('#uk-shipping', 'content', {'width': "750px"});
+              localStorage.ukShipping = '1';
+            }
+          }
+          {%- if settings.free_shipping_rule == 'us' -%}
+            else if(country != "US"){
+              $('.us-only').addClass('hide');
+              $('.internation').removeClass('hide');
+            }
+          {%- endif -%}
+          Holly.topBannerMessage()
+        }
+      },1000);
+    };
+    notUS();
+  {% comment %} international and us difference end {% endcomment %}
+  $(window).scroll(function() {
+    $.each($('.cld-prepare'), function() {
+        if ( $(this).attr('data-src') && $(this).offset().top < ($(window).scrollTop() + $(window).height() + 100) ) {
+            var source = $(this).data('src');
+            $(this).addClass('cld-responsive');
+            $(this).removeClass('cld-prepare');
+            cloudinaryimg.responsive();
+        }
+    })
+  })
+</script>
+<div id="uk-shipping" class="hide">
+  <div class="p-lg p-t-xlg">
+    Due to Brexit, we are temporarily pausing shipments to the UK on 12/21/20. Orders must be placed by 12/20/20 11:59 PM PST to be processed.
+  </div>
+</div>

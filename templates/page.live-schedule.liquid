@@ -1,0 +1,98 @@
+<div class="text-center brand-bg-guava p-v-xlg">
+  <h1 class="page_title_text">{{ page.title }}</h1>
+  <p class="content_text">{{ page.content }}</p>
+</div>
+<section class="wrapper m-t-xlg">
+  <div class="b-t b-b b-primary p-v-sm text-center large--four-fifths margin-auto">
+    <button type="button" class="p-h small--p-h-sm" id="prev" aria-label="Previous week" disabled onclick="perv()"> < </button>
+    <span class="content_text inline m-h small--m-h-sm">M<span class="small--hide">ON</span><br class="large--hide"> <span id="date-0">29</span></span>
+    <span class="content_text inline m-h small--m-h-sm">T<span class="small--hide">UE</span><br class="large--hide"> <span id="date-1">30</span></span>
+    <span class="content_text inline m-h small--m-h-sm">W<span class="small--hide">ED</span><br class="large--hide"> <span id="date-2">31</span></span>
+    <span class="content_text inline m-h small--m-h-sm">T<span class="small--hide">HU</span><br class="large--hide"> <span id="date-3">01</span></span>
+    <span class="content_text inline m-h small--m-h-sm">F<span class="small--hide">RI</span><br class="large--hide"> <span id="date-4">02</span></span>
+    <span class="content_text inline m-h small--m-h-sm">S<span class="small--hide">AT</span><br class="large--hide"> <span id="date-5">03</span></span>
+    <button type="button" class="p-h small--p-h-sm" id="next" aria-label="Next week" onclick="next()"> > </button>
+  </div>
+  <div class="large--four-fifths margin-auto" id="week-events"></div>
+</section>
+<script type="text/javascript">
+  var liveData = {{ page.metafields.social_setting.event | json }};
+  let currentweek = 0;
+  var loadBambuser = (bambuserID)=>{
+    if (!window.initBambuserLiveShopping){
+      window.initBambuserLiveShopping = function(item) { window.initBambuserLiveShopping.queue.push(item) }; window.initBambuserLiveShopping.queue = [];
+      var scriptNode = document.createElement('script');
+      scriptNode['src'] = 'https://lcx-embed.bambuser.com/purity-cosmetics/embed.js';
+      document.body.appendChild(scriptNode);
+    }
+    window.initBambuserLiveShopping({
+      showId: bambuserID,
+      type: "overlay",
+    });
+    window.onBambuserLiveShoppingReady = player => {
+      player.configure({
+        buttons: {
+          checkout: player.BUTTON.MINIMIZE,
+          dismiss: player.BUTTON.MINIMIZE,
+          product: player.BUTTON.MINIMIZE,
+        }
+      });
+    };
+  }
+  var createList = (week)=>{
+    document.getElementById('week-events').innerHTML = "";
+    let weekevent = "";
+    liveData[week].forEach((d,i)=>{
+      // console.log(d)
+      document.getElementById(`date-${i}`).innerHTML = d.time.split('/')[1];
+      if(d.event.length>0){
+        weekevent += `<div class=""><p class="content_text m-t-md m-b">${d.day}, ${d.time}</p><div class="b-a b-primary r-2x m-b-sm">`;
+        d.event.forEach((e,u)=>{
+          // console.log(e)
+          weekevent += `
+          <div class="o-f-hid p-h-md p-v-sm small--p-h-sm ${u==0?'':'b-t'} b-primary">
+            <span class="left m-r-xlg small--m-r p-v-sm content_text w-s-no o-f-hid" style="width:110px">${e.time}</span>
+            <span class="clear-both hide small--show"></span>
+            <span class="left">
+              <span class="callout_text">${e.store} - Live</span>
+              <br>
+              <span class="caption_text">${e.platform.match("Bambuser - ")?"Bambuser":e.platform}</span>
+            </span>
+            <span class="clear-both hide small--show"></span>
+            ${e.platform.match("Bambuser - ")?`<button id="liveshopping-${e.platform.replace('Bambuser - ','')}" class="right small--left p-v-sm caption_text" onclick="loadBambuser('${e.platform.replace('Bambuser - ','')}')">WATCH LIVE</button>`:""}
+            ${e.platform=="Facebook Live"?`<a href="https://www.facebook.com/100percentpure" class="right small--left p-v-sm caption_text" target="_blank">WATCH LIVE</a>`:""}
+            ${e.platform=="Instagram Masterclass"?`<a href="https://www.instagram.com/100percentpure/" class="right small--left p-v-sm caption_text" target="_blank">WATCH LIVE</a>`:""}
+          </div>
+          `
+        })
+      }
+      weekevent += `</div></div>`;
+    })
+    document.getElementById('week-events').innerHTML = weekevent;
+  }
+  let perv = ()=>{
+    if(currentweek>0){
+      currentweek--;
+      createList(currentweek);
+      document.getElementById('next').removeAttribute('disabled');
+    }
+    if (currentweek==0){
+      document.getElementById('prev').setAttribute('disabled','disabled');
+    }
+  }
+  let next = ()=>{
+    if(currentweek<liveData.length-1){
+      currentweek++;
+      createList(currentweek);
+      document.getElementById('prev').removeAttribute('disabled');
+    }
+    if (currentweek==liveData.length-1){
+      document.getElementById('next').setAttribute('disabled','disabled');
+    }
+  }
+  createList(0);
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var bambuserID = url.searchParams.get("bambuserid");
+  if(bambuserID){loadBambuser(bambuserID) }
+</script>

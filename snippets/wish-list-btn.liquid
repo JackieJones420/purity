@@ -1,0 +1,15 @@
+<span class="wishlist_container {{additionalClass}}">
+  {%- if customer -%}
+    {% assign inWishlist = false %}
+    {%- for wishListHandle in customer.metafields.purity-toolbox.wish-list-handles -%}
+      {%- if wishListHandle == product.handle -%}
+        {% assign inWishlist = true %}
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if inWishlist -%}
+      <i class="wl-icon-heart remove-wishlist pointer" user-id="{{customer.id}}" product-handle="{{product.handle}}"></i>
+    {%- else -%}
+      <i class="wl-icon-heart-o add-wishlist pointer" user-id="{{customer.id}}" product-handle="{{product.handle}}"></i>
+    {%- endif -%}
+  {%- endif -%}
+</span>

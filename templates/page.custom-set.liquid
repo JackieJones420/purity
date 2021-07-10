@@ -1,0 +1,103 @@
+<div class="wrapper">
+  <div class="o-f-hid m-v-lg">
+    <div class="large--one-half left large--p-r-lg">
+      <img
+        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ settings.cloudinary_image_version }}/{{settings.cloudinary_image_version}}/{{page.metafields.100pure.product-img}}"
+        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{page.metafields.100pure.product-img}}"
+        id="ProductPhotoImg"
+        class="cld-prepare w-full"
+        alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+    </div>
+    <div class="large--one-half left large--p-l-lg">
+      <h1 class="section_title_text">{{ page.title }}</h1>
+      <div class="short-description caption_text m-b-sm">{{ page.content }}</div>
+      <div class="product--price-block">
+        <span id="ProductPrice" class="section_title_text inline original_price" itemprop="price">
+          {{ page.metafields.100pure.discount-price | money }}
+        </span>
+        <span class="module_title_text">
+          (<span id="ComparePrice">{{ page.metafields.100pure.original-price | money }}</span> value)
+        </span>
+      </div>
+
+      {% assign setvariantIdArray = '' %}
+      {% for handle in page.metafields.100pure.product-handles %}
+        {% assign product = all_products[handle] %}
+        {% assign setvariantIdArray = setvariantIdArray | append: product.variants.first.id | append: ',' %}
+        {%- if product.options.size > 0 -%}
+          <div class="m-v setProductContainer" product-index="{{ forloop.index0 }}">
+            <!-- Variants Swatch-->
+            {% if product.variants.size > 1 %}
+              {% assign selectedOption = product.options | first %}
+              <p>
+                <span class="text-u-c text-xs alt-font l-s-1x">Select a {{selectedOption}} for {{product.title}}:</span>
+                <span class="variantName">{{product.variants.first.title}}</span>
+              </p>
+              {% include 'swatch' with selectedOption %}
+            {% endif %}
+          </div>
+        {%- endif -%}
+      {% endfor %}
+
+      <button class="btn btn__bg-filled--secondary w-full addSetProductsBtn" data-variant-id>
+        <span id="AddToCartText">Add To Tote</span>
+      </button>
+      <div class="callout_text m-t m-b-sm">THIS KIT INCLUDES:</div>
+      <div class="product-bundle-list">
+        {% for handle in page.metafields.100pure.product-handles %}
+        {% assign x_product = handle | split: '?' %}
+        {% assign listNumber = forloop.index0 %}
+          <div class="productPopContainer" product-index="{{forloop.index0}}">
+            {%- for variant in all_products[x_product[0]].variants -%}
+              <div class="productVariantPopLink {% unless forloop.index0 == 0 %}hide{% endunless %}" variant-id={{variant.id}}>
+                {% assign b_variant = variant %}
+                {% include 'pp-bundle' %}
+              </div>
+            {%- endfor -%}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="o-f-hid">
+    {%- include 'pp-social-block' -%}
+  </div>
+  {% assign product = all_products[page.metafields.100pure.product-handles.first] %}
+  <div id="suggestItem"></div>
+</div>
+<script type="text/javascript">
+  $('.setProductContainer .swatch-element').each(function(i,e){
+    if ($(e).attr('variant-compare-price')) {
+      if ($(e).attr('variant-compare-price') > $(e).attr('variant-price')) {
+        $(e).remove();
+      }
+    }
+  })
+  var customProductSet = [{{setvariantIdArray}}];
+  window.currentAddButton = $('.addSetProductsBtn');
+  $('.setProductContainer .swatch-element').on('click', function(){
+    let productIndex = $(this).closest('.setProductContainer').attr('product-index');
+    $(this).closest('.setProductContainer').find('.variantName').html($(this).attr('variant-title'));
+    customProductSet[productIndex] = $(this).attr('variant-id');
+    $(this).closest('.setProductContainer').find('.swatch-element.active').removeClass('active');
+    $(this).addClass('active');
+    $('.productPopContainer').eq(productIndex).find('.productVariantPopLink:not(.hide)').addClass('hide');
+    $('.productPopContainer').eq(productIndex).find(`.productVariantPopLink[variant-id=${$(this).attr('variant-id')}]`).removeClass('hide');
+  })
+  $('.setProductContainer .swatch-element:first-child').trigger('click');
+  // variantName
+  $('.addSetProductsBtn').click(()=>{
+    let currentSetList = Array.from( customProductSet );
+    Holly.checkboxConfirmation(currentSetList);
+    Holly.AddProductsToCard(currentSetList);
+  })
+  // suggest Products
+  $.ajax({
+    url: `/recommendations/products?section_id=product-recommendations&limit=4&product_id={{product.id}}`,
+    context: document.body
+  }).done(function(data) {
+    $('#suggestItem').html(data.replace(`<div class="h4">`,`<div class="h4 hide">`));
+    cloudinaryimg.responsive();
+  });
+</script>

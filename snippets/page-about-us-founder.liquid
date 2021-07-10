@@ -1,0 +1,15 @@
+<a href="{{about_href}}" class="grid__item large--one-third large--p-h-xlg m-b-lg">
+  <img
+    src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/{{about_img_url}}"
+    data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/{{about_img_url}}"
+    class="cld-prepare inline m-b"
+    alt="{{about_name}}"/>
+  <span class="block module_title_text m-b-sm">{{about_name}}</span>
+  <span class="block callout_s_text m-b">{{about_title}}</span>
+  <p class="special-text">{{about_description}}</p>
+</a>
+{% assign about_img_url = '' %}
+{% assign about_name = '' %}
+{% assign about_title = '' %}
+{% assign about_description = '' %}
+{% assign about_href = '' %}

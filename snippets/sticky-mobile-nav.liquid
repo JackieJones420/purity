@@ -1,0 +1,206 @@
+<div class="mobile-nav--container is-moved-by-drawer">
+    <div id="TopBannerMessage" class="hide text-center pos-rlt bg-peach">
+      {% assign topBannerNum = 0 %}
+      {%- if settings.display_gwp != "none" or settings.display_pwp_1 != "none" -%}
+        <p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full {% if topBannerNum == 0 %}active pos-rlt{% else %}pos-abt top-0{% endif %}">
+          {%- if settings.display_gwp == "collection" -%}
+            <a
+              href="{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}
+                /discount/{{ settings.gwp_coupon_name_2 }}?redirect=%2Fcollections%2F{{ settings.gwp_collection_handle_2 }}
+              {%- else -%}
+                /collections/{{ settings.gwp_collection_handle_2 }}
+              {%- endif -%}">
+              Choose a FREE {{ settings.gwp_title_2 }} when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.gwp_us_only %}*US only{% endif %}
+            </a>
+          {%- elsif settings.display_gwp == "product" -%}
+            {%- if all_products[settings.gwp_product_handle_2].variants.size > 1 -%}
+              <a
+                href="{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}
+                  /discount/{{ settings.gwp_coupon_name_2 }}?redirect=%2Fproducts%2F{{ settings.gwp_product_handle_2 }}
+                {%- else -%}
+                  /products/{{ settings.gwp_product_handle_2 }}
+                {%- endif -%}">
+                Choose any shade of {{ settings.gwp_title_2 }} for FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.gwp_us_only %}*US only{% endif %}
+              </a>
+            {%- else -%}
+              <a
+                href="{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}
+                  /discount/{{ settings.gwp_coupon_name_2 }}?redirect=%2Fproducts%2F{{ settings.gwp_product_handle_2 }}
+                {%- else -%}
+                  /products/{{ settings.gwp_product_handle_2 }}
+                {%- endif -%}">
+                Receive {{ settings.gwp_value_2 | times: 100 | money_without_trailing_zeros }} gift FREE with purchase of {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.gwp_us_only %}*US only{% endif %}
+              </a>
+            {%- endif -%}
+          {%- elsif settings.display_gwp == "variant" -%}
+            {% if settings.gwp_variant_id_2 contains ',' %}
+              <a
+                href="{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}
+                  /discount/{{ settings.gwp_coupon_name_2 }}?redirect=%2Fproducts%2F{{ settings.gwp_product_handle_2 }}
+                {%- else -%}
+                  /products/{{ settings.gwp_product_handle_2 }}
+                {%- endif -%}">
+                Choose a FREE {{ settings.gwp_title_2 }} from select shades when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.gwp_us_only %}*US only{% endif %}
+              </a>
+            {%- else -%}
+              <a
+                href="{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}
+                  /discount/{{ settings.gwp_coupon_name_2 }}?redirect=%2Fproducts%2F{{ settings.gwp_product_handle_2 }}
+                {%- else -%}
+                  /products/{{ settings.gwp_product_handle_2 }}
+                {%- endif -%}">
+                Get a free {{ settings.gwp_title_2 }} when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.gwp_us_only %}*US only{% endif %}
+              </a>
+            {%- endif -%}
+          {%- elsif settings.display_pwp_1 == "collection" -%}
+            <a
+              href="{%- if settings.pwp_coupon_name_1 and settings.pwp_coupon_name_1 !="" -%}
+                /discount/{{ settings.pwp_coupon_name_1 }}?redirect=%2Fproducts%2F{{ settings.pwp_product_handle_1 }}
+              {%- else -%}
+                /products/{{ settings.pwp_product_handle_1 }}
+              {%- endif -%}">
+              Choose any {{ settings.pwp_title_1 }}  for only {{ settings.pwp_discount_price_1 | times: 100 | money_without_trailing_zeros }} when you spend {{ settings.pwp_threshold_1 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.pwp_us_only %}*US only{% endif %}
+            </a>
+          {%- elsif settings.display_pwp_1 == "product" -%}
+            {%- if all_products[settings.pwp_product_handle_1].variants.size > 1 -%}
+              <a
+                href="{%- if settings.pwp_coupon_name_1 and settings.pwp_coupon_name_1 !="" -%}
+                  /discount/{{ settings.pwp_coupon_name_1 }}?redirect=%2Fcollections%2F{{ settings.pwp_collection_handle_1 }}
+                {%- else -%}
+                  /collections/{{ settings.pwp_collection_handle_1 }}
+                {%- endif -%}">
+                Choose any shade of {{ settings.pwp_title_1 }} for only {{ settings.pwp_discount_price_1 | times: 100 | money_without_trailing_zeros }} when you spend {{ settings.pwp_threshold_1 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.pwp_us_only %}*US only{% endif %}
+              </a>
+            {%- else -%}
+              <a
+                href="{%- if settings.pwp_coupon_name_1 and settings.pwp_coupon_name_1 !="" -%}
+                  /discount/{{ settings.pwp_coupon_name_1 }}?redirect=%2Fcollections%2F{{ settings.pwp_collection_handle_1 }}
+                {%- else -%}
+                  /collections/{{ settings.pwp_collection_handle_1 }}
+                {%- endif -%}">
+                Get {{ settings.pwp_title_1 }} for only {{ settings.pwp_discount_price_1 | times: 100 | money_without_trailing_zeros }} when you spend {{ settings.pwp_threshold_1 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.pwp_us_only %}*US only{% endif %}
+              </a>
+            {%- endif -%}
+          {%- elsif settings.display_pwp_1 == "variant" -%}
+            {% if settings.pwp_variant_id_1 contains ',' %}
+              <a
+                href="{%- if settings.pwp_coupon_name_1 and settings.pwp_coupon_name_1 !="" -%}
+                  /discount/{{ settings.pwp_coupon_name_1 }}?redirect=%2Fproducts%2F{{ settings.pwp_product_handle_1 }}
+                {%- else -%}
+                  /products/{{ settings.pwp_product_handle_1 }}
+                {%- endif -%}">
+                Get select shades of {{ settings.pwp_title_1 }} for only {{ settings.pwp_discount_price_1 | times: 100 | money_without_trailing_zeros }} when you spend {{ settings.pwp_threshold_1 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.pwp_us_only %}*US only{% endif %}
+              </a>
+            {%- else -%}
+              <a
+                href="{%- if settings.pwp_coupon_name_1 and settings.pwp_coupon_name_1 !="" -%}
+                  /discount/{{ settings.pwp_coupon_name_1 }}?redirect=%2Fproducts%2F{{ settings.pwp_product_handle_1 }}
+                {%- else -%}
+                  /products/{{ settings.pwp_product_handle_1 }}
+                {%- endif -%}">
+                Get {{ settings.pwp_title_1 }} for only {{ settings.pwp_discount_price_1 | times: 100 | money_without_trailing_zeros }} when you spend {{ settings.pwp_threshold_1 | times: 100 | money_with_currency | replace: '.00', '' }} or more! {% if settings.pwp_us_only %}*US only{% endif %}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        </p>
+        {% assign topBannerNum = topBannerNum | plus: 1 %}
+      {%- endif -%}
+      {%- if settings.display_free_shipping -%}
+        <p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full {% if topBannerNum == 0 %}active pos-rlt{% else %}pos-abt top-0{% endif %}">
+          {% if settings.free_shipping_rule == 'no' %}
+            <a href="/pages/help-faq">Free USA Domestic Shipping on $50+ <span class="medium-down--hide">| CA/UK/EU Shipping</span></a>
+          {% elsif settings.free_shipping_rule == 'us' %}
+            <a href="/pages/help-faq">
+              <span class="us-only">FREE SHIPPING ON ANY U.S. ORDER | FREE RETURNS</span>
+              <span class="internation hide">FREE CA SHIPPING ON $99 | UK/EU SHIPPING</span>
+            </a>
+          {%- else -%}
+            <a href="/pages/help-faq">Free Domestic Standard Shipping</a>
+          {% endif %}
+        </p>
+        {% assign topBannerNum = topBannerNum | plus: 1 %}
+      {%- endif -%}
+      {%- if settings.display_banner_text_2 -%}
+        <p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full {% if topBannerNum == 0 %}active pos-rlt{% else %}pos-abt top-0{% endif %}">
+          {%- if settings.banner_link_2 -%}
+            <a href="{{ settings.banner_link_2 }}">{{ settings.banner_text_2 }}</a>
+          {%- else -%}
+            {{ settings.banner_text_2 }}
+          {%- endif -%}
+        </p>
+        {% assign topBannerNum = topBannerNum | plus: 1 %}
+      {%- endif -%}
+      {%- if settings.display_banner_text_1 -%}
+        <p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full {% if topBannerNum == 0 %}active pos-rlt{% else %}pos-abt top-0{% endif %}">
+          {%- if settings.banner_link_1 -%}
+            <a href="{{ settings.banner_link_1 }}">{{ settings.banner_text_1 }}</a>
+          {%- else -%}
+            {{ settings.banner_text_1 }}
+          {%- endif -%}
+        </p>
+        {% assign topBannerNum = topBannerNum | plus: 1 %}
+      {%- endif -%}
+      {%- if settings.display_free_sample -%}
+        <p class="p-v-sm no-margin alt-font l-s text-u-c text-xxs w-full {% if topBannerNum == 0 %}active pos-rlt{% else %}pos-abt top-0{% endif %}">
+          <a href="/pages/sample">Get 2 free samples with any <span class="money">$45</span> purchase</a>
+        </p>
+        {% assign topBannerNum = topBannerNum | plus: 1 %}
+      {%- endif -%}
+      <!-- <span class="icon-fallback-text">
+        <a class="close-message pos-abt text-md-lg" href="javascript:void(0)">
+          <span class="icon icon-circle-cross"></span>
+          <span class="fallback-text">X</span>
+        </a>
+      </span> -->
+    </div>
+    <div class="pos-abt left-0 bg-white desk-top-fix-nav w-full p-t b-shadow medium-down--hide">
+      {% include '_nav', navClass: ' ' %}
+    </div>
+  <div class="large--hide" id="MobileMenu">
+    <div class="grid--full no-m-v-gutter text-center">
+      <div class="grid__item one-sixth">
+        <div class="site-nav--mobile">
+          <a href="javascript:void(0)" class="nav-open site-nav__link js-drawer-open-left" aria-controls="NavDrawer" aria-expanded="false">
+            <div class="inner"></div>
+            <span class="off-screen icon-fallback-text">Mobile Menu</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid__item one-sixth site-nav--mobile" id="search-bar">
+        <form action="/search" method="get" role="search">
+          <input type="search" name="q" value="{{ search.terms | escape }}" placeholder='Search e.g. "Mascara"' class="input-group-field main-font" aria-label="{{ 'general.search.placeholder' | t }}">
+          <input style="visibility: hidden;" type="submit" aria-labelledby="open-mobile-search-btn"/>
+          <button id="open-mobile-search-btn">
+            <span class="icon-fallback-text">
+              <span class="icon icon-search" aria-hidden="true"></span>
+              <span class="fallback-text">Search</span>
+            </span>
+          </button>
+        </form>
+      </div>
+
+      <div class="grid__item two-sixths site-nav--mobile p-t-sm">
+        <a href="/">
+          <img
+            src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+            data-src="https://cdn.no-toxic.com/image/fetch/q_auto,f_auto,fl_lossy,w_90,f_auto,dpr_auto/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+            class="cld-prepare m-t-xs"
+            alt="100% Logo Mobile" itemprop="logo" height="40" />
+        </a>
+      </div>
+
+      <div class="grid__item one-sixth push--one-sixth">
+        <div class="site-nav--mobile">
+          <a href="/cart" class="js-drawer-open-right site-nav__link" aria-controls="CartDrawer" aria-expanded="false">
+            <span class="icon-fallback-text">
+              <span class="icon icon-bag" aria-hidden="true"></span>
+              <span class="fallback-text">{{ 'layout.cart.title' | t }}</span>
+              <span class="main-font" id="CartCount">{{ cart.item_count }}</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

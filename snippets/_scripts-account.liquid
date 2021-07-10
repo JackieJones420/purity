@@ -1,0 +1,183 @@
+<script type="text/javascript">
+  // navigation action
+
+  // Using setTimeout to wait for DOM elements. Temporary quickfix until we can rebuild.
+  $(document).ready(function(){
+    if ($(`.section-${document.location.hash.replace('#','')}`).length>0) {
+      $('.account-nav-list .account-nav').removeClass('text-u-l');
+      $(`.account-nav[section-to='${document.location.hash.replace('#','')}']`).addClass('text-u-l').removeClass('medium-down--hide');
+      $(`.section-${document.location.hash.replace('#','')}`).addClass('animated-show pos-rlt').removeClass('animated-hide pos-abt');
+    } else {
+      $(`.section-`).addClass('animated-show pos-rlt').removeClass('animated-hide pos-abt');
+    }
+    $('.account-nav').click(function(){
+      if ($(this).attr('section-to') == 'order') {
+        $('.buy-again').removeClass('hide');
+        $('.recent-view').addClass('hide');
+      }else {
+        $('.buy-again').addClass('hide');
+        $('.recent-view').removeClass('hide');
+      }
+      cloudinaryimg.responsive();
+      $('.account-nav-list .account-nav').removeClass('text-u-l');
+      $(`.account-nav[section-to='${$(this).attr('section-to')}']`).addClass('text-u-l');
+      $('.section-account').addClass('animated-hide pos-abt').removeClass('animated-show pos-rlt');
+      $(`.section-${$(this).attr('section-to')}`).removeClass('animated-hide pos-abt').addClass('animated-show pos-rlt');
+      $(`[class^='${$(this).attr('section-to')}-']`).addClass('animated-hide pos-abt').removeClass('animated-show pos-rlt');
+      $(`.${$(this).attr('section-to')}-home`).removeClass('animated-hide pos-abt').addClass('animated-show pos-rlt');
+      document.location.hash = $(this).attr('section-to');
+      $('.account-nav-list .pointer, .account-nav-list br').addClass('medium-down--hide');
+      $('.account-nav-list .text-u-l').removeClass('medium-down--hide');
+    })
+    $('.account-2nd-nav').click(function(){
+      $(`.${$(this).attr('section-from')}`).addClass('animated-hide pos-abt').removeClass('animated-show pos-rlt');
+      $(`.${$(this).attr('section-to')}`).removeClass('animated-hide pos-abt').addClass('animated-show pos-rlt');
+    })
+    $('.mobile-nav-trigger').click(()=>{
+      if ($('.account-nav-list .medium-down--hide').length > 0) {
+        $('.account-nav-list .medium-down--hide').removeClass('medium-down--hide');
+      }else{
+        $('.account-nav-list .pointer, .account-nav-list br').addClass('medium-down--hide');
+        $('.account-nav-list .text-u-l').removeClass('medium-down--hide');
+      }
+    })
+    // address page provinces fill
+    var fetchId = function(element){
+      return element.attr("id").replace("AddressCountry_","");
+    }
+    var fetchProvince = function(element,currentId){
+      let provinces = JSON.parse(element.find(":selected").attr("data-provinces"));
+      $("#AddressProvince_"+currentId).html("<option value='--- select province ---'>--- select province ---</option>");
+      for(var i=0; i<provinces.length; i++){
+        $("#AddressProvince_"+currentId).append("<option value='"+provinces[i][0]+"'>"+provinces[i][1]+"</option>");
+      }
+    }
+    // set edit address form default value
+    $("select[id^=AddressCountry_]").each(function(){
+      let currentId = fetchId($(this));
+      if($(this).attr("data-default")){
+        $(this).find("option[value='"+$(this).attr("data-default")+"']").attr("selected","selected");
+      }
+      fetchProvince($(this),currentId);
+      $("#AddressProvince_"+currentId).find("option[value='"+$("#AddressProvince_"+currentId).attr("data-default")+"']").attr("selected","selected");
+    })
+    // select styled
+    $(".styled-select").each(function() {
+      var $this = $(this),
+          numberOfOptions = $(this).children("option").length;
+
+      $this.addClass("select-hidden");
+      $this.wrap('<div class="select"></div>');
+      $this.after('<div class="select-styled pointer"></div>');
+
+      var $styledSelect = $this.next("div.select-styled");
+      if($this.children("option[selected]").length == 0){
+        $styledSelect.text(
+          $this
+            .children(":first")
+            .text()
+        );
+      }else{
+        $styledSelect.text(
+          $this
+            .children("option[selected]")
+            .text()
+        );
+      }
+
+      var $list = $("<ul />", {
+        class: "select-options"
+      }).insertAfter($styledSelect);
+
+      for (var i = 0; i < numberOfOptions; i++) {
+        $("<li />", {
+          text: $this
+            .children("option")
+            .eq(i)
+            .text(),
+          rel: $this
+            .children("option")
+            .eq(i)
+            .val(),
+          class: $this
+            .children("option")
+            .eq(i)
+            .attr("type")
+        }).appendTo($list);
+      }
+
+      var $listItems = $list.children("li");
+
+      $styledSelect.click(function(e) {
+        e.stopPropagation();
+        $("div.select-styled.active")
+          .not(this)
+          .each(function() {
+            $(this)
+              .removeClass("active")
+              .next("ul.select-options")
+              .hide();
+          });
+        $(this)
+          .toggleClass("active")
+          .next("ul.select-options")
+          .toggle();
+      });
+
+      $listItems.click(function(e) {
+        e.stopPropagation();
+        $styledSelect.text($(this).text()).removeClass("active");
+        $this.val($(this).attr("rel"));
+        $list.hide();
+        if($this.attr("name") == "skin_concern"){
+          $("#SkinConcern2").parent().find(".select-options li").removeClass("hide");
+          if($this.val() == "Default"){
+            $("#SkinConcern2").parent().find(".select-styled").html("--- Not Set ---");
+            $("#SkinConcern2").parent().find(".select-options li[rel='Default']").siblings().addClass("hide");
+            $("#SkinConcern2").val("Default");
+          }else{
+            $("#SkinConcern2").parent().find(".select-styled").html("--- Not Set ---");
+            $("#SkinConcern2").val("Default");
+            $("#SkinConcern2").parent().find(".select-options li[rel='"+$(this).attr("rel")+"']").addClass("hide");
+          }
+        }
+      });
+
+      $(document).click(function() {
+        $styledSelect.removeClass("active");
+        $list.hide();
+      });
+    });
+    // customer profile update
+    $('form#custmeta').submit(function(e) {
+      e.preventDefault();
+      $(".cus-pfl-submit-btn").html("updating ....").addClass("disabled");
+      $.ajax({
+        url: $(this).attr('action'),
+        type: "GET",
+        contentType: "application/liquid",
+        data: $(this).serialize()
+      }).done(function() {
+        location.reload();
+      }).fail(function(data) {
+        alert("We are so sorry but seems some error occurred. Please try again");
+        console.log("fail to submit!!", data);
+      })
+      return false;
+    });
+    // Recent View Function
+    if (localStorage.recentView) {
+      $.ajax({
+        url: `/tools/customer_profile?user_id={{ customer.id }}&recent_view=${localStorage.recentView}`,
+        type: "GET",
+        contentType: "application/liquid",
+      }).done(function() {
+        location.reload();
+        localStorage.removeItem('recentView');
+      }).fail(function(data) {
+        alert("We are so sorry but seems some error occurred. Please try again");
+        console.log("fail to submit!!", data);
+      })
+    }
+  })
+</script>

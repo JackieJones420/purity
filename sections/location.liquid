@@ -1,0 +1,244 @@
+{% comment %}integration with retail store start{% endcomment %}
+<script type="text/javascript">
+  var retailStoreInfo = [
+    {% for block in section.blocks %}
+      {%- if block.type == 'location' and block.settings.qtyAPIname != '' -%}
+        {
+          storeName: '{{ block.settings.title }}',
+          api: '{{block.settings.storeAPI}}',
+          url: '{{block.settings.storeURL}}',
+          qtyName: '{{block.settings.qtyAPIname}}'
+        },
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+</script>
+{% comment %}integration with retail store end{% endcomment %}
+{% capture appointmentScript %}
+  <script type="text/javascript">
+   var __snap = {};
+   __snap.base_url = 'https://snapappointments.com';
+   __snap.user_no = '22849';
+  </script>
+  <script id="snapAppointments-script" src="https://snapappointments.com/propel/js/book/snap-schedule.js"></script>
+{% endcapture %}
+{%- if template contains "cart" -%}
+  {% assign jsIndex = 0 %}
+  <div id="retail-store-container" class="hide">
+    <div class="p-xlg">
+      <p class="m-b module_title_text ">Pick Up In-Store</p>
+      <p class="content_text">Available for Pick Up In-Store at these locations. Please verify store location and operating hours prior to placing order.</p>
+      {% for block in section.blocks %}
+        {%- if block.type == 'location' and block.settings.qtyAPIname != '' -%}
+          <div class="m-t-md">
+            <p class="callout_text">{{ block.settings.title }}</p>
+            <p class="content_text no-margin">{{ block.settings.locationAddress }}, {{ block.settings.locationCity }}, {{ block.settings.locationState }}</p>
+            <p class="content_text">{{ block.settings.locationPhone }}</p>
+            <p class="content_text m-t">Open hours: <br>
+              <time class="caption_text block" itemprop="openingHours">{{ block.settings.locationOpeningHours }}</time>
+            </p>
+            <div class="retailMissingProduct m-t caption_text hide" retail-index="{{ jsIndex }}">
+              <p>Item not available for this store:</p>
+              <ul class="retailMissingProductList"></ul>
+            </div>
+            <p class=""><a class="content_text thick-u-l add-retail-item pointer disabled btn btn-secondary no-borders" retail-index="{{ jsIndex }}">PICK UP IN-STORE</a> </p>
+          </div>
+          {% assign jsIndex = jsIndex | plus: 1 %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+{% case page.template_suffix %}
+  {% when 'locations' %}
+    {{appointmentScript}}
+    <section class="wrapper m-t-lg p-t-lg text-center">
+      <h1 class="section_title_text no-margin">Store Locations</h1>
+      <div class="caption_text m-t">Filter by: <span class="store-filter-by brand-primary large--hide">ALL</span></div>
+      <div class="m-t-sm pos-rlt">
+        <div class="dorp-down-container bg-white">
+          <span class="store-filter-option callout_s_text pointer m-h-sm brand-primary" data="all"><span class="service-label">ALL</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="event">{%- include 'icon-store-event.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">EVENT</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="spa">{%- include 'icon-store-spa.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">SPA FACIAL</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="makeover">{%- include 'icon-store-makeover.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">MAKEOVER</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="facial">{%- include 'icon-store-facial.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">MINI FACIAL</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="video">{%- include 'icon-store-video.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">VIDEO CONSULTATIONS</span></span>
+          <span class="store-filter-option callout_s_text pointer m-h-sm" data="pickup">{%- include 'icon-store-pickup.svg', additionalClass: "store-service-icon-s v-a-mid" -%} <span class="service-label">IN-STORE PICKUP</span></span>
+        </div>
+      </div>
+    </section>
+    <section class="grid grid-uniform wrapper m-t-lg p-t store-filter-resource">
+      {% include 'snippet_location_list' %}
+    </section>
+    <section class="grid grid-uniform wrapper m-t-lg p-t store-filter-result">
+    </section>
+  {% when 'location-single' %}
+    {{appointmentScript}}
+    {% include 'snippet_location_single' %}
+{% endcase %}
+
+{% schema %}
+  {
+  "name": "Location",
+  "settings": [
+    {
+      "id": "locationName",
+      "type": "text",
+      "label": "Name"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "location",
+      "name": "Location",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Name"
+        },
+        {
+          "id": "locationAddress",
+          "type": "text",
+          "label": "Address"
+        },
+        {
+          "id": "locationCity",
+          "type": "text",
+          "label": "City"
+        },
+        {
+          "id": "locationState",
+          "type": "text",
+          "label": "State",
+          "placeholder": "CA"
+        },
+        {
+          "id": "locationPhone",
+          "type": "text",
+          "label": "Phone"
+        },
+        {
+          "id": "storeAPI",
+          "type": "text",
+          "label": "pickup API key"
+        },
+        {
+          "id": "storeURL",
+          "type": "text",
+          "label": "pickup store URL"
+        },
+        {
+          "id": "qtyAPIname",
+          "type": "text",
+          "label": "store name on quantity API"
+        },
+        {
+          "type": "checkbox",
+          "id": "serviceMakeover",
+          "label": "Makeover Service"
+        },
+        {
+          "type": "checkbox",
+          "id": "serviceVideo",
+          "label": "Video Consultations"
+        },
+        {
+          "type": "text",
+          "id": "serviceVideoURL",
+          "label": "Video Consultations URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "serviceFacial",
+          "label": "Mini Facial Service"
+        },
+        {
+          "type": "checkbox",
+          "id": "serviceSpa",
+          "label": "SPA Treatment Service"
+        },
+        {
+          "id": "snapLocation",
+          "type": "text",
+          "label": "Location ID"
+        },
+        {
+          "type": "paragraph",
+          "content": "this is only available for stores with spa treatment"
+        },
+        {
+          "id": "locationOpeningHours",
+          "type": "text",
+          "label": "Opening Hours"
+        },
+        {
+          "type": "paragraph",
+          "content": "use '<br>' to change line"
+        },
+        {
+          "id": "locationDirections",
+          "type": "text",
+          "label": "Directions URL"
+        },
+        {
+          "type": "paragraph",
+          "content": "find the store on google map, then copy the URL and paste to here"
+        },
+        {
+          "id": "locationImage",
+          "type": "image_picker",
+          "label": "Store image"
+        },
+        {
+          "type": "paragraph",
+          "content": "image size should be 2048X2048"
+        },
+        {
+          "id": "locationPage",
+          "type": "page",
+          "label": "Location Page"
+        },
+        {
+          "type": "paragraph",
+          "content": "on shopify admin page, find 'Pages' under 'Online Store'. Create a new page with title store name and template location-single. Then link the page."
+        }
+      ]
+    },
+    {
+      "type": "event",
+      "name": "Event",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Event block need to be before Location block"
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Event name"
+        },
+        {
+          "id": "storeList",
+          "type": "text",
+          "label": "Store List"
+        },
+        {
+          "type": "paragraph",
+          "content": "'ALL'for all stores; or store name separate with '|', example 'WESTFIELD TOPANGA|VANCOUVER MALL'"
+        },
+        {
+          "id": "eventDate",
+          "type": "text",
+          "label": "Event Date"
+        },
+        {
+          "id": "eventDetail",
+          "type": "textarea",
+          "label": "Event Detail"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

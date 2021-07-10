@@ -1,0 +1,92 @@
+<!-- /templates/collection.list.liquid -->
+{% comment %}
+
+  By using a variation of the 'view all' parameter technique, you can create
+  a custom layout for any template by adding ?view=xxxx
+
+  In this example, you can have a list view of your collection page by going to
+  /collections/all?view=list
+
+  For more information on collection tags:
+    - http://docs.shopify.com/themes/liquid-variables/collection
+
+  For more information on the ?view parameter:
+    - http://docs.shopify.com/support/configuration/store-customization/can-i-show-more-than-50-products-on-my-homepage-can-i-add-a-view-all-function-to-my-collection-pages#add-view-all
+
+{% endcomment %}
+
+{% paginate collection.products by 12 %}
+
+{% comment %}
+  Use .grid--rev so that the collection tags appear below the products on mobile
+{% endcomment %}
+<div class="grid--rev">
+  <div class="grid__item large--one-whole">
+
+    {% comment %}
+      Different markup if a collection description exists
+    {% endcomment %}
+    {% if collection.description != blank %}
+      <header class="text-center">
+        <h1 class="section-header__title m-v">{{ collection.title }}</h1>
+        <div class="rte rte--header margin-auto text-base large--one-half">
+          {{ collection.description }}
+        </div>
+      </header>
+      <hr>
+    {% else %}
+      <header class="section-header m-v">
+        <h1 class="section-header__title section-header__left">{{ collection.title }}</h1>
+      </header>
+    {% endif %}
+
+    {% comment %}
+      Use class grid-uniform to have evenly sized columns clear
+      each other properly at each breakpoint.
+    {% endcomment %}
+    <div class="grid-uniform m-t-lg">
+      {% if collection.products.size == 0 %}
+        <div class="grid__item large--one-third push--large--one-third">
+          <div class="text-md-lg text-center">
+            Don't miss out on our upcoming promotions!
+          </div>
+          <div class="m-t-md collection-email-signup">
+            {%- if shop.name == "100% PURE" -%}
+              {% include "email-signup" %}
+            {%- elsif shop.name == "100% PURE® EU" -%}
+              {% include "eu-email-signup" %}
+            {%- endif -%}
+          </div>
+        </div>
+      {% else %}
+        <!-- begin product list output -->
+        {% for product in collection.products %}
+          {% include 'collection-product-card' %}
+        {% endfor %}
+        <!-- //product list output -->
+      {% endif %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <hr>
+      <div class="pagination">
+        {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<div class="m-b-md">
+  {% include 'breadcrumb' %}
+</div>
+
+{% if collection.handle contains "last-chance" %}
+  <div class="text-center m-v-md">
+    All "Final Few" items are final sale: no returns.
+  </div>
+{% elsif collection.handle contains "back-in-stock" %}
+  <div class="text-center text-base m-v-md">
+    * Vitamin C Serum is not included with the Buy 5 get 6th item free.
+  </div>
+{% endif %}
+{% endpaginate %}

@@ -1,0 +1,6 @@
+<!-- /templates/blog.liquid -->
+{%- if blog.title contains "Feed" -%}
+  {%- include 'blog-feed' -%}
+{%- elsif blog.title contains "How To" -%}
+  {%- include 'blog-howto' -%}
+{%- endif -%}

@@ -1,0 +1,23 @@
+{% comment %} ** ==> Shoppable Instagram {% endcomment %}
+<div class="grid__item large--one-whole text-center m-b-lg" id="instaFeed">
+  <div class="m-t-md m-b text-center insta-inner">
+    <span class="h4 text-center l-h margin-auto">{{ product.title | escape }}</span>
+    <div class="h4 m-b">
+      <em>by Pure Community</em>
+    </div>
+  </div>
+  <script src="//foursixty.com/media/scripts/fs.slider.v2.5.js" data-feed-id="100-pure_1" data-theme="slider_v2_5" data-cell-size="25%" data-connector-filter="30842,21960,21961" data-for-url="true"></script><style>.fs-has-links::after {  padding: 10px 15px; background-color: #fff; color: rgba(0,0,0,0.8); content: "SHOP IT";  }.fs-wrapper { height: auto } .fs-entry-container { height: 0 !important; width: 25% !important; padding-top: 25% !important; }.fs-wrapper div.fs-text-container .fs-entry-title, div.fs-detail-title{font-family:Times New Roman, serif;font-style:italic;font-weight:normal;}div.fs-text-container .fs-entry-date, div.fs-detail-container .fs-post-info, div.fs-wrapper div.fs-has-links::after, .fs-text-product, .fs-overlink-text{font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-style:normal;font-weight:bold;}.fs-wrapper div.fs-text-container * {color:#fff}.fs-wrapper div.fs-text-container {background-color:rgba(0,0,0,0.8); margin: 0px}div.fs-entry-date{display:none}div.fs-entry-title{display:none}.fs-wrapper div.fs-timeline-entry{ margin: 0px }</style>
+  <a href="/pages/pure-community" class="btn btn-tertiary m-t-md">Shop Community Looks</a>
+</div>
+
+<div class="grid__item large--one-whole">
+  <div class="text-container margin-auto m-v-sm">
+    <p class="text-sm">By using hashtag
+      <a class="thin-u-l" href="https://www.instagram.com/explore/tags/100percentpure" target="_blank">#100percentpure</a> or
+      <a class="thin-u-l" href="https://www.instagram.com/explore/tags/nodirtybeauty" target="_blank">#nodirtybeauty</a>, I hereby grant to 100% PURE (Purity Cosmetics), it subsidiaries, agents and affiliates, the unlimited worldwide, perpetual, unending right to use, reproduce, distribute, and convey my image/photograph in any format or medium now known or subsequently developed, to modify and edit my image/photograph, to combine my image/photograph with other images, video, audio, text and other media, to create derivative works incorporating, including or based on my image/photograph. This grant shall be construed broadly.
+    </p>
+  </div>
+
+  {%- include 'pp-social-block' -%}
+  <hr>
+</div>

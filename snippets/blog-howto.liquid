@@ -1,0 +1,50 @@
+{% assign slideNumber = 1 %}
+<div class="banner bg-lt-gauva">
+  {% for article in blog.articles limit:slideNumber %}
+    <div class="wrapper flex medium-down--f-d-column">
+      <div class="banner-img large--one-half medium-down--one-whole p-h-lg">
+          <a href="{{ article.url }}" class="bg-img block"
+            style="
+              background-image:url('{{ article.image.src | img_url: '720x' }}');
+              padding-top: 100%;
+          ">
+          </a>
+      </div>
+      <div class="large--one-half medium-down--one-whole p-h flex f-d-column j-c-center">
+        <a href="{{ article.url }}">
+          <p class="text-md font-bold l-s-3x medium-down--text-center m-t-lg">HOW TO</p>
+          <p class="main-font text-lg-xl m-b-lg medium-down--text-center">{{ article.title }}</p>
+        </a>
+        <p class="m-b-lg medium-down--text-center">{{article.excerpt}}</p>
+        <p class=" medium-down--text-center">
+          <a href="{{ article.url }}" class="btn-secondary l-s-2x p-v-sm font-bold w-md text-center inline m-b-lg">LEARN MORE</a>
+        </p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+<div class="wrapper m-t-lg p-t-xlg">
+  {% for article in blog.articles %}
+    {%- if forloop.index > slideNumber -%}
+      <div class="wrapper flex medium-down--f-d-column m-b-lg">
+        <div class="banner-img large--one-third medium-down--one-whole">
+          <a href="{{ article.url }}" class="bg-img m-l-lg block"
+            style="
+              background-image:url('{{ article.image.src | img_url: '720x' }}');
+              padding-top: calc(100% - 32px);
+          ">
+          </a>
+        </div>
+        <div class="large--two-thirds medium-down--one-whole medium-down--text-center p-h-lg flex f-d-column j-c-center">
+          <a href="{{ article.url }}">
+            <p class="text-md font-bold l-s-3x m-t-lg">HOW TO</p>
+            <p class="main-font text-lg-xl m-b-lg">{{ article.title }}</p>
+          </a>
+          <p class="m-b-lg">{{article.excerpt}}</p>
+          <p><a href="{{ article.url }}" class="btn l-s-2x p-v-sm font-bold w-md text-center inline m-b-lg">LEARN MORE</a></p>
+        </div>
+      </div>
+    {%- endif -%}
+  {% endfor %}
+</div>

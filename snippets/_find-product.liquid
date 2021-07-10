@@ -1,0 +1,227 @@
+<!-- required assign "finding" in liquan and findingdata in js -->
+<!-- required assign "finding" in liquan and findingdata in js -->
+<!-- required assign "finding" in liquan and findingdata in js -->
+{% assign imageURL = "find-"| append: finding |append: "-new-bg.jpg" %}
+{% assign imageURLMobile = "find-"| append: finding |append: "-mobile-bg.jpg" %}
+<style media="screen">
+  #finding-previous-{{ finding }}{display:none}
+  #finding-{{ finding }}{background-image: url({{ imageURL | file_img_url: "master"}});background-position:top;background-size:100% auto}
+  #finding-{{ finding }} select{-webkit-appearance:none}
+  #finding-{{ finding }} .m-width-xs{min-width:200px}
+  #finding-{{ finding }} .dorp-down-options{top:1.8em;left:0;transition:0.3s all;}
+  #finding-{{ finding }} .current-value:after{content:"";display:inline-block;width:0;height:0;border-left:7px solid transparent;border-right:7px solid transparent;border-top:8px solid #ed3376;float:right;margin-top:16px;margin-right:10px;}
+  #finding-{{ finding }} .{{ finding }}-content{max-height:0;transition:all 0.4s}
+  #finding-{{ finding }} .{{ finding }}-content.expand{max-height:500px}
+  @media only screen and (max-width: 768px) {
+    #finding-{{ finding }}{background-image: url({{ imageURLMobile | file_img_url: "master"}})}
+  }
+</style>
+<div class="content text-center p-t-lg" id="finding-{{ finding }}">
+  <div class="h1 text-md l-s-1x m-b alt-font">FIND MY PERFECT</div>
+  <h2 class="h1 l-s-2x alt-font">{{ finderTitle }}</h2>
+  <div class="m-b-md p-b-lg">
+    <p class="text-md-lg l-h-2x max-width-lgx7 margin-auto {{ finding }}-content o-f-hid m-b-lg">
+      {% assign content = content | split: "|" %}
+      {%- for sentence in content -%}
+        {{sentence}}
+        {%- if forloop.index < content.size -%}
+          <span class="{{ finding }}-option m-width-xs inline pos-rlt pointer main-font" selecter="{{ forloop.index }}">
+            <span class="current-value brand-primary p-l-sm">Select</span>
+            <span class="dorp-down-options pos-abt w-full o-f-hid inline b-a bg-white brand-primary" style="height:0">
+            </span>
+          </span>
+        {%- endif -%}
+      {%- endfor -%}
+    </p>
+    <button type="button" name="button" class="{{ finding }}-get-result btn m-h m-t-sm">Find Now</button>
+    {%- if selectMatch -%}
+    <br class="large--hide">
+      {%- if customer -%}
+        <a class="pointer v-m m-t-sm m-h inline text-u-l hide {{ finding }}-second-btn">UPDATE TO PROFILE</a>
+      {%- else -%}
+        <a href="/account/login" target="_blank" rel="noopener" class="pointer v-m m-t-sm m-h inline text-u-l hide {{ finding }}-second-btn">SAVE TO PROFILE</a>
+      {%- endif -%}
+    {%- endif -%}
+    <br>
+    <span class="{{ finding }}-result hide">this is resault</span>
+    <div id="finding-previous-{{ finding }}">
+      <p class="text-base l-h text-center m-v-lg">please select previous selector first!</p>
+    </div>
+  </div>
+</div>
+<div class="step-nav text-center"></div>
+<script type="text/javascript">
+$(document).ready(function() {
+  {%- if current_tags == null and collection.handle != originalHandle and template != 'page.prod-finder' -%}
+    window.location=`/collections/{{originalHandle}}`;
+  {%- endif -%}
+  {% assign selectMatch = selectMatch | split: '|' %}
+  {% assign selectMatchForm = selectMatchForm | split: '|' %}
+  {%- for select in selectMatch -%}var checksame${{forloop.index}}='{{select}}';{%- endfor -%}
+  const {{ finding }}DataLength = {{content.size | minus: 1}};
+  let {{ finding }}data;
+  for(const [i, v] of {{ finding }}Data.entries()){
+    $('.{{ finding }}-option[selecter=1] .dorp-down-options').append(`<span class="w-full inline text-center" data="${i}" data-value="${v.name}">${v.name}</span>`);
+  }
+  /* page interaction with buttons */
+  $(document).on('click','.{{ finding }}-option',function(){
+    $(this).siblings('.{{ finding }}-option').find('.dorp-down-options').css('height',0);
+    if($(this).find('.dorp-down-options').height()>=1){
+      $(this).find('.dorp-down-options').css('height',0);
+    }else{
+      if($(this).find('.dorp-down-options span').length>=1){
+        $('span[class^="{{ finding }}-option"]').css('z-index',1);
+        $(this).css('z-index',10);
+        $(this).find('.dorp-down-options').css('height',`${$(this).find('.dorp-down-options span').length*42}px`);
+      }else{
+        Purity.popwindow.open('#finding-previous-{{ finding }}', 'content', {width:'750px'});
+      }
+    }
+  })
+
+  $(document).click(function(e) {
+    if ( $(e.target).closest('.{{ finding }}-option').length === 0 ) {
+      $('.{{ finding }}-option').find('.dorp-down-options').css("height",0);
+    }
+  });
+
+  $(document).on('click','#finding-{{ finding }} .dorp-down-options span',function(){
+    {{ finding }}data = {{ finding }}Data;
+    $(this).siblings().removeClass('selected-option');
+    $(this).addClass('selected-option');
+    $(this).parent().closest('.{{ finding }}-option').find('.current-value').html($(this).html());
+    $('.{{ finding }}-get-result').addClass('disabled');
+    {%- if customer -%}
+      // $('.{{ finding }}-second-btn').addClass('disabled');
+    {%- endif -%}
+    $('.{{ finding }}-result').html('this is resault');
+    for(let i=0; i<$(this).closest('.{{ finding }}-option').attr('selecter'); i++){
+      {{ finding }}data={{ finding }}data[$(`.{{ finding }}-option[selecter=${i+1}]`).find('.selected-option').attr('data')].value;
+    }
+    if($(this).closest('.{{ finding }}-option').attr('selecter') < {{ finding }}DataLength){
+      for(let i=0; i<({{ finding }}DataLength - $(this).closest('.{{ finding }}-option').attr('selecter')); i++){
+        $(`.{{ finding }}-option[selecter=${ {{ finding }}DataLength-i }]`).find('.current-value').html('Select');
+        $(`.{{ finding }}-option[selecter=${ {{ finding }}DataLength-i }] .dorp-down-options`).html('');
+      }
+      for(const [i, v] of {{ finding }}data.entries()){
+        $(`.{{ finding }}-option[selecter=${$(this).closest('.{{ finding }}-option').attr('selecter')/1+1}] .dorp-down-options`).append(`<span class="w-full inline text-center" data="${i}" data-value="${v.name}">${v.name}</span>`);
+      }
+    }else{
+      let result = ""
+      for(let i=0; i<{{ finding }}DataLength; i++){
+        result+=`${$(`.{{ finding }}-option[selecter=${i+1}] .current-value`).html()}/`;
+      }
+      $('.{{ finding }}-get-result').removeClass('disabled');
+        {%- if selectMatch.size > 1 -%}
+          if ({% for select in selectMatch %}{% if forloop.index > 1 %}||{% endif %}$('.skincare-option[selecter={{forloop.index}}] .selected-option').attr('data-value')!=checksame${{forloop.index}}{% endfor %}) {
+            $('.{{ finding }}-second-btn').removeClass('disabled');
+          }
+        {%- endif -%}
+    }
+  })
+
+  $('.{{ finding }}-get-result').click(function(){
+    if(!$(this).hasClass('disabled')){
+      if(typeof {{ finding }}data != 'string'){
+        $('.{{ finding }}-content').addClass('expand').delay(400).queue(function(){
+          $(this).removeClass('o-f-hid').dequeue();
+        });
+        $(this).addClass('disabled').html('GET RESULT');
+      }else{
+        window.location=`/collections/{{resultHandle}}/${ {{ finding }}data.replace(/ /g,"-") }`;
+        let result = "";
+        for(let i=0; i<{{ finding }}DataLength; i++){
+          result+=$(`.{{ finding }}-option[selecter=${i+1}] .selected-option`).attr("data");
+        }
+        sessionStorage.productFinder=result;
+      }
+    }
+  });
+  {%- if customer -%}
+    $('.{{ finding }}-second-btn').click(function(e){
+      e.preventDefault();
+      if(!$(this).hasClass('disabled')){
+        $('.{{ finding }}-second-btn').addClass('disabled').html('UPDATING');
+        var data=`user_id={{customer.id}}&{%- for formvalue in selectMatchForm -%}&{{formvalue}}=${$('.skincare-option[selecter={{forloop.index}}] .selected-option').attr('data-value')}{%- endfor -%}`;
+        $.ajax({
+          url: '/tools/customer_profile',
+          type: "GET",
+          contentType: "application/liquid",
+          data: data
+        }).done(function() {
+          {%- for select in selectMatch -%}checksame${{forloop.index}}=$('.skincare-option[selecter={{forloop.index}}] .selected-option').attr('data-value');{%- endfor -%}
+          $('.{{ finding }}-second-btn').html('UPDATE TO PROFILE');
+        }).fail(function(data) {
+          alert("We are so sorry but seems some error occurred. Please try again");
+          console.log("fail to submit!!", data);
+        })
+      }
+    });
+  {%- endif -%}
+  /* fetch to customer profile */
+  $( document ).ready(function() {
+    {%- if customer -%}
+      {%- for select in selectMatch -%}
+        $(`#finding-{{ finding }} .skincare-option[selecter={{forloop.index}}] .dorp-down-options span[data-value='{{select}}']`).trigger('click');
+      {%- endfor -%}
+      $('.{{ finding }}-get-result').removeClass('disabled');
+      if ( typeof {{ finding }}data == 'string' ) {
+        $('.{{ finding }}-get-result').html('GET RESULT BY PROFILE');
+      }
+    {%- endif -%}
+    /* if get result */
+    if(sessionStorage.productFinder){
+      let lastChoice = sessionStorage.productFinder.split('');
+      for(const [i, v] of lastChoice.entries()){
+        $(`.{{ finding }}-option[selecter=${i+1}] .dorp-down-options span`).eq(v).trigger('click');
+      }
+      $('.dorp-down-options').css('height',0);
+      sessionStorage.removeItem('productFinder');
+      var position = $('#jumpToShow').offset().top;
+      $('body, html').animate({ scrollTop: position },1000);
+      $('.{{ finding }}-content').addClass('expand').delay(400).removeClass('o-f-hid');
+      $('.{{ finding }}-second-btn').removeClass('hide');
+      $('.{{ finding }}-get-result').html('GET RESULT');
+      $('.{{ finding }}-second-btn').removeClass('hide');
+    };
+    {%- comment -%}step fetch{%- endcomment -%}
+    {%- if steps.size > 0 and stepNames.size == steps.size and collection.handle != originalHandle -%}
+      $(()=>{
+        let {{ finding }}Steps = [];
+        let {{ finding }}StepsIndex = 1;
+        {%- for step in steps -%}
+          {{ finding }}Steps.push('{{step}}|{{stepNames[forloop.index0]}}');
+        {%- endfor -%}
+        for(step of {{ finding }}Steps){
+          if($(`.${ step.split('|')[0] }`).length > 0){
+            if(step.split('|')[1].split('&').length >1){
+              if($(`.combine-title-${step.split('|')[1].split('&')[0].replace(' ','-')}`).length > 0){
+                $(`.combine-title-${step.split('|')[1].split('&')[0].replace(' ','-')}`).append(`&${step.split('|')[1].split('&')[1]}`);
+                $(`.${ step.split('|')[0] }`).each(function(){
+                  $(`.step-container-${step.split('|')[1].split('&')[0].replace(' ','-')}`).append($(this).clone().removeClass('hide'));
+                  $(this).remove();
+                });
+              }else{
+                $('.product-list-container').append(`<div class="o-f-hid"><div class="combine-title-${step.split('|')[1].split('&')[0].replace(' ','-')} text-center text-lg-xl main-font l-s-1x m-t-md m-b">Step ${ {{ finding }}StepsIndex }: ${step.split('|')[1].replace('&',' ')}</div><div class="step-container-${step.split('|')[1].split('&')[0].replace(' ','-')} flex j-c-center"></div></div>`);
+                $(`.${ step.split('|')[0] }`).each(function(){
+                  $(`.step-container-${step.split('|')[1].split('&')[0].replace(' ','-')}`).append($(this).clone().removeClass('hide'));
+                  $(this).remove();
+                });
+                {{ finding }}StepsIndex++;
+              }
+            }else{
+              $('.product-list-container').append(`<div class="o-f-hid" id="step-${ {{finding}}StepsIndex}"><div class="text-center text-lg-xl main-font l-s-1x m-t-md m-b">Step ${ {{ finding }}StepsIndex }: ${step.split('|')[1]}</div><div class="step-container-${step.split('|')[0]} flex j-c-center"></div></div>`);
+              $(`.${ step.split('|')[0] }`).each(function(){
+                $(`.step-container-${step.split('|')[0]}`).append($(this).clone().removeClass('hide'));
+                $(this).remove();
+              });
+              $('.step-nav').append(`${ {{finding}}StepsIndex>1?'<span class="m-xs">|</span>':''}<a href="#step-${ {{finding}}StepsIndex }">${ step.split('|')[1]}</a>`);
+              {{ finding }}StepsIndex++;
+            }
+          }
+        }
+      })
+    {%- endif -%}
+  })
+})
+</script>

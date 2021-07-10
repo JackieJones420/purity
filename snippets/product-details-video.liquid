@@ -1,0 +1,45 @@
+{% assign filestack_size_1 = "400" %}
+{% assign filestack_size_2 = "600" %}
+{% assign filestack_size_3 = "800" %}
+{% assign filestack_size_default = "900" %}
+{% assign filestack_url = "https://cdn.filestackcontent.com/" %}
+
+{% assign youtube_videos = product_meta.youtube-videos %}
+{% assign youtube_videos = youtube_videos | split: "|" %}
+
+<div class="text-center" style="margin-left:-8px;margin-right:-8px">
+  <p class="text-u-c l-s-1x alt-font m-t-lg m-b text-md">Watch Our Videos</p>
+  {%- for item in youtube_videos -%}
+    {%- assign i = forloop.index | minus: 1 -%}
+    {%- assign oddOReven = i| modulo: 3 -%}
+    {%- if oddOReven == 0 -%}
+    {%- assign videoType = youtube_videos[i] -%}
+    {%- elsif oddOReven == 1 -%}
+    {%- assign videoID = youtube_videos[i] -%}
+    {%- assign video_img_id = youtube_videos[forloop.index] | remove: filestack_url -%}
+      <div class="p-h-sm large--one-third inline medium--one-half small--one-whole">
+        <a href="https://www.youtube.com/embed/{{ videoID }}" class="purity-pop" pop-type="youtube" pop-ytid="{{ videoID }}" pop-ratio="0.5618" pop-autoplay="1" pop-rel="0">
+          <div class="bg-img b-a pos-rlt" style="background-image: url(
+          {%- if video_img_id contains 'Video%20Thumbnails' -%}
+            https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ video_img_id }}
+          {%- else -%}
+            {{ filestack_url }}resize=w:{{ filestack_size_default }}/{{ video_img_id }}
+          {%- endif -%})">
+            <span class="pos-abt inline h-full w-full">
+              <img
+                data-src="{{ 'play-sign.png' | file_img_url: '1024x' | format: 'pjpg' }}"
+                data-srcset="{{ 'play-sign.png' | file_img_url: '1024x' | format: 'pjpg' }} 1000w,
+                             {{ 'play-sign.png' | file_img_url: '800x' | format: 'pjpg' }} 800w,
+                             {{ 'play-sign.png' | file_img_url: '600x' | format: 'pjpg' }} 600w,
+                             {{ 'play-sign.png' | file_img_url: '400x' | format: 'pjpg' }} 400w"
+                class="lazyload fade-in inline w-64 pos-abt"
+                alt="play-sign" >
+            </span>
+          </div>
+          <p class="text-center m-v">{{videoType}}</p>
+        </a>
+      </div>
+    {%- elsif oddOReven == 2 -%}
+    {%- endif -%}
+  {%- endfor -%}
+</div>

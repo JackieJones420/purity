@@ -1,0 +1,275 @@
+<div class="wrapper">
+
+  {% comment %}
+  Ingredients: :Ingredients
+  Makeup:how-to-choose-the-best-natural-foundation: :Makeup
+  Skincare:stable-vitamin-c-in-our-newest-facial-serum: :Skin Care
+  Wellness:the-best-natural-mascara-for-lengthening-lashes: :Wellness
+  How-To's:how-to-contour-and-highlight-with-makeup: :how-to
+  Hair & Body:how-to-choose-the-correct-shampoo-and-conditioner: :Body
+  Clean Living: :Clean Living
+  {% endcomment %}
+  {%- if blogs.feed.metafields.feature_blog.ingredients_img_url and blogs.feed.metafields.feature_blog.ingredients_url -%} {% assign ingredients_feature = ':' | append: blogs.feed.metafields.feature_blog.ingredients_url | append: ':' | append: blogs.feed.metafields.feature_blog.ingredients_img_url %} {%- else -%} {% assign ingredients_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.makeup_img_url and blogs.feed.metafields.feature_blog.makeup_url -%} {% assign makeup_feature = ':' | append: blogs.feed.metafields.feature_blog.makeup_url | append: ':' | append: blogs.feed.metafields.feature_blog.makeup_img_url %} {%- else -%} {% assign makeup_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.skincare_img_url and blogs.feed.metafields.feature_blog.skincare_url -%} {% assign skincare_feature = ':' | append: blogs.feed.metafields.feature_blog.skincare_url | append: ':' | append: blogs.feed.metafields.feature_blog.skincare_img_url %} {%- else -%} {% assign skincare_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.wellness_img_url and blogs.feed.metafields.feature_blog.wellness_url -%} {% assign wellness_feature = ':' | append: blogs.feed.metafields.feature_blog.wellness_url | append: ':' | append: blogs.feed.metafields.feature_blog.wellness_img_url %} {%- else -%} {% assign wellness_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.howto_img_url and blogs.feed.metafields.feature_blog.howto_url -%} {% assign howto_feature = ':' | append: blogs.feed.metafields.feature_blog.howto_url | append: ':' | append: blogs.feed.metafields.feature_blog.howto_img_url %} {%- else -%} {% assign howto_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.body_img_url and blogs.feed.metafields.feature_blog.body_url -%} {% assign body_feature = ':' | append: blogs.feed.metafields.feature_blog.body_url | append: ':' | append: blogs.feed.metafields.feature_blog.body_img_url %} {%- else -%} {% assign body_feature = '' %} {%- endif -%}
+  {%- if blogs.feed.metafields.feature_blog.cleanliving_img_url and blogs.feed.metafields.feature_blog.cleanliving_url -%} {% assign cleanliving_feature = ':' | append: blogs.feed.metafields.feature_blog.cleanliving_url | append: ':' | append: blogs.feed.metafields.feature_blog.cleanliving_img_url %} {%- else -%} {% assign cleanliving_feature = '' %} {%- endif -%}
+  {% assign blogsInCover = "Ingredients" | append: ingredients_feature | append: ":Ingredients|Makeup" | append: makeup_feature | append: ":Makeup|Skincare" | append: skincare_feature | append: ":Skin Care|Wellness" | append: wellness_feature | append: ":Wellness|How-To's" | append: howto_feature | append: ":how-to|Hair & Body" | append: body_feature | append: ":Body|Clean Living" | append: cleanliving_feature | append: ":Clean Living" %}
+  {% assign blogsInCover = blogsInCover | split: "|" %}
+
+  <div class="grid">
+    <div class="grid__item large--one-whole text-center blog__header">
+      <h1 class="m-t-lg text-2x">100% PURE<sup>™</sup> BEAUTY BLOG</h1>
+      <h2 class="text-md-lg m-b-lg">
+        <em>Your source for natural beauty trends, guides, and education</em>
+      </h2>
+    </div>
+  </div>
+
+  <div id="blog-all">
+    {% paginate blog.articles by 45 %}
+    <div class="margin-auto grid large--three-quarters left medium-down--one-whole b-r">
+      <nav class="text-center m-b text-u-c">
+        <a class="text-base btn-default" href="#cover"> <span>Home</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Ingredients' %}active{% endif %}" href="/blogs/feed/tagged/ingredients"> <span>Ingredients</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Makeup' %}active{% endif %}" href="/blogs/feed/tagged/Makeup"> <span>Makeup</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Skin Care' %}active{% endif %}" href="/blogs/feed/tagged/Skin-Care"> <span>Skincare</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Wellness' %}active{% endif %}" href="/blogs/feed/tagged/Wellness"> <span>Wellness</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'how-to' or current_tags contains 'How to' %}active{% endif %}" href="/blogs/feed/tagged/how-to"> <span>How-To's</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Body' %}active{% endif %}" href="/blogs/feed/tagged/Body"> <span>Hair & Body</span> </a>
+        <span class="p-l-xs p-r-xs">#</span>
+        <a class="text-base btn-default {% if current_tags contains 'Clean Living' %}active{% endif %}" href="/blogs/feed/tagged/clean-living"> <span>Clean Living</span> </a>
+      </nav>
+      {%- for currentblog in blogsInCover -%}
+        {% assign blogInfo = currentblog | split: ":" %}
+        {%- if blogInfo[3] contains current_tags[0] -%}
+          {% assign blog_name = 'feed/' %}
+          {% assign featured_blog_handle = blogInfo[1] %}
+          {% assign featured_blog_handle_complete = blog_name | append: featured_blog_handle %}
+          {% assign featured_blog = articles[featured_blog_handle_complete] %}
+          <div class="feature-blog m-b-lg m-h">
+            <a href="{{ featured_blog.url }}" class="block blog-feature-image" style="background-image:url('{{ blogInfo[2] | file_img_url: '1024x' }}')">
+              <span class="fallback-text hide">Featured Blog Link: {{ featured_blog.title }}</span>
+            </a>
+            <div class="main-font text-md m-b-sm inline tagged-tittle text-u-c text-black-lt m-t">Featured</div>
+            <div class="main-font h3 l-h-md no-margin">
+              <a href="{{ featured_blog.url }}">
+                {{ featured_blog.title }}
+                <span class="fallback-text hide">Featured Blog Link: {{ featured_blog.title }}</span>
+              </a>
+            </div>
+            <div class="m-t m-b-md l-h text-md text-black">{{ featured_blog.excerpt_or_content | split: '<em' | first | strip_html }}</div>
+            <div class="m-t m-b-lg">
+              <a class="btn text-xxs p-v-sm p-h" href="{{ featured_blog.url }}">Read More</a>
+            </div>
+            <div class="line m-b-lg bg-light dk"></div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- for currentblog in blogsInCover -%}
+        {% assign blogInfo = currentblog | split: ":" %}
+        {%- if blogInfo[3] contains current_tags[0] -%}
+          <span class="m-l block main-font text-lg m-b-lg">{{blogInfo[0]}}</span>
+        {%- endif -%}
+      {%- endfor -%}
+        <div class="tags-ajax-loader no-margin grid grid-uniform">
+          <div class="page1 o-f-hid grid__item">
+            <!-- ajax stone point -->
+            {% for article in blog.articles %}
+            {% comment %} *** UTM Track
+            Variable to track individual blogs
+            {% endcomment %}
+              {% if article.image.src != blank %}
+                  <div class="p-h small--p-h-xs grid__item large--one-third medium--one-half small--one-whole pos-rlt">
+                    <a class="block" href="{{ article.url }}">
+                      <img class="block" src="{{ article.image.src | img_url: 'large', scale: 1 }}" alt="Blog Feed Article Feature Image Carousel: {{ article.title }} ">
+                    </a>
+                    <div class="blog-content no-padding m-b-lg">
+                      <h3 class="m-t text-md-lg l-h m-b"><a href="{{ article.url }}" >{{ article.title }}</a></h3>
+                      <a href="{{ article.url }}" class="to-article text-center b-b b-dark text-sm font-bold l-s-2x p-b-xs">READ MORE <span class="icon icon-arrow-right"></span> </a>
+                    </div>
+                  </div>
+                  <!-- ajax item spliter -->
+              {% endif %}
+            {% endfor %}
+            <!-- ajax stone point -->
+          </div>
+        </div>
+        <div style="clear:both"></div>
+        <div class="text-center m-t-lg"><span class="btn pointer ajax-load-trigger disabled">NO MORE</span></div>
+
+    </div>
+    <div class="side-panel large--one-quarter right medium-down--one-whole">
+      <!-- <div class="community-container p-t-lg p-b m-h b-b">
+        <style>
+          .fs-has-links::after {  padding: 5px 7.5px; background-color: #fff; color: rgba(0,0,0,0.8); content: "SHOP IT";  }
+          .fs-desktop .fs-entry-container { width: 50% !important; padding-top: 50% !important; }
+          .fs-mobile .fs-entry-container { width: 33.333333333333336% !important; padding-top: 33.333333333333336% !important; }
+          .fs-wrapper div.fs-text-container .fs-entry-title, div.fs-detail-title{font-family:Times New Roman, serif;font-style:italic;font-weight:normal;}
+          div.fs-text-container .fs-entry-date, div.fs-detail-container .fs-post-info, div.fs-wrapper div.fs-has-links::after, .fs-text-product, .fs-overlink-text{font-family:Helvetica Neue, Helvetica, Arial, sans-serif;font-style:normal;font-weight:bold;}
+          .fs-wrapper div.fs-text-container * {color:#fff}
+          .fs-wrapper div.fs-text-container {background-color:rgba(0,0,0,0.8); margin: 0px}
+          div.fs-entry-date{display:none}div.fs-entry-title{display:none}
+          .fs-wrapper div.fs-timeline-entry{ margin: 1px }
+        </style>
+        <p class="text-center main-font text-lg-xl l-s-1x">Pure Community</p>
+        <p class="text-center m-b l-s-2x text-md">#100PERCENTPURE</p>
+        <script src="//foursixty.com/media/scripts/fs.embed.v2.5.js" data-feed-id="100-pure_1" data-theme="showcase_v2_5" data-page-size="6" data-connector-filter="21961,21966,22141,22142,22140,23440"></script>
+        <a href="/pages/pure-community" class="btn-secondary p-v-sm p-h block margin-auto text-center m-t-md max-width-xs font-bold l-s-1x text-xs alt-font m-b-xlg">SEE MORE</a>
+      </div> -->
+      <div class="social-container text-md-lg m-lg text-center text-black">
+        <span class="text-base font-bold l-s-3x inline m-b-md">FOLLOW 100% PURE</span>
+        <br>
+        <a class="icon-fallback-text"href="https://www.instagram.com/100percentpure/" target="_blank">
+          <span class="m-r-sm icon icon-instagram"></span>
+          <span class="fallback-text">Instagram</span>
+        </a>
+        <a class="icon-fallback-text"href="https://www.facebook.com/100percentpure" target="_blank">
+          <span class="m-h-sm icon icon-facebook"></span>
+          <span class="fallback-text">Facebook</span>
+        </a>
+        <a class="icon-fallback-text"href="https://twitter.com/100percentpure" target="_blank">
+          <span class="m-h-sm icon icon-twitter"></span>
+          <span class="fallback-text">Twitter</span>
+        </a>
+        <a class="icon-fallback-text"href="https://www.pinterest.com/100percentpure/?autologin=true" target="_blank">
+          <span class="m-h-sm icon icon-pinterest"></span>
+          <span class="fallback-text">Pinterest</span>
+        </a>
+        <a class="icon-fallback-text"href="https://www.youtube.com/channel/UCuDO-8MnXXrUFX1VkRJPCuA" target="_blank">
+          <span class="m-r-sm icon icon-youtube"></span>
+          <span class="fallback-text">YouTube</span>
+        </a>
+        <a target="_blank" href="https://www.tiktok.com/@100percentpure?lang=en&utm_source=website&utm_medium=icon&utm_campaign=homepage">
+          <span class="m-r-sm icon tik_tok_logo"></span>
+          <span class="fallback-text">Tik Tok</span>
+        </a>
+      </div>
+    </div>
+    {% endpaginate %}
+  </div>
+  <div id="blog-cover" class="none o-f-hid">
+    <div class="large--three-quarters left medium-down--one-whole b-r">
+      {% assign blog_name = 'feed/' %}
+      {% assign featured_blog_handle = blogs.feed.metafields.feature_blog.home_url %}
+      {% assign featured_blog_handle_complete = blog_name | append: featured_blog_handle %}
+      {% assign featured_blog = articles[featured_blog_handle_complete] %}
+
+      <div class="feature-blog m-b-lg m-h">
+        <a href="{{ featured_blog.url }}" class="block blog-feature-image" style="background-image:url('{{ blogs.feed.metafields.feature_blog.home_img_url | file_img_url: '1024x' }}')">
+          <span class="hide">{{ featured_blog.title }}</span>
+        </a>
+        <div class="main-font text-md m-b-sm inline tagged-tittle text-u-c text-black-lt m-t">Featured</div>
+        <div class="main-font h3 l-h-md no-margin">
+          <a href="{{ featured_blog.url }}">{{ featured_blog.title }}</a>
+        </div>
+        <div class="m-t m-b-md l-h text-md text-black">{{ featured_blog.excerpt_or_content | split: '<em' | first | strip_html }}</div>
+        <div class="m-t m-b-lg">
+          <a class="btn text-xxs p-v-sm p-h" href="{{ featured_blog.url }}">Read More</a>
+        </div>
+        <div class="line m-b-lg bg-light dk"></div>
+      </div>
+
+      {%- for blogtitle in blogsInCover -%}
+        {%- unless forloop.index == 1 -%}
+          <div class="line m-b-lg m-h bg-light dk"></div>
+        {%- endunless -%}
+        <div class="new-post o-f-hid m-b-lg">
+          <a href="/blogs/feed/tagged/{{ blogtitle | split: ':' | last | handle }}" class="main-font h3 m-b-lg inline m-l tagged-tittle">{{ blogtitle | split: ':' | first }}</a>
+          <a href="/blogs/feed/tagged/{{ blogtitle | split: ':' | last | handle }}" class="right text-base b-b m-r-md m-t-sm b-dark font-bold l-s-1x">SEE ALL <span class="icon icon-arrow-right"></span> </a>
+          <div class="init-carousel ajax-content-{{ blogtitle | split: ':' | last | handle }} no-padding">
+
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="side-panel large--one-quarter right medium-down--one-whole">
+      <div class="new-post b-b o-f-hid m-h">
+        <a href="/blogs/feed" class="inline w-full text-md-lg m-b-md text-center main-font text-black-lt">RECENT POSTS</a>
+        {% for article in blogs.feed.articles | limit: 4 %}
+          {% if article.image %}
+            <div class="large--one-whole medium--one-half small--one-whole o-f-hid m-b-lg left pos-rlt">
+              <a href="{{ article.url }}" class="one-third block left">
+                <img
+                data-src="{{ article.image.src | img_url: '1024x' }}"
+                data-srcset="{{ article.image.src | img_url: '1000x' | format: 'pjpg' }} 1000w,
+                             {{ article.image.src | img_url: '900x' | format: 'pjpg' }} 900w,
+                             {{ article.image.src | img_url: '800x' | format: 'pjpg' }} 800w,
+                             {{ article.image.src | img_url: '700x' | format: 'pjpg' }} 700w,
+                             {{ article.image.src | img_url: '600x' | format: 'pjpg' }} 600w,
+                             {{ article.image.src | img_url: '500x' | format: 'pjpg' }} 500w,
+                             {{ article.image.src | img_url: '400x' | format: 'pjpg' }} 400w"
+                data-sizes="auto"
+                class="no-border lazyload fade-in"
+                alt="Blog Feed Recent Posts Article: {{ article.title }}" />
+              </a>
+              <div class="two-thirds left p-l-sm">
+                {% comment %}
+                  <span class="text-md m-t inline text-black-lt">{{ article.published_at | date: format: 'month_day_year' }}</span>
+                {% endcomment %}
+                <p class="l-h-md text-md main-font recent-blog-title">{{ article.title }}</p>
+                <a class="text-base b-b b-dark pos-abt recent-read-more" href="{{ article.url }}">Read More <span class="icon icon-arrow-right v-m"></span></a>
+              </div>
+            </div>
+            {% assign remainder = forloop.index | modulo: 2 %}
+            {%- if remainder == 0 -%}
+              <div class="clear-both"></div>
+            {%- endif -%}
+          {% endif %}
+        {% endfor %}
+        <div class="text-center">
+          <a href="/blogs/feed" class="btn p-v-sm p-h text-center max-width-xs font-bold l-s-1x text-xs alt-font m-b-xlg">SEE MORE</a>
+        </div>
+      </div>
+      <!-- <div class="community-container p-v m-h b-b">
+        <p class="text-center main-font text-lg-xl l-s-1x">Pure Community</p>
+        <p class="text-center m-b l-s-2x text-md">
+          <a target="_blank" href="https://www.instagram.com/explore/tags/100percentpure/">
+            #100PERCENTPURE
+          </a>
+        </p>
+        <script src="//foursixty.com/media/scripts/fs.embed.v2.5.js" data-feed-id="100-pure_1" data-theme="showcase_v2_5" data-page-size="6" data-connector-filter="21961,21966,22141,22142,22140,23440"></script>
+        <a href="/pages/pure-community" class="btn-secondary p-v-sm p-h block margin-auto text-center m-t-md max-width-xs font-bold l-s-1x text-xs alt-font m-b-xlg">SEE MORE</a>
+      </div> -->
+      <div class="social-container text-md-lg m-lg text-center text-black">
+        <span class="text-base font-bold l-s-3x inline m-b-md">FOLLOW 100% PURE</span>
+        <br>
+        <a class="icon-fallback-text" href="https://www.instagram.com/100percentpure/" target="_blank">
+          <span class="m-r-sm icon icon-instagram"></span>
+          <span class="fallback-text">Instagram</span>
+        </a>
+        <a class="icon-fallback-text" href="https://www.facebook.com/100percentpure" target="_blank">
+          <span class="m-h-sm icon icon-facebook"></span>
+          <span class="fallback-text">Facebook</span>
+        </a>
+        <a class="icon-fallback-text" href="https://twitter.com/100percentpure" target="_blank">
+          <span class="m-h-sm icon icon-twitter"></span>
+          <span class="fallback-text">Twitter</span>
+        </a>
+        <a class="icon-fallback-text" href="https://www.pinterest.com/100percentpure/?autologin=true" target="_blank">
+          <span class="m-h-sm icon icon-pinterest"></span>
+          <span class="fallback-text">Pinterest</span>
+        </a>
+        <a class="icon-fallback-text" href="https://www.youtube.com/channel/UCuDO-8MnXXrUFX1VkRJPCuA" target="_blank">
+          <span class="m-r-sm icon icon-youtube"></span>
+          <span class="fallback-text">YouTube</span>
+        </a>
+        <a target="_blank" href="https://www.tiktok.com/@100percentpure?lang=en&utm_source=website&utm_medium=icon&utm_campaign=homepage">
+          <span class="m-r-sm icon tik_tok_logo"><img  src="{{ 'tik_tok_logo.png' | asset_img_url: '19x19' }}" /></span>
+          <span class="fallback-text">Tik Tok</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+</div>

@@ -1,0 +1,204 @@
+{% assign storeEvent = '|' %}
+{% for block in section.blocks %}
+  {% if block.settings.locationPage == handle %}
+    <section class="grid m-v-lg location-single">
+      <div class="grid__item large--one-third">
+        {% if block.settings.locationImage %}
+          <img
+            alt="{{ block.settings.title }} store image"
+            class="cld-prepare m-b-xlg large--hide"
+            src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ block.settings.locationImage|  img_url: '1024x768'}}"
+            data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ block.settings.locationImage|  img_url: '1024x768'}}"/>
+        {% endif %}
+        <h2 class="page_title_text text-u-c m-b-lg">{{ block.settings.title }}</h2>
+        <div itemscope itemtype="http://schema.org/PostalAddress">
+          <div class="callout_text m-b-sm">ADDRESS</div>
+          <div class="caption_text" itemprop="streetAddress">{{ block.settings.locationAddress }}</div>
+          <div class="caption_text" itemprop="addressLocality">{{ block.settings.locationCity }}, {{ block.settings.locationState }}</div>
+          <div class="m-b caption_text m-b" itemprop="telephone">
+            <a href="tel:{{ block.settings.locationPhone }}">
+              {{ block.settings.locationPhone }}
+            </a>
+          </div>
+          <a class="btn btn-secondary m-b-lg" href="{{ block.settings.locationDirections }}" target="_blank">
+            GET DIRECTIONS
+          </a>
+        </div>
+
+        <div itemscope itemtype="http://schema.org/openingHours">
+          <div class="callout_text m-b">HOURS</div>
+          <time class="caption_text m-b block" itemprop="openingHours">{{ block.settings.locationOpeningHours }}</time>
+          <p class="caption_s_text">*Please contact store for holiday hours</p>
+        </div>
+        <hr>
+        <div class="store-service-list-detail text-left">
+          <div class="module_title_text">Services We Offer</div>
+          {% for block in section.blocks %}
+            {%- if block.type == 'event' -%}
+              {%- if block.settings.storeList == 'ALL' -%}
+                {% assign allStoreEvent = true %}
+              {%- else -%}
+                {% assign storeEvent = storeEvent | append: block.settings.storeList %}
+              {%- endif -%}
+            {%- endif -%}
+            {% assign storeEvent = storeEvent | append: '|' %}
+          {% endfor %}
+          {% assign storeNameAbs = '|' | append: block.settings.title | append: '|' %}
+          {%- if allStoreEvent or storeEvent contains storeNameAbs -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-event.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l ">
+                <span class="callout_text">SPECIAL EVENTS</span>
+                {% for block in section.blocks %}
+                  {%- if block.type == 'event' -%}
+                    {%- if block.settings.storeList == 'ALL' -%}
+                      <p class="callout_s_text no-margin m-t-sm">{{ block.settings.eventDate }}</p>
+                      <p class="caption_text">{{ block.settings.eventDetail }}</p>
+                    {%- else -%}
+                      {% assign storeEvent = '|' | append: block.settings.storeList | append: '|' %}
+                      {%- if storeEvent contains storeNameAbs -%}
+                        <p class="callout_s_text no-margin m-t-sm">{{ block.settings.eventDate }}</p>
+                        <p class="caption_text">{{ block.settings.eventDetail }}</p>
+                      {%- endif -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {% endfor %}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.serviceSpa -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-spa.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l">
+                <span class="callout_text">SPA FACIALS</span>
+                <p class="caption_text">
+                  Visit one of our exclusive spa service locations to experience luxurious, skin rejuvenating treatments from licensed estheticians.
+                  <br>
+                  <a href="#spaMenu" class="purity-pop caption_text text-u-l" pop-width="760px">Spa Facials Services</a>
+                </p>
+
+                <div>
+                   <a class="btn btn-secondary snapAppointments-link" data-snap-color="black"
+                   data-snap-label="BOOK ONLINE" data-snap-position="inline" data-snap-type="widget"
+                   data-snap-locations="{{ block.settings.snapLocation }}"
+                   href="https://snapappointments.com">SnapAppointments Online
+                   Scheduling</a>
+                </div>
+
+                <div id="spaMenu" class="hide">
+                  <div class="p-lg">
+                    <p class="text-center section_title_text m-b p-b-sm"><span class="b-b b-b-dark">Spa Facials Services</span></p>
+                    <p class="text-center module_title_text no-margin">Vitamin C Blast Facial <span class="p-l-sm callout_text">75 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$150 ($110 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg">Turn back time with this rejuvenating, brightening facial treatment that will leave your skin with a vibrant, healthy, and youthful glow. This luxurious 75-minute treatment tackles major signs of aging including reducing lines, hyperpigmentation, increasing collagen and elastin production with the application of 1500 mg of pure, fresh, stabilized Vitamin C powder. Treatment includes hydra blast, LED light treatment, shoulder massage, neck and hand treatment.</p>
+
+                    <p class="text-center module_title_text no-margin">Aqua Boost Treatment <span class="p-l-sm callout_text">60 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$120 ($100 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg">Intensely moisturizing and skin softening facial that peels away bumps, flakes and dead skin cells and drenches skin with both hydration (feeding skin water) and moisturization (feeding skin oil).  Includes hydra blast, shoulder massage, neck and hand treatment.</p>
+
+                    <p class="text-center module_title_text no-margin">Deep Clean <span class="p-l-sm callout_text">75 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$150 ($110 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg">A deeply purifying facial that focuses on purifying pores through extraction, exfoliation for a smooth surface, a facial massage to increase oxygen and circulation and then blasts skin with a deeply hydrating solution of green tea and hyaluronic acid to lock in deep hydration. Includes hydra blast, LED, shoulder massage, neck and hand treatment.</p>
+
+                    <p class="text-center module_title_text no-margin">Acne Clarifying Treatment <span class="p-l-sm callout_text">60 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$120 ($100 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg">A deep cleansing, detoxifying facial to fight acne, unclog pores and prevent future breakouts. This intensive 60-minute treatment uses anti-bacterial herbs, seaweeds, and fruit acids to gently peel, detoxify, and clarify the skin. Includes High Frequency, LED, shoulder massage, neck and hand treatment.</p>
+
+                    <p class="text-center module_title_text no-margin">Custom Facial <span class="p-l-sm callout_text">45 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$80 ($65 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg">Our custom facial will be curated to suit your specific skin care needs. This personalized 45-minute treatment begins with cleansing and exfoliation, followed by extractions if necessary. A custom skin care product application of toner, serum, and moisturizer will be applied to finish off the treatment.</p>
+
+                    <p class="text-center module_title_text no-margin">LED Treatment <span class="p-l-sm callout_text">35 MINS</span></p>
+                    <p class="text-center caption_text m-b-sm">$50 ($40 each when you buy a package of 6)</p>
+                    <p class="caption_s_text m-b-lg p-b-sm">Skin is first cleansed and then treated to a 20-minute professional LED treatment. LED options: Anti-acne, dark spot reducing, Collagen Boosting, Skin Calming. Serum and moisturizer application after LED treatment.</p>
+
+                    <p class="text-center section_title_text no-margin m-b"><span class="b-b b-b-dark">Waxing</span></p>
+                    <p class="text-center module_title_text m-b-lg p-b-sm">Brows $25 <span class="p-h"> </span> Lips $15 <span class="p-h"> </span> Chin $15</p>
+
+                    <div class="text-center m-b-lg">
+                      <p class="callout_text m-b-sm" >BOOK AN APPOINTMENT</p>
+                      <a href="tel:{{ block.settings.locationPhone }}" itemprop="telephone" class="caption_text">
+                        {{ block.settings.locationPhone }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.serviceMakeover -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-makeover.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l">
+                <span class="callout_text">MAKEOVERS</span>
+                <p class="caption_text">In-house makeup artists provide foundation color matching, tutorials for applying fruit pigmented® makeup, and will even help you choose your perfect shade of lipstick!</p>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.serviceFacial -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-facial.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l">
+                <span class="callout_text">MINI FACIALS</span>
+                <p class="caption_text">100% PURE specialists can help you find the perfect products for your skin type, with consultations and hands-on product testing for a tailored-to-you routine.</p>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.serviceVideo -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-video.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l">
+                <span class="callout_text">VIDEO CONSULTATIONS</span>
+                <p class="caption_text">
+                  Personalized tips, tricks, and recommendations via video chat to help make your clean beauty routine the best it can be.
+                  <br>
+                  <a href="{{ block.settings.serviceVideoURL }}" class="text-u-l">SCHEDULE NOW</a>
+                </p>
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.qtyAPIname != '' -%}
+            <div class="o-f-hid m-t">
+              <div class="one-eighth left">
+                {%- include 'icon-store-pickup.svg', additionalClass: "store-service-icon w-full" -%}
+              </div>
+              <div class="seven-eighths left p-l">
+                <span class="callout_text">IN-STORE PICK UP</span>
+                <p class="caption_text">
+                  Order online and pick up your products in-store. View your store's in-store pick up product selection by clicking below.
+                  <br>
+                  <a href="https://{{ block.settings.storeURL }}" class="text-u-l" target="_blank">PICK UP IN-STORE</a>
+                </p>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="grid__item large--two-thirds text-center medium-down--hide">
+        {% if block.settings.locationImage %}
+          <img
+            alt="{{ block.settings.locationName }} store image"
+            class="cld-prepare m-b-xlg"
+            src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ block.settings.locationImage|  img_url: '1024x768'}}"
+            data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ block.settings.locationImage|  img_url: '1024x768'}}"/>
+        {% endif %}
+      </div>
+    </section>
+
+  {% endif %}
+{% endfor %}

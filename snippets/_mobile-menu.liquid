@@ -1,0 +1,100 @@
+<ul id="mobile-nav" class="p-t m-h">
+  {%- if customer -%}
+    <li class="b-b p-l">
+      <a class="block p-v-md dorp-trigger-l1 pos-rlt">
+        <span class="callout_text l-s-0x">Hey, {{ customer.first_name | trim }} |</span>
+        <span class="caption_s_text">
+          {%- if shop.name == '100% PURE' -%}
+            {% for tag in customer.tags %}
+              {% case tag %}
+              {% when 'tier: Activist' %}
+                Activist,
+                {% break %}
+              {% when 'tier: Revolutionist' %}
+                Revolutionist,
+                {% break %}
+              {% when 'tier: Enthusiast' %}
+                Enthusiast,
+              {% when 'tier: Pure Activist' %}
+                Activist,
+                {% break %}
+              {% when 'tier: Pure Revolutionist' %}
+                Revolutionist,
+                {% break %}
+              {% when 'tier: Pure Enthusiast' %}
+                Enthusiast,
+              {% endcase %}
+            {% endfor %}
+            <span data-lion-points="approved"></span>
+            pts
+          {%- endif -%}
+        </span>
+        <span class="mobile-nav-account-arrow inline m-l-xs"></span>
+      </a>
+      <ul class="o-f-hid no-margin-v m-h-sm">
+        <li><a class="p-v-sm block p-l caption_text" href="/account">Account</a></li>
+        <li><a class="p-v-sm block p-l caption_text" href="/pages/customer-profile">Edit Profile</a></li>
+        <li><a href="/account/logout" class="p-v-sm block p-l caption_text">Log Out</a></li>
+      </ul>
+    </li>
+  {%- else -%}
+    <li class="b-b p-v-md p-l">
+      <span class="callout_text l-s-0x">Hey, Gorgeous！</span>
+      <span class="caption_s_text text-u-c">
+        <a class="thin-u-l p-r-xs" href="/account/login">Log in</a> or <a class="thin-u-l p-l-xs" href="/account/register">Register</a>
+      </span>
+    </li>
+  {%- endif -%}
+
+  {% for linkT1 in linklists.[settings.main_nav].links %}
+    <li class="b-b">
+      {%- if linkT1.levels > 0 -%}
+        <a class="callout_text text-u-c p-v-md block p-l dorp-trigger-l1 pos-rlt">
+          {{ linkT1.title }}
+          {%- include 'icon-arrow.svg', additionalClass: 'mobile-nav-arrow' -%}
+        </a>
+      {%- else -%}
+        <a class="callout_text text-u-c p-v-md block p-l dorp-trigger-l1 pos-rlt" href="{{ linkT1.url }}"
+        {%- if linkT1.url contains 'http' -%}
+          {%- unless linkT1.url contains '100percentpure.com' -%}
+            target="_blank"
+          {%- endunless -%}
+        {%- endif -%}>
+          {{ linkT1.title }}
+        </a>
+      {%- endif -%}
+      {%- if linkT1.levels > 0 -%}
+        <ul class="o-f-hid no-margin-v m-h-sm">
+          {%- if linkT1.url != '/' -%}
+            <li><a class="p-v-sm m-b-sm block p-l callout_text text-u-c" href="{{ linkT1.url }}">View All</a></li>
+          {%- endif -%}
+          {%- for linkT2 in linkT1.links -%}
+            <li>
+              {%- if linkT2.title == 'placeholder' -%}
+              {%- elsif linkT2.url == '/' or linkT2.levels > 0 -%}
+                <a class="p-v-sm m-b-sm block p-l callout_text text-u-c dorp-trigger-l2">{{ linkT2.title }}</a>
+              {%- else -%}
+                <a class="p-v-sm m-b-sm block p-l callout_text text-u-c" href="{{ linkT2.url | replace: '%3F', '?' }}">{{ linkT2.title }}</a>
+              {%- endif -%}
+              {%- if linkT2.levels > 0 -%}
+                <ul class="o-f-hid no-margin-v m-h-sm">
+                  {%- if linkT2.url != '/' -%}
+                    <li><a class="p-v-sm block p-l caption_text" href="{{ linkT2.url }}">View All</a></li>
+                  {%- endif -%}
+                  {%- for linkT3 in linkT2.links -%}
+                    <li>
+                      <a class="p-v-sm block p-l caption_text" href="{{ linkT3.url }}">{{ linkT3.title }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </li>
+  {% endfor %}
+</ul>
+<a href="/pages/purist-perks" class="block callout_text text-center p-v-md bg-peach m-t-md m-h">PURIST PERKS</a>
+<a href="/pages/cosmetic-retailers" class="block callout_text text-center p-v-md bg-peach m-t m-h">STORE LOCATOR</a>
+<a href="https://support.100percentpure.com" class="block callout_text text-center p-v-md bg-peach m-t m-h">HELP</a>

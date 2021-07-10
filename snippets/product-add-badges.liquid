@@ -1,0 +1,14 @@
+{% assign badgesURL = "" %}
+{% assign badgesNumber = 0 %}
+{%- if product.tags contains "Finder-sc-awards" -%}
+  {% assign badges = product.metafields.purity-toolbox.awards | split: "|" %}
+  {%- for tag in badges -%}
+    {% assign lowcaseTag = tag | downcase %}
+    {% assign badgePosition = 0.3 | times: badgesNumber | minus: 0.3 %}
+    {% assign badgesURL = badgesURL | append: "/l_Badges:badges,w_0.3,y_" | append: badgePosition | append: ",x_0.34,fl_relative,pg_name:" | append: lowcaseTag %}
+    {% assign badgesNumber = badgesNumber | plus: 1 %}
+  {%- endfor -%}
+{%- endif -%}
+{%- if product.id == 4325531222094 or product.id == 4325531254862 -%}
+  {% assign badgesURL = badgesURL | append: "/l_Badges:limited_deition_bug,w_0.3,y_-0.35,x_-0.35,fl_relative" %}
+{%- endif -%}

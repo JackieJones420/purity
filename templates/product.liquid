@@ -1,0 +1,280 @@
+{% comment %} Product variables {% endcomment %}
+{% include '_product-variables' %}
+
+{% comment %} Product Metafields variables {% endcomment %}
+{% include 'product-metafields' %}
+
+{% comment %} check if add badge to product image {% endcomment %}
+{%- include 'product-add-badges' -%}
+
+<div>
+  {% comment %}
+  Get first variant, or deep linked one
+  {% endcomment %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+
+  {% include 'breadcrumb', additionClasses:"medium-down--hide" %}
+
+  {% comment %}banner animation start{% endcomment %}
+  {%- if product_meta.banner_animation != "[empty]" and product_meta.banner_animation != null -%}
+    {% comment %}
+      banner animation
+      css at product.scss.liquid .product-banner-container
+      js at _script-product-detail-page.liquid comment 'trigger animation'
+      animation formula
+        letters show between time:          0.03
+        each letter delay:                  0.03*i
+        letter show:                        2.4
+        letter container delay:             1+letternumber*0.03  (1.4s overlay with last letter show)
+        letter container hide:              1.8
+        all letter animation(LetterTiming): 2.8+letternumber*0.03
+        swatchs show between time:          0.2
+        each swatch image delay:            LetterTiming+0.2*i
+        swatch show:                        1
+        all swatch show(swatchImageTiming): 1+swatchnumber*0.2
+        swatchs hide between time:          0.08
+        swatch hide delay dce:              LetterTiming+swatchImageTiming+0.08*i
+        swatchs hide animation:             0.4
+    {% endcomment %}
+    {% assign LetterArray = product_meta.banner_animation | split: '' %}
+    {% assign LetterTiming = LetterArray.size|minus:1|times:0.03|plus:2.8 %}
+    {% assign newShadesArray = '' %}
+    {%- for variant in product.variants -%}
+      {%- if variant.metafields.purity-toolbox.animate_img -%}
+        {%- unless newShadesArray == '' -%}
+          {% assign newShadesArray = newShadesArray|append:'|' %}
+        {%- endunless -%}
+        {% assign newShadesArray = newShadesArray|append:variant.metafields.purity-toolbox.animate_img %}
+      {%- endif -%}
+    {%- endfor -%}
+    {% assign newShadesArray = newShadesArray | split:'|' %}
+    {% assign swatchImageTiming = newShadesArray.size|minus:1|times:0.2|plus:1 %}
+    {% comment %}banner hide animation{% endcomment %}
+    <div
+      class="product-banner-container pos-rlt"
+      style="
+        -webkit-animation-delay:{{newShadesArray.size|times:0.08|plus:LetterTiming|plus:swatchImageTiming|plus:0.4}}s;
+        animation-delay:{{newShadesArray.size|times:0.08|plus:LetterTiming|plus:swatchImageTiming|plus:0.4}}s;
+      "
+    >
+      {% comment %}letter container hide animation{% endcomment %}
+      <p class="text-center banner-text o-f-hid l-s-2x" style="-webkit-animation-delay:{{LetterArray.size|minus:1|times:0.03|plus:1}}s;animation-delay:{{LetterArray.size|times:0.03|plus:1}}s;">
+        {% comment %}letter show animation{% endcomment %}
+        {%- for item in LetterArray -%}{% if item == ' ' %} {%- elsif item == '|' -%}<br class="large--hide">{% else %}<span style="-webkit-animation-delay:{{forloop.index0|times:0.03}}s;animation-delay:{{forloop.index0|times:0.03}}s;">{{item}}</span>{% endif %}{%- endfor -%}
+      </p>
+      {%- for newShade in newShadesArray -%}
+        {% comment %}banner swatch image animation{% endcomment %}
+        <div
+          class="pos-abt shade-image-box"
+          style="
+            {%- if newShadesArray.size < 4 -%}
+              top: 25px;
+              left: calc(50% + {{newShadesArray.size|times:50}}px - {{forloop.index|times:100}}px{% if forloop.index == 1 %} + 50px{% endif %}{% if forloop.index == newShadesArray.size %} - 50px{% endif %});
+            {%- else -%}
+              top: 25px;
+              left: calc(50% + {{newShadesArray.size|times:50}}px - {{forloop.index|times:100}}px);
+            {%- endif -%}
+            -webkit-animation-delay:{{forloop.index0|times:0.08|plus:LetterTiming|plus:swatchImageTiming}}s;
+            animation-delay:{{forloop.index0|times:0.08|plus:LetterTiming|plus:swatchImageTiming}}s;
+          "
+        >
+          <img
+            class="shade-image"
+            src="{{ newShade | file_img_url: '90x' | format: 'pjpg' }}"
+            alt="variant.sku"
+            style="
+              -webkit-animation-delay:{{newShadesArray.size|minus:forloop.index|times:0.2|plus:LetterTiming}}s;
+              animation-delay:{{newShadesArray.size|minus:forloop.index|times:0.2|plus:LetterTiming}}s;
+            ">
+        </div>
+      {%- endfor -%}
+    </div>
+    {% comment %}swatch animation at swatch.liquid file .swatch-element element{% endcomment %}
+  {%- endif -%}
+  {% comment %}banner animation end{% endcomment %}
+
+
+  <div class="product_section ">
+    <div class="grid clearfix">
+      <!-- Main product image column -->
+      <div class="grid__item large--one-half">
+        {%- include 'product-details-main-img' -%}
+        {%- include 'product-details-thumb-img' -%}
+      </div>
+
+      <!-- Product Form column -->
+      <div class="grid__item large--one-half">
+        {%- include "product-details-form" -%}
+      </div>
+    </div>
+
+    {%- if product_meta.youtube-videos -%}
+      {%- if product_meta.youtube-videos != "[empty]" -%}
+        <div class="video-container">
+          <div class="grid clearfix">
+            <!-- Product Video column -->
+            <div class="grid__item large--one-whole">
+              {%- include 'product-details-video' -%}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+    {%- if product.metafields.affiliate.personal_info -%}
+      <div class="grid m-t-lg">
+        <div class="grid__item large--six-twelfths medium-down--one-whole medium-down--text-center m-t-xlg">
+          <p class="section_title_text">{{product.metafields.affiliate.personal_info.title}}</p>
+          <p class="content_text">
+            <span class="m-v-lg inline large--p-r-md">{{product.metafields.affiliate.personal_info.content}}</span>
+            <br>
+            <a href="/" class="btn btn-secondary">SHOP ALL MY FAVORITES</a>
+          </p>
+        </div>
+        <div class="grid__item large--six-twelfths medium-down--one-whole text-center" id="ProductPhoto">
+          <img
+            src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-m}}"
+            data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-m}}"
+            class="cld-prepare large--one-whole medium-down--four-fifths"
+            alt="affiliate main image" />
+        </div>
+      </div>
+      <div class="main-module">
+        <div class="init-carousel grid m-t-lg">
+          <img src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-1}}"
+          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-1}}"
+          class="cld-prepare grid__item large--one-third"
+          alt="affiliate lefe style image 1" />
+          <img src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-2}}"
+          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-2}}"
+          class="cld-prepare grid__item large--one-third"
+          alt="affiliate lefe style image 2" />
+          <img src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-3}}"
+          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/page_affiliate/{{product.metafields.affiliate.personal_info.img-3}}"
+          class="cld-prepare grid__item large--one-third"
+          alt="affiliate lefe style image 3" />
+        </div>
+      </div>
+    {%- endif -%}
+    {%- unless product.tags contains "brief_product" -%}
+      <div class="clearfix">
+        <!-- Product Tabs -->
+        {%- unless product.tags contains "BundleProduct" or product.type == "Gift Card" or product.type == "Sample" -%}
+          {%- include 'product-details-tabs' -%}
+        {%- endunless -%}
+        {% include 'pp-social-block' %}
+      </div>
+
+      {% unless product.type == "Gift Card" %}
+        <div class="grid clearfix">
+          <!-- Product review -->
+          <div class="grid__item large--one-whole">
+            {%- include "pp-reviews" -%}
+          </div>
+        </div>
+      {% endunless %}
+
+      {% if product.type == "Gift Card" %}
+        <div class="grid__item featured-carousel o-f-hid">
+            <a href="/collections/gift-sets">
+              <div class="h2 text-center line-250 l-h margin-auto m-v-lg">Trending Now</div>
+            </a>
+            <div class="grid__item init-carousel m-b">
+              {% for product in collections['frontpage-trending-now'].products | limit: 6 %}
+                {% include 'product-grid-item', grid_item_width: 'large--one-quarter' %}
+              {% else %}
+                {% include 'onboarding-featured-products' %}
+              {% endfor %}
+            </div>
+        </div>
+      {% else %}
+        <div class="grid clearfix product-page__product-details-container">
+          <!-- Product similar -->
+          <div class="grid__item large--one-whole">
+              {% section 'product-recommendations' %}
+          </div>
+        </div>
+      {% endif %}
+
+      {%- unless product.type == "Gift Card" or product.tags contains 'Discontinued' -%}
+        <div class="grid clearfix">
+          <!-- Product UCG -->
+          <div class="grid__item large--one-whole">
+            {%- include 'pp-shoppable-ig' -%}
+          </div>
+        </div>
+      {%- endunless -%}
+    {%- endunless -%}
+
+  </div>
+</div>
+
+
+
+<script id="mobileAddToTote" type="text/template">
+  <div class="mobile-AddToTote-bar text-center b-t l-h-2x large--hide medium--hide">
+    <div class="swatch-container bg-white pos-abt w-full text-left p-h b-t o-f-hid">
+      <div class="m-t-sm">
+        <span class="text-u-c text-xs alt-font l-s-1x">Select a {{ product.options | first | downcase }}: </span>
+        <span class="variant-title">Sandstone</span>
+        {%- include 'wish-list-btn', additionalClass: 'right' -%}
+      </div>
+      <p class="caption_text shade-description-container"></p>
+      <div class="swatch o-f-hid"></div>
+    </div>
+    <div class="controller bg-white pos-rlt o-f-hid">
+      <div class="mobile-price">
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          <span class="block three-tenths left text-md-lg l-h-1x m-t-sm">
+            <span class="price money original_price">{{current_variant.price | money}}</span>
+            <br>
+            <small class="text-l-t money">{{current_variant.compare_at_price | money}}</small>
+          </span>
+        {%- else -%}
+          <span class="block three-tenths left m-v text-md-lg price money original_price">
+            {{current_variant.price | money}}
+          </span>
+        {%- endif -%}
+      </div>
+      {%- if settings.beauty_start -%}
+        {%- for tag in product.tags -%}
+          {%- if tag == 'Beauty Deal 5' -%}
+            <span class="block three-tenths left section_title_text m-v-xs beauty_deal_price hide">{{ settings.beauty_deal_price5 | money }} <span class="text-l-t">{{ product.price | money }}</span></span>
+          {%- elsif tag == 'Beauty Deal 10' -%}
+            <span class="block three-tenths left section_title_text m-v-xs beauty_deal_price hide">{{ settings.beauty_deal_price10 | money }} <span class="text-l-t">{{ product.price | money }}</span></span>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+      <div class="three-tenths left m-t text-md option">
+        {%- if product.variants.size > 1 -%}
+          {%- if product.options contains 'Size' -%}
+            <span class="inline pointer mobile-color-trigger" style="vertical-align: top;">{{product.selected_or_first_available_variant.title}}</span>
+          {%- elsif product.options contains 'Color' -%}
+            <span class="inline w-32 circle pointer mobile-color-trigger" style="background:currentShadeColor"></span>
+          {%- endif -%}
+          <i class="m-sm arrow up top-3 pos-rlt pointer mobile-color-trigger"></i>
+        {%- else -%}
+          {%- include 'wish-list-btn', additionalClass: 'l-h-1x inline' -%}
+          <span class="wishlist_container l-h-1x inline"></span>
+        {%- endif -%}
+      </div>
+      {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.selected_or_first_available_variant -%}
+      {% assign productIsAvailable = product.available %}
+      {%- case productVariantsAvailableState -%}
+        {%- when 'email' -%}
+          {% assign productIsAvailable = false %}
+        {%- when 'discontinued' -%}
+          {% assign productIsAvailable = false %}
+      {%- endcase -%}
+      <div onclick="$('[name=add]')[0].click();return false;" class="mobile-add-bt two-fifthsd left btn-secondary no-borders text-md p-v alt-font l-s-1x pointer text-u-c add-to-tote-text{% if productIsAvailable == false %} no-shipping-text{% endif %}" style="">
+        {% if productIsAvailable %} {{ 'products.product.add_to_cart' | t }} {% else %} {{ 'products.product.sold_out' | t }} {% endif %}
+        {% if productIsAvailable and settings.mobile_sticky_checkout_free_shipping_text %}
+          <span class="shipping-text">
+            {{ settings.mobile_sticky_checkout_free_shipping_text }}
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</script>
+
+

@@ -1,0 +1,503 @@
+
+<div class="grid m-b-xlg">
+  <div class="grid__item large--one-quarter m-t-lg medium-down--text-center">
+    <div class="medium-down--b-a p-v pos-rlt account-nav-list">
+      <a class="pointer medium-down--hide module_title_text inline m-v-xs large--m-b-md account-nav" section-to="">My Account</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs account-nav" section-to="profile">Profile</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs account-nav" section-to="address">Address</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs account-nav" section-to="order">Order History</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs account-nav" section-to="perk">Purist Perks</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs account-nav" section-to="favorite">Favorites</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs" href="/pages/referral-dashboard">Refer a friend</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide content_text inline m-v-xs" href="https://100percentpure.com/pages/returns-and-exchanges">Returns & Exchanges</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide callout_text inline m-v-xs large--m-t account-nav" section-to="password">RESET PASSWORD</a>
+      <br class="medium-down--hide">
+      <a class="pointer medium-down--hide callout_text inline m-v-xs" id="customer_logout_link" href="/account/logout">LOGOUT</a>
+      {%- include 'icon-arrow.svg', additionalClass: 'inline-16 pos-abt top-0 right-0 m-md large--hide trans-r-270 mobile-nav-trigger' -%}
+    </div>
+  </div>
+  <div class="pos-rlt large--three-quarters medium-down--one-whole m-t-xlg left">
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-">
+      <h1 class="m-b-lg section_title_text m-h medium-down--text-center">Hello, {{ customer.first_name | trim }}</h1>
+      <div class="medium-down--m-h">
+        <div class="grid__item large--one-third">
+          <div class="">
+            <span class="inline two-thirds callout_text">ACCOUNT INFO</span>
+            <a class="inline one-third right caption_text text-right pointer account-nav text-u-l" section-to="profile">Edit</a>
+          </div>
+          <hr class="m-t-sm m-b">
+          <p class="caption_text">
+            {{ customer.first_name | trim }} {{ customer.last_name | trim }}
+            <br>
+            Skin Type: {{customer.metafields.purity-toolbox.skin_type}}
+            <br>
+            Skin Tone: {{customer.metafields.purity-toolbox.skin_tone}}
+            <br>
+            Skin Concern: {{customer.metafields.purity-toolbox.skin_concern}}
+          </p>
+        </div>
+        <div class="grid__item large--one-third medium-down--m-t">
+          <div class="">
+            <span class="inline two-thirds callout_text">ADDRESS BOOK</span>
+            <a class="inline one-third right caption_text text-right pointer account-nav text-u-l" section-to="address">Edit</a>
+          </div>
+          <hr class="m-t-sm m-b">
+          <p class="caption_text">
+            {%- if customer.default_address -%}
+              {{ customer.default_address.first_name | capitalize }} {{ customer.default_address.last_name | capitalize }}
+              {% if customer.default_address.company != "" %}<br> {{ customer.default_address.company }}{% endif %}
+              {% if customer.default_address.phone %}<br> {{ customer.default_address.phone }}{% endif %}
+              <br>
+              {{ customer.default_address.street }}, {{ customer.default_address.city | capitalize }}<br> {% if customer.default_address.province_code %}{{ customer.default_address.province_code | upcase }}{% endif %} {{ customer.default_address.zip | upcase }}, {{ customer.default_address.country }}
+            {%- else -%}
+              You don’t have any address saved
+            {%- endif -%}
+          </p>
+        </div>
+        <div class="grid__item large--one-third medium-down--m-t">
+          <span class="callout_text">YOUR PURIST PERK</span>
+          <hr class="m-t-sm m-b">
+          <p class="caption_text">
+            <span data-lion-points="approved"></span>
+            points
+            <br>
+            {% for tag in customer.tags %}
+              {% case tag %}
+              {% when 'tier: Activist' %}
+                Activist
+                {% break %}
+              {% when 'tier: Revolutionist' %}
+                Revolutionist
+                {% break %}
+              {% when 'tier: Enthusiast' %}
+                Enthusiast
+              {% when 'tier: Pure Activist' %}
+                Activist
+                {% break %}
+              {% when 'tier: Pure Revolutionist' %}
+                Revolutionist
+                {% break %}
+              {% when 'tier: Pure Enthusiast' %}
+                Enthusiast
+              {% endcase %}
+            {% endfor %}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-profile">
+      <h1 class="m-b-sm section_title_text m-h medium-down--text-center">Hello, {{ customer.first_name | trim }}</h1>
+      <p class="content_text m-h large--three-quarters m-b-lg">Help us customize your shopping experience! You'll find product recommendations and curated content just for you.</p>
+      <div class="pos-rlt m-h">
+        <div class="profile-home pos-rlt w-full top-0 left-0 opa-0 animated-show">
+          <div class="large--one-third medium-down--one-whole left">
+            <div class="">
+              <span class="inline two-thirds callout_text">ACCOUNT INFO</span>
+              <a class="inline one-third right caption_text text-right pointer account-2nd-nav text-u-l" section-to="profile-name" section-from="profile-home">Edit</a>
+            </div>
+            <hr class="m-t-sm m-b">
+            <p class="caption_text">
+              First Name: {{ customer.first_name | trim }}
+              <br>
+              Last Name: {{ customer.last_name | trim }}
+            </p>
+          </div>
+          <div class="large--one-third medium-down--one-whole medium-down--m-t push--large--one-eighth left">
+            <div class="">
+              <span class="inline two-thirds callout_text">SKIN PROFILE</span>
+              <a class="inline one-third right caption_text text-right pointer account-2nd-nav text-u-l" section-to="profile-skin" section-from="profile-home">Edit</a>
+            </div>
+            <hr class="m-t-sm m-b">
+            <p class="caption_text">
+              Skin Type: {{customer.metafields.purity-toolbox.skin_type}}
+              <br>
+              Skin Tone: {{customer.metafields.purity-toolbox.skin_tone}}
+              <br>
+              Skin Concern (Primary): {{customer.metafields.purity-toolbox.skin_concern}}
+              <br>
+              Skin Concern (Secondary): {{customer.metafields.purity-toolbox.skin_concern2}}
+              <br>
+              <a href="/collections/sc-finder/finder-sc-{{ customer.metafields.purity-toolbox.skin_type }}-{{ customer.metafields.purity-toolbox.skin_concern }}" class="inline m-t-lg text-u-l">Shop Result</a>
+            </p>
+          </div>
+        </div>
+        <form action="/tools/customer_profile" method="GET" id="custmeta">
+          <input type="hidden" name="user_id" value="{{ customer.id }}" />
+          <div class="profile-name o-f-hid pos-abt w-full top-0 left-0 b-a opa-0 p-v large--p-h-xlg medium-down--p-h animated-hide">
+            <p class="module_title_text p-h-md">Edit Profile</p>
+            <svg height="40" width="40" class="pos-abt pointer top-0 right-0 m-sm account-2nd-nav" section-to="profile-home" section-from="profile-name"><line x1="10" y1="10" x2="30" y2="30" stroke="#333"></line><line x1="10" y1="30" x2="30" y2="10" stroke="#333"></line></svg>
+            <hr class="m-h-md">
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label for="firstname" class="callout_text inline m-b-sm">FIRST NAME</label>
+              <br>
+              <input class="select" id="firstname" type="text" name="first_name" value="{{customer.first_name}}">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label for="lastname" class="callout_text inline m-b-sm">LAST NAME</label>
+              <br>
+              <input class="select" id="lastname" type="text" name="last_name" value="{{customer.last_name}}">
+            </div>
+            <div class="left m-v-sm p-h-md w-full">
+              <button type="submit" class="cus-pfl-submit-btn btn btn-secondary p-v w-full">Update Profile</button>
+            </div>
+          </div>
+          <div class="profile-skin pos-abt w-full top-0 left-0 b-a opa-0 p-v large--p-h-xlg medium-down--p-h animated-hide">
+            <p class="module_title_text p-h-md">Edit Profile</p>
+            <svg height="40" width="40" class="pos-abt pointer top-0 right-0 m-sm account-2nd-nav" section-to="profile-home" section-from="profile-skin"><line x1="10" y1="10" x2="30" y2="30" stroke="#333"></line><line x1="10" y1="30" x2="30" y2="10" stroke="#333"></line></svg>
+            <hr class="m-h-md">
+            <div class="">
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label for="SkinType" class="text-md inline m-b-sm">Skin Type</label>
+                <br>
+                <select class="styled-select" id="SkinType" name="skin_type">
+                  <option value="Default" {% if customer.metafields.purity-toolbox.skin_type == "Default" %} selected {% endif %}>-- Not Set --</option>
+                  <option value="Dry" {% if customer.metafields.purity-toolbox.skin_type == "Dry" %} selected {% endif %}>Dry</option>
+                  <option value="Oily" {% if customer.metafields.purity-toolbox.skin_type == "Oily" %} selected {% endif %}>Oily</option>
+                  <option value="Combo" {% if customer.metafields.purity-toolbox.skin_type == "Combo" %} selected {% endif %}>Combo</option>
+                  <option value="Normal" {% if customer.metafields.purity-toolbox.skin_type == "Normal" %} selected {% endif %}>Normal</option>
+                </select>
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label for="SkinShade" class="text-md inline m-b-sm">Skin Tone</label>
+                <br>
+                <select class="styled-select" id="SkinShade" name="skin_tone">
+                  <option value="Default" {% if customer.metafields.purity-toolbox.skin_tone == "Default" %} selected {% endif %}>-- Not Set --</option>
+                  <option value="Fair" {% if customer.metafields.purity-toolbox.skin_tone == "Fair" %} selected {% endif %}>Fair</option>
+                  <option value="Light" {% if customer.metafields.purity-toolbox.skin_tone == "Light" %} selected {% endif %}>Light</option>
+                  <option value="Medium" {% if customer.metafields.purity-toolbox.skin_tone == "Medium" %} selected {% endif %}>Medium</option>
+                  <option value="Tan" {% if customer.metafields.purity-toolbox.skin_tone == "Tan" %} selected {% endif %}>Tan</option>
+                  <option value="Dark" {% if customer.metafields.purity-toolbox.skin_tone == "Dark" %} selected {% endif %}>Dark</option>
+                  <option value="Deep" {% if customer.metafields.purity-toolbox.skin_tone == "Deep" %} selected {% endif %}>Deep</option>
+                </select>
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label for="SkinConcern" class="text-md inline m-b-sm">Skin Concern (Primary)</label>
+                <br>
+                <select class="styled-select" id="SkinConcern" name="skin_concern">
+                  <option value="Default" {% if customer.metafields.purity-toolbox.skin_concern == "Default" %} selected {% endif %}>-- Not Set --</option>
+                  <option value="Acne" {% if customer.metafields.purity-toolbox.skin_concern == "Acne" %} selected {% endif %}>Acne</option>
+                  <option value="Aging" {% if customer.metafields.purity-toolbox.skin_concern == "Aging" %} selected {% endif %}>Aging</option>
+                  <option value="Dehydration" {% if customer.metafields.purity-toolbox.skin_concern == "Dehydration" %} selected {% endif %}>Dehydration</option>
+                  <option value="Pores" {% if customer.metafields.purity-toolbox.skin_concern == "Pores" %} selected {% endif %}>Pores</option>
+                  <option value="Redness/Rosacea" {% if customer.metafields.purity-toolbox.skin_concern == "Redness/Rosacea" %} selected {% endif %}>Redness / Rosacea</option>
+                  <option value="Sensitivity" {% if customer.metafields.purity-toolbox.skin_concern == "Sensitivity" %} selected {% endif %}>Sensitivity</option>
+                  <option value="Brightening" {% if customer.metafields.purity-toolbox.skin_concern == "Brightening" %} selected {% endif %}>Brightening</option>
+                  <option value="Dark Age/Sun Spots" {% if customer.metafields.purity-toolbox.skin_concern == "Dark Age/Sun Spots" %} selected {% endif %}>Dark Age / Sun Spots</option>
+                </select>
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label for="SkinConcern2" class="text-md inline m-b-sm">Skin Concern (Secondary)</label>
+                <br>
+                <select class="styled-select" id="SkinConcern2" name="skin_concern_2">
+                  <option value="Default" {% if customer.metafields.purity-toolbox.skin_concern2 == "Default" %} selected {% endif %}>-- Not Set --</option>
+                  <option value="Acne" {% if customer.metafields.purity-toolbox.skin_concern2 == "Acne" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Acne" %}type="hide"{% endif %}>Acne</option>
+                  <option value="Aging" {% if customer.metafields.purity-toolbox.skin_concern2 == "Aging" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Aging" %}type="hide"{% endif %}>Aging</option>
+                  <option value="Dehydration" {% if customer.metafields.purity-toolbox.skin_concern2 == "Dehydration" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Dehydration" %}type="hide"{% endif %}>Dehydration</option>
+                  <option value="Pores" {% if customer.metafields.purity-toolbox.skin_concern2 == "Pores" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Pores" %}type="hide"{% endif %}>Pores</option>
+                  <option value="Redness/Rosacea" {% if customer.metafields.purity-toolbox.skin_concern2 == "Redness/Rosacea" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Redness/Rosacea" %}type="hide"{% endif %}>Redness / Rosacea</option>
+                  <option value="Sensitivity" {% if customer.metafields.purity-toolbox.skin_concern2 == "Sensitivity" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Sensitivity" %}type="hide"{% endif %}>Sensitivity</option>
+                  <option value="Brightening" {% if customer.metafields.purity-toolbox.skin_concern2 == "Brightening" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Brightening" %}type="hide"{% endif %}>Brightening</option>
+                  <option value="Dark Age/Sun Spots" {% if customer.metafields.purity-toolbox.skin_concern2 == "Dark Age/Sun Spots" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Dark Age/Sun Spots" %}type="hide"{% endif %}>Dark Age / Sun Spots</option>
+                </select>
+              </div>
+              <div class="clear-both"></div>
+            </div>
+            <div class="m-v-sm p-h-md w-full">
+              <button type="submit" class="cus-pfl-submit-btn btn btn-secondary p-v w-full">Update Profile</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-address">
+      <h1 class="medium-down--text-center m-b-sm section_title_text m-h">Your Addresses</h1>
+      <div class="pos-rlt medium-down--m-h">
+        <div class="address-home medium-down--text-center pos-rlt w-full top-0 left-0 opa-0 animated-show">
+          {%- if customer.default_address -%}
+            {% assign address = customer.default_address %}
+            <div class="grid__item large--one-third medium-down--one-whole p-v text-left">
+              <div class="">
+                <span class="inline two-thirds callout_text">ADDRESS(DEFAULT)</span>
+                <span class="inline one-third right caption_text text-right">
+                  <span class="pointer m-r-sm text-u-l">{{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}</span>
+                  <a class="pointer account-2nd-nav text-u-l" section-to="address-edit-{{address.id}}" section-from="address-home">Edit</a>
+                </span>
+              </div>
+              <hr class="m-t-sm m-b">
+              <p class="caption_text">
+                {{ address.first_name | capitalize }} {{ address.last_name | capitalize }}
+                {% if address.company != "" %}<br> {{ address.company }}{% endif %}
+                {% if address.phone %}<br> {{ address.phone }}{% endif %}
+                <br>
+                {{ address.street }}, {{ address.city | capitalize }}<br> {% if address.province_code %}{{ address.province_code | upcase }}{% endif %} {{ address.zip | upcase }}, {{ address.country }}
+              </p>
+            </div>
+            <div class="clear-both"></div>
+            {% for address in customer.addresses %}
+              {% if address != customer.default_address %}
+                <div class="grid__item large--one-third medium-down--one-whole p-v  text-left">
+                  <div class="">
+                    <span class="inline two-thirds callout_text">ADDRESS</span>
+                    <span class="inline one-third right caption_text text-right">
+                      <span class="pointer m-r-sm text-u-l">{{ 'customer.addresses.delete' | t | delete_customer_address_link: address.id }}</span>
+                      <a class="pointer account-2nd-nav text-u-l" section-to="address-edit-{{address.id}}" section-from="address-home">Edit</a>
+                    </span>
+                  </div>
+                  <hr class="m-t-sm m-b">
+                  <p class="caption_text">
+                    {{ address.first_name | capitalize }} {{ address.last_name | capitalize }}
+                    {% if address.company != "" %}<br> {{ address.company }}{% endif %}
+                    {% if address.phone %}<br> {{ address.phone }}{% endif %}
+                    <br>
+                    {{ address.street }}, {{ address.city | capitalize }}<br> {% if address.province_code %}{{ address.province_code | upcase }}{% endif %} {{ address.zip | upcase }}, {{ address.country }}
+                  </p>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {%- else -%}
+            <p class="content_text large--three-quarters m-b m-h">You don’t have any address saved</p>
+          {%- endif -%}
+          <div class="clear-both"></div>
+          <button type="submit" class="clear-both cus-ads-new btn btn-secondary p-v m-h account-2nd-nav" section-to="address-new" section-from="address-home">create a new address</button>
+        </div>
+        <div class="address-new pos-abt w-full top-0 left-0 opa-0 animated-hide b-a p-v large--p-h-xlg medium-down--p-h">
+          <p class="module_title_text p-h-md">{{ 'customer.addresses.add_new' | t }}</p>
+          <svg height="40" width="40" class="pos-abt pointer top-0 right-0 m-sm account-2nd-nav" section-to="address-home" section-from="address-new"><line x1="10" y1="10" x2="30" y2="30" stroke="#333"></line><line x1="10" y1="30" x2="30" y2="10" stroke="#333"></line></svg>
+          <hr class="m-h-md">
+          {% form 'customer_address', customer.new_address %}
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressFirstNameNew">{{ 'customer.addresses.first_name' | t }}</label>
+              <input type="text" id="AddressFirstNameNew" class="select" name="address[first_name]" value="{{ form.first_name }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressLastNameNew">{{ 'customer.addresses.last_name' | t }}</label>
+              <input type="text" id="AddressLastNameNew" class="select" name="address[last_name]" value="{{ form.last_name }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressCompanyNew">{{ 'customer.addresses.company' | t }}</label>
+              <input type="text" id="AddressCompanyNew" class="select" name="address[company]" value="{{ form.company }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressPhoneNew">{{ 'customer.addresses.phone' | t }}</label>
+              <input type="tel" id="AddressPhoneNew" class="select" name="address[phone]" value="{{ form.phone }}">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressAddress1New">{{ 'customer.addresses.address1' | t }}</label>
+              <input type="text" id="AddressAddress1New" class="select" name="address[address1]" value="{{ form.address1 }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressAddress2New">{{ 'customer.addresses.address2' | t }}</label>
+              <input type="text" id="AddressAddress2New" class="select" name="address[address2]" value="{{ form.address2 }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressCityNew">{{ 'customer.addresses.city' | t }}</label>
+              <input type="text" id="AddressCityNew" class="select" name="address[city]" value="{{ form.city }}" autocapitalize="words">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressZipNew">{{ 'customer.addresses.zip' | t }}</label>
+              <input type="text" id="AddressZipNew" class="select" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+              <label class="text-md inline m-b-sm" for="AddressCountry_new">{{ 'customer.addresses.country' | t }}</label>
+              <select id="AddressCountry_new" class="select" name="address[country]">{{ country_option_tags | replace: "---", "--- select country ---" }}</select>
+            </div>
+            <div class="medium-down--one-whole large--one-half left p-h-md m-b" id="AddressProvinceContainerNew">
+              <label class="text-md inline m-b-sm" for="AddressProvince_new">{{ 'customer.addresses.province' | t }}</label>
+              <select id="AddressProvince_new" class="select" name="address[province]"><option value='--- select province ---'>--- select province ---</option></select>
+            </div>
+            <div class="one-whole left p-h-md m-b">
+              <label for="address_default_address_new" class="inline m-t">{{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}</label>
+              <div class="right m-t-sm">
+                <button class="btn" type="submit" name="button">{{ 'customer.addresses.add' | t }}</button>
+              </div>
+            </div>
+            <div class="clear-both"></div>
+          {% endform %}
+        </div>
+        {%- for address in customer.addresses -%}
+          <div class="address-edit-{{address.id}} pos-abt w-full top-0 left-0 opa-0 animated-hide b-a p-v large--p-h-xlg medium-down--p-h">
+            <p class="module_title_text p-h-md">{{ 'customer.addresses.edit_address' | t }}</p>
+            <svg height="40" width="40" class="pos-abt pointer top-0 right-0 m-sm account-2nd-nav" section-to="address-home" section-from="address-edit-{{address.id}}"><line x1="10" y1="10" x2="30" y2="30" stroke="#333"></line><line x1="10" y1="30" x2="30" y2="10" stroke="#333"></line></svg>
+            <hr class="m-h-md">
+            {% form 'customer_address', address %}
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+                <input type="text" id="AddressFirstName_{{ form.id }}" class="select" name="address[first_name]" value="{{ form.first_name }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+                <input type="text" id="AddressLastName_{{ form.id }}" class="select" name="address[last_name]" value="{{ form.last_name }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+                <input type="text" id="AddressCompany_{{ form.id }}" class="select" name="address[company]" value="{{ form.company }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+                <input type="tel" id="AddressPhone_{{ form.id }}" class="select" name="address[phone]" value="{{ form.phone }}">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+                <input type="text" id="AddressAddress1_{{ form.id }}" class="select" name="address[address1]" value="{{ form.address1 }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+                <input type="text" id="AddressAddress2_{{ form.id }}" class="select" name="address[address2]" value="{{ form.address2 }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+                <input type="text" id="AddressCity_{{ form.id }}" class="select" name="address[city]" value="{{ form.city }}" autocapitalize="words">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+                <input type="text" id="AddressZip_{{ form.id }}" class="select" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters">
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+                <label class="text-md inline m-b-sm" for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+                <select id="AddressCountry_{{ form.id }}" class="select" name="address[country]" data-default="{{ form.country }}" >{{ country_option_tags | replace: "---", "--- select country ---"}}</select>
+              </div>
+              <div class="medium-down--one-whole large--one-half left p-h-md m-b" id="AddressProvinceContainerNew">
+                <label class="text-md inline m-b-sm" for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+                <select id="AddressProvince_{{ form.id }}" class="select" name="address[province]" data-default="{{ form.province }}"><option value='--- select province ---'>--- select province ---</option></select>
+              </div>
+              <div class="one-whole left p-h-md m-b">
+                <label for="address_default_address_{{ form.id }}" class="inline m-t">{{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}</label>
+                <div class="right m-t-sm">
+                  <button class="btn" type="submit" name="button">{{ 'customer.addresses.update' | t }}</button>
+                </div>
+                <div class="clear-both"></div>
+              </div>
+              <hr>
+            {% endform %}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-order">
+      <h1 class="medium-down--text-center m-b-sm section_title_text m-h">Order History</h1>
+      {% paginate customer.orders by 10 %}
+        {% if customer.orders.size != 0 %}
+          <div class="m-h m-t">
+            <table>
+              <thead>
+                <tr>
+                  <th class="no-b-t no-b-r no-b-l p-v l-s-2x">{{ 'customer.orders.order_number' | t }}</th>
+                  <th class="medium-down--hide no-b-t l-s-2x no-b-r no-b-l p-v">{{ 'customer.orders.date' | t }}</th>
+                  <th class="medium-down--hide no-b-t l-s-2x no-b-r no-b-l p-v">{{ 'customer.orders.payment_status' | t }}</th>
+                  <th class="no-b-t no-b-r no-b-l p-v l-s-2x">{{ 'customer.orders.total' | t }}</th>
+                  <th class="no-b-t no-b-r no-b-l"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for order in customer.orders %}
+                  <tr>
+                    <td class="no-b-t no-b-r no-b-l p-v">{{ order.name }}</td>
+                    <td class="medium-down--hide no-b-t no-b-r no-b-l p-v">{{ order.created_at | date: format: 'month_day_year' }}</td>
+                    <td class="medium-down--hide no-b-t no-b-r no-b-l p-v">{{ order.financial_status_label }}</td>
+                    <td class="no-b-t no-b-r no-b-l p-v">{{ order.total_price | money }}</td>
+                    <td class="no-b-t no-b-r no-b-l p-v text-center text-u-l"><a href="{{order.order_status_url}}" target="_blank" rel="noopener">{{ 'customer.orders.todetail' | t }}</a></td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="content_text m-h large--three-quarters m-b-lg">{{ 'customer.orders.none' | t }}</p>
+        {% endif %}
+        {% if paginate.pages > 1 %}
+          <div class="pagination m-t">
+            {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-perk">
+      <h1 class="m-b-sm section_title_text m-h">My Purist Perks</h1>
+      <div class="m-h">
+        <div data-lion-account></div>
+      </div>
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-favorite">
+      <h1 class="medium-down--text-center m-b-sm section_title_text m-h">Favorites</h1>
+      <div class="grid-uniform medium-down--m-h" id="load_wishlist">
+        {% for wishListHandle in customer.metafields.purity-toolbox.wish-list-handles %}
+          {% assign product = all_products[wishListHandle] %}
+          {%- if product == blank -%}
+            <script type="text/javascript">
+              $.ajax({
+                url: `/tools/customer_profile?user_id={{customer.id}}&wish_list=remove&product_handle={{wishListHandle}}`,
+                type: "GET",
+                contentType: "application/liquid",
+              }).done(function() {
+              }).fail(function(data) {
+                alert("We are so sorry but seems some error occurred. Please try again");
+                console.log("fail to submit!!", data);
+              })
+            </script>
+          {%- else -%}
+            {% include 'product-grid-item', grid_item_width: 'large--one-third' %}
+          {%- endif -%}
+        {% endfor %}
+      </div>
+    </div>
+    <div class="pos-abt w-full top-0 left-0 opa-0 section-account animated-hide section-password">
+      <h1 class="medium-down--text-center m-b-sm section_title_text m-h">Reset Password</h1>
+      <p class="content_text m-h large--three-quarters m-b-lg">We will send you an email to reset your password.</p>
+      <div class="m-h">
+        {% form 'recover_customer_password' %}
+          {{ form.errors | default_errors }}
+          <div class="form-row m-v">
+            <input type="email" placeholder="Enter your email" size="30" name="email" id="recover-email" />
+          </div>
+          <div class="form-row m-v">
+            <input class="btn" type="submit" value="Submit" />
+          </div>
+        {% endform %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="recent-view">
+  <p class="text-center m-t-xlg m-b-lg l-s-2x medium-down--p-t-xlg section_title_text p-t-xlg">Recently Viewed</p>
+  <div class="grid__item">
+    {% assign recent_view = customer.metafields.purity-toolbox.recent_view | split: '|' %}
+    {% assign productLoaded = 0 %}
+    {%- for productURL in recent_view -%}
+      {%- if productLoaded < 4 -%}
+        {% assign productLoaded = productLoaded | plus: 1 %}
+        {% assign product = all_products[productURL] %}
+        {% include 'product-grid-item', grid_item_width: 'large--one-quarter one-half' %}
+      {%- endif -%}
+
+    {%- endfor -%}
+  </div>
+</div>
+<div class="buy-again hide">
+  <p class="text-center m-t-xlg m-b-lg l-s-2x medium-down--p-t-xlg section_title_text p-t-xlg">Buy Again</p>
+  <div class="grid__item">
+    {% assign productLoaded = 0 %}
+    {% assign purchedItemHandle = '|' %}
+    {% for order in customer.orders limit: 4 %}
+      {%- for item in order.line_items -%}
+        {%- if productLoaded < 4 -%}
+          {% assign product = item.product %}
+          {%- unless product.type == 'Sample' -%}
+            {%- unless purchedItemHandle contains product.handle -%}
+              {% assign productLoaded = productLoaded | plus: 1 %}
+              {% assign purchedItemHandle = purchedItemHandle | append: product.handle %}
+              {% include 'product-grid-item', grid_item_width: 'large--one-quarter one-half' %}
+            {%- endunless -%}
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {% endfor %}
+  </div>
+</div>

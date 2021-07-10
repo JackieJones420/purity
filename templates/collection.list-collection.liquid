@@ -1,0 +1,74 @@
+{% include "collection-metafields" %}
+
+{% comment %}
+  Use .grid--rev so that the collection tags appear below the products on mobile
+{% endcomment %}
+<section class="grid banner no-padding">
+
+  <div class="grid__item {% if collection.image %}large--one-half{% else %}large--one-whole no-padding{% endif %} margin-auto">
+    <div class="text-container {% unless collection.image %}no-padding{% endunless %}">
+      {% if collection.description != "" %}
+        <div class="small--text-left">
+          {{ collection.description }}
+        </div>
+      {% else %}
+        <h1 class="section-header__title {% unless collection.image %}m-t{% endunless %} {% if collection.description == "" %}text-center{% endif %}">{{ collection.title }}</h1>
+      {% endif %}
+    </div>
+  </div>
+  {% if collection.image %}
+  <div class="grid__item large--one-half">
+    <div class="banner-container">
+      <img
+        data-src="{{ collection.image | img_url: '598x' }}"
+        data-srcset="{{ collection.image | img_url: '598x' }} 598w,
+        {{ collection.image | img_url: '500x' }} 500w,
+        {{ collection.image | img_url: '394x' }} 394w,
+        {{ collection.image | img_url: '360x' }} 360w"
+        data-sizes="auto"
+        class="grid__image no-border lazyload"
+        alt="Collection Banner: {{ collection.title | escape }}" />
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+<hr>
+
+<div class="grid--rev">
+  <div class="grid__item large--one-whole">
+
+    {% comment %}
+      Different markup if a collection description exists
+    {% endcomment %}
+
+
+    {% comment %}
+      Use class grid-uniform to have evenly sized columns clear
+      each other properly at each breakpoint.
+    {% endcomment %}
+    <div class="grid-uniform {% if collection_type.style != 'checkbox' %}m-t-lg{% endif %}">
+      {% if collection_type.style contains "checkbox" %}
+      {% comment %}
+        Create collection metafield
+          namespace: collection_type
+          key: type
+          value: checkbox
+      {% endcomment %}
+        {% include 'collection-list-item__checkbox' %}
+      {% else %}
+        {% include 'collection-list-item' %}
+      {% endif %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+      <hr>
+      <div class="pagination">
+        {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+{% include 'breadcrumb' %}

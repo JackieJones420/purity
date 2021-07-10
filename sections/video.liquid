@@ -1,0 +1,58 @@
+<section id="video-{{section.id}}" class="main-module video-banner m-v-lg" style="margin-top:-100px; padding-top:100px;">
+  <div id="video-banner-{{section.id}}"></div>
+</section>
+
+<script>
+  if(!window['YT']){
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/player_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    function onYouTubePlayerAPIReady() {
+      let player{{section.id}} = new YT.Player('video-banner-{{section.id}}', {
+        height: $('#video-{{section.id}}.video-banner').width()*{{section.settings.video_ratio}},
+        width: $('#video-{{section.id}}.video-banner').width(),
+        videoId: '{{section.settings.video_id}}',
+        playerVars: { 'autoplay': 1,'controls': 0, 'showinfo': 0, 'rel': 0, 'playlist': '{{section.settings.video_id}}', 'loop': 1 }
+      });
+    }
+  }else{
+    let player{{section.id}} = new YT.Player('video-banner-{{section.id}}', {
+      height: $('#video-{{section.id}}.video-banner').width()*{{section.settings.video_ratio}},
+      width: $('#video-{{section.id}}.video-banner').width(),
+      videoId: '{{section.settings.video_id}}',
+      playerVars: { 'autoplay': 1,'controls': 0, 'showinfo': 0, 'rel': 0, 'playlist': '{{section.settings.video_id}}', 'loop': 1 }
+    });
+  }
+</script>
+
+{% schema %}
+
+{
+  "name": "Youtube Video",
+  "class": "index-video",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "For best results, upload images that are around 1280px in width and under 600px in height. Try to keep your slideshow images the same size."
+    },
+    {
+      "type": "text",
+      "id": "video_id",
+      "label": "video id"
+    },
+    {
+      "type": "text",
+      "id": "video_ratio",
+      "label": "video ratio(height/weight)"
+    }
+  ],
+  "presets": [{
+    "name": "Video",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+
+{% endschema %}

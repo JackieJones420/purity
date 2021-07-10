@@ -1,0 +1,34 @@
+{{#location}}
+
+<div class="row" style="overflow: hidden">
+    <div class="col-xs-6 p-v-sm">
+        <div style="font-size: 1.6rem" class="loc-name m-b-sm">{{name}}</div>
+        <div style="font-size: 1.2rem;">{{address}}</div>
+        <div style="font-size: 1.2rem;">{{address2}}</div>
+        <div style="font-size: 1.2rem;">{{city}}, {{state}} {{postal}}</div>
+        {{#if distance}}<small style="font-weight: bold; font-style: italic; color: #8e8e8e;" class="loc-dist">{{distance}} {{length}}</small>
+        <div style="font-size: 1.2rem;" class="loc-directions m-v"><a href="http://maps.google.com/maps?saddr={{origin}}&amp;daddr={{address}} {{address2}} {{city}}, {{state}} {{postal}}" target="_blank">Driving directions</a></div>{{/if}}
+        <div>{{hours1}}</div>
+        <div>{{hours2}}</div>
+        <div>{{hours3}}</div>
+        <div>tel: {{phone}}</div>
+
+        <div class="m-t">
+            <p style="font-size: 1.2rem; margin: 0">
+                Way to the store:
+            </p>
+            <span style="text-align: justify;">
+                {{loc_desc}}
+            </span>
+        </div>
+    </div>
+    <div class="col-xs-6 p-v-sm">
+        <div class="text-center m-b"><img src="{{store_img}}"></div>
+    </div>
+</div>
+
+<div class="text-center">
+
+
+</div>
+{{/location}}

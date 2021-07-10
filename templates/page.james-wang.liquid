@@ -1,0 +1,40 @@
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+
+<header class="text-center founders--header">
+  <h1 class="p-t-lg">James Wang</h1>
+  <h2 class="p-b">Founder and COO of 100% PURE®</h2>
+</header>
+<section class="grid founders--section">
+  <div class="grid__item large--one-whole">
+    <img
+      alt="100% PURE Founder James Wang"
+      class="lazyload fade-in"
+      data-sizes="100vw"
+      data-src="{{ 'about_us_james.png' | file_img_url: default, format: 'pjpg' }}"
+      data-srcset="
+      {{ 'about_us_james.png' | file_img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+      {{ 'about_us_james.png' | file_img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}}"/>
+  </div>
+  <div class="grid__item large--one-whole">
+    <div class="content m-v text-md-lg">
+      <p>Although James Wang was originally set on a future in investment banking upon graduation, his path changed when learning about the serious problems that underlied the cosmetic and beauty industry. Inspired by his sister Susie, James helped manufacture 100% PURE®’s early products and used the money he’d saved during his time in college to seed the financing for 100% PURE®, leading charge behind all of the company’s sustainability methods of construction and operational projects.  Entrenched in all things operations, James can often be found getting his hands dirty with new building projects or maintenance around the San Jose headquarters. This busy husband and new dad spends his free time sneaking out to enjoy fresh air and solitude on the golf course.</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,197 @@
+/*==============================================================================
+  #Custom Mixins
+=================================================================================*/
+$small: 480px;
+$medium: 768px;
+$large: 769px;
+$larger: 960px;
+$xlarge: 1400px;
+
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == "small" {
+    @media (max-width: $small) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "medium" {
+    @media (max-width: $medium) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "large" {
+    @media (min-width: $large) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "larger" {
+    @media (min-width: $larger) {
+      @content;
+    }
+  }
+
+  @else if $breakpoint == "xlarge" {
+    @media (min-width: $xlarge) {
+      @content;
+    }
+  }
+  @else {
+    @media ($breakpoint) {
+      @content;
+    }
+  }
+}
+
+@mixin aspect-ratio($width, $height) {
+  position: relative;
+  &:before {
+    display: block;
+    content: "";
+    width: 100%;
+    padding-top: ($height / $width) * 100%;
+  }
+  > video,
+  > iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+
+@mixin vertical-alignment {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50.1%);
+  -ms-transform: translateY(-50.1%);
+  transform: translateY(-50.1%);
+  padding: 18px 0;
+}
+
+@mixin background-size($cover) {
+    -webkit-background-size: $cover;
+    -moz-background-size: $cover;
+    -ms-background-size: $cover;
+    -o-background-size: $cover;
+    background-size: $cover;
+}
+.back-cover { @include background-size(cover); }
+
+@mixin circle-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    -ms-box-shadow: $shadow;
+    -o-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+.circle-shadow-xs { @include circle-shadow(1px 2px rgba(0,0,0,0.15)); }
+.circle-shadow-sm { @include circle-shadow(2px 4px rgba(0, 0, 0, 0.5)); }
+.circle-shadow-md { @include circle-shadow(4px 6px rgba(0, 0, 0, 0.5)); }
+
+@mixin box-shadow($shadow) {
+    -webkit-box-shadow: $shadow;
+    -moz-box-shadow: $shadow;
+    -ms-box-shadow: $shadow;
+    -o-box-shadow: $shadow;
+    box-shadow: $shadow;
+}
+.box-shadow-xs { @include box-shadow(0px 1px 2px rgba(0, 0, 0, 0.15)); }
+.box-shadow-sm { @include box-shadow(2px 2px 4px rgba(0, 0, 0, 0.5)); }
+
+@mixin border-radius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+
+.border-rad-sm { @include border-radius(2px); }
+.border-rad-md { @include border-radius(4px); }
+.border-rad-lg { @include border-radius(6px); }
+
+@mixin transition($speed) {
+    -webkit-transition: $speed;
+    -moz-transition: $speed;
+    -ms-transition: $speed;
+    -o-transition: $speed;
+    transition: $speed;
+}
+.transition-very-fast { @include transition(all .15s); }
+.transition-fast { @include transition(all .35s); }
+
+
+
+.hide{
+  display: none !important;
+}
+#purity-pop-window-container{
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+  z-index: 999999;
+  background-color: rgba(0,0,0,.2);
+  padding: 0 15%;
+  @include respond-to('small'){
+    padding: 0 5%;
+  }
+  &.animated-show{
+    opacity: 0;
+    animation-name: animated-show;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+    #purity-pop-window-content{
+      opacity: 0;
+      animation-name: animated-show;
+      animation-duration: .4s;
+      animation-fill-mode: forwards;
+      animation-delay: .3s;
+    }
+  }
+  &.animated-hide{
+    opacity: 1;
+    animation-name: animated-hide;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+  }
+  #purity-pop-window-content{
+    background-color: white;
+    margin: auto;
+    width: 100%;
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+    svg{
+      position: absolute;
+      cursor: pointer;
+      top: 10px;
+      right: 10px;
+    }
+    iframe{
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+  }
+}
+@keyframes animated-show {
+  0%   {opacity: 0;}
+  100% {opacity: 1;}
+}
+@keyframes animated-hide {
+  0%   {opacity: 1;}
+  100% {opacity: 0;}
+}

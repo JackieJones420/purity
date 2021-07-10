@@ -1,0 +1,1024 @@
+<script>
+dataLayer.push({"event":"radiance-opt-in"});
+</script>
+<style>
+  /* content with media query */
+  #ct-commerce-page-container .promote-card{background-color:#F1EFF2}
+  #phone_input{background-color:#e8e9eb;background:url(https://d30y9cdsu7xlg0.cloudfront.net/png/42970-200.png) #e8e9eb no-repeat scroll 4px 8px;background-size:1rem}
+  #ct-commerce-page-container .promote-info{padding-top:calc(25% - 207.5px)}
+  #ct-commerce-page-container .btn__bg-filled--secondary{height:46px;padding:10px;letter-spacing:1px;margin-top:64px;margin-bottom:16px}
+  #ct-commerce-page-container .image-container{background-image:url("{{ 'chat-commerce-register.jpg' | file_img_url: 'master' }}");background-position:center;background-size:cover;padding-top:50%}
+  @media (max-width: 960px) and (min-width: 769px) {
+    #ct-commerce-page-container .promote-info{padding-top:calc(25% - 157px)}
+    #ct-commerce-page-container .p-b-lg{padding-bottom:16px}
+    #ct-commerce-page-container .m-v{margin-top:12px;margin-bottom:12px}
+    #ct-commerce-page-container .btn__bg-filled--secondary{font-size:16px;font-weight:bold;height:40px;margin-top:36px;letter-spacing:0}
+  }
+  @media (max-width: 769px){
+    #ct-commerce-page-container{padding-bottom:16px}
+    #ct-commerce-page-container .image-container{background-position:0% 67%;margin-top:30px}
+    #ct-commerce-page-container .promote-info{padding-top:32px}
+    #ct-commerce-page-container .p-b-lg{padding-bottom:16px}
+    #ct-commerce-page-container .btn__bg-filled--secondary{margin-top:36px}
+  }
+  @media (max-width: 480px){
+    #ct-commerce-page-container .btn__bg-filled--secondary{font-size:16px;font-weight:bold;height:40px;letter-spacing:0}
+  }
+  /* pop window */
+  #smsPopWindow .sms-image,#fbPopWindow .sms-image{background-image: url("{{ 'chat-commerce-register-sms.jpg' | file_img_url: '500x' }}");background-size:contain;background-repeat:no-repeat;padding-top:131px;margin-top:30px}
+  /* facebook messenger button special */
+  #fbPopWindow{position: fixed;top: 0;left: 0;background-color: rgba(0,0,0,0.4);height: 100vh;width: 100vw;z-index: 100;overflow: hidden;}
+  #fbPopWindow.standby{display: none}
+  #fbPopWindow .wrapper{background-color: white;margin-top: calc(50vh - 100px);max-width: 800px;height: 200px;margin-left:auto;margin-right:auto;position:relative}
+  #fbPopWindow.standby .wrapper{position:absolute;top:0;left:0;margin:0;height:100%;width:100%}
+  #fbPopWindow .close-btn{position: absolute;top:0;right:0}
+  #fbPopWindow iframe{width: initial !important; height: initial !important; max-width: initial !important}
+  #fb-button-wrapper{position: relative;top: 0;left: 0;transform-origin: top left;}
+  #fbPopWindow.standby #fb-button-wrapper{position: absolute;top: -40px;left: -40px;transform: scale(10);}
+  #fb-button-wrapper span{vertical-align: top !important}
+  #genie-fb-bt{width: 180px;margin:auto;}
+  #genie-fb-bt2{width: 180px;margin:auto;}
+  #genie-fb-bt3{width: 180px;margin:auto;}
+  #genie-mme{margin:auto;color: rgb(255, 255, 255); border: 1px solid rgb(243, 129, 137); background-color: rgb(243, 129, 137); font-size: 2em}
+  #genie-mme2{margin:auto;color: rgb(255, 255, 255); border: 1px solid rgb(243, 129, 137); background-color: rgb(243, 129, 137); font-size: 2em}
+  .fb-trigger{opacity: 0.3;}
+  /*  prepare animation  */
+  .edu-ani-container{height:600px}
+  .edu-ain-phone{width: 338px;height: 600px;margin-left:calc(50% - 169px)}
+  .edu-ani-screen-cover{bottom:0;left:0;z-index:2}
+  .edu-ain-chat-container{left:0;bottom:62px;height:484px}
+  div[class^="edu-ain-task"]{bottom:0;left:0}
+  .edu-ain-talk {border-radius:14px;max-width:70%}
+  .edu-ain-talk .special-url{word-wrap:break-word;text-decoration:underline}
+  .susie-talk{background-color:#f1f0f0;margin-left:40px}
+  .susie-talk::before,.edu-ain-cards::before {content:"";background-image:url({{ 'fb-messenger-chat-icon.png' | file_img_url: '100x' }});position:absolute;height:30px;width:30px;background-size:cover;left:-32px;bottom:3px}
+  .user-talk{background-color:#3982f7}
+  .edu-ain-cards{margin-left:40px;margin-bottom:10px; width:750px}
+  .edu-ain-card{width:242px;border-radius:4px}
+  .edu-ain-card:first-child{border-top-left-radius:14px;border-bottom-left-radius:14px}
+  .edu-ain-card:last-child{border-top-right-radius:14px;border-bottom-right-radius:14px}
+  .edu-ani-timer-container,div[class$="animate-timer"]{height:2px}
+  div[class$="animate-timer"]{background-color:#F37E90; width:0%}
+  .edu-ain-breaker{clear:both}
+  span[class^='edu-pinter']{background-color:#F37E90;z-index:10;opacity:0}
+  @media (max-width: 769px){
+    .edu-add,.edu-check,.edu-noti{margin-top: -120px}
+  }
+  @media (max-width: 480px){
+    .edu-ani-container{transform: scale(0.8);transform-origin: top}
+    .edu-check,.edu-noti{margin-top: -260px}
+  }
+  /* animations */
+  @keyframes pointTimerAnim {
+    0%   {width:0%}
+    100% {width: 100%}
+  }
+  /*  -----------------------------  task 1-1 start  -----------------------------  */
+  .task1-1-animate-active .task1-1-animate-timer{animation-name: pointTimerAnim;animation-duration: 12s;animation-timing-function: linear}
+  .task1-1-animate-active .edu-pinter1{animation-name: pointTask1-1Anim;animation-duration: 12s}
+  @keyframes pointTask1-1Anim {
+    0%   {opacity: 0}
+    15%  {opacity: 0;transform: scale(1);top: 567px;left: 91px}
+    16%  {opacity: 1}
+    25%  {opacity: 0;transform: scale(3);top: 567px;left: 91px}
+    26%  {top: 567px;left: 91px}
+    30%  {opacity: 0;transform: scale(1);top: 67px;left: 68px}
+    31%  {opacity: 1}
+    41%  {opacity: 0;transform: scale(3);top: 67px;left: 68px}
+    100% {opacity: 0}
+  }
+  .edu-ani-home,.edu-ani-people,.edu-ani-scan{opacity: 0;position: absolute;z-index: 3}
+  .task1-1-animate-active .edu-ani-home{animation-name: task1-1Animhome;animation-duration: 12s}
+  @keyframes task1-1Animhome {
+    0%   {opacity: 0}
+    5%   {opacity: 1}
+    22%  {opacity: 1}
+    23%  {opacity: 0}
+    100% {opacity: 0}
+  }
+  .task1-1-animate-active .edu-ani-people{animation-name: task1-1Animpeople;animation-duration: 12s}
+  @keyframes task1-1Animpeople {
+    0%   {opacity: 0}
+    21%  {opacity: 0}
+    22%  {opacity: 1}
+    50%  {opacity: 1}
+    51%  {opacity: 0}
+    100% {opacity: 0}
+  }
+  .edu-ani-scan{top:100%;opacity: 1}
+  .task1-1-animate-active .edu-ani-scan{animation-name: task1-1Animscan;animation-duration: 12s}
+  @keyframes task1-1Animscan {
+    0%   {top: 100%}
+    38%  {top: 100%}
+    46%  {top: 0}
+    69%  {top: 0}
+    75%  {top: 100%}
+    100% {top: 100%}
+  }
+  .edu-ani-sticker{z-index: 3;top:169px;left: 40px;width:260px;opacity: 0}
+  .task1-1-animate-active .edu-ani-sticker{animation-name: task1-1Animsticker;animation-duration: 12s}
+  @keyframes task1-1Animsticker {
+    0%   {opacity: 0}
+    54%  {opacity: 0;top:169px}
+    67%  {opacity: 1}
+    69%  {top: 169px}
+    75%  {top: 769px}
+    100% {top: 769px}
+  }
+  .edu-ain-task1-1{opacity: 0}
+  .task1-1-animate-active .edu-ain-task1-1{opacity: 1}
+  /* ----------------------------- task 1-2 start ----------------------------- */
+  .task1-2-animate-active .task1-2-animate-timer{animation-name: pointTimerAnim;animation-duration: 12s;animation-timing-function: linear}
+  .task1-2-animate-active .edu-pinter1{animation-name: pointTask1-2Anim;animation-duration: 12s}
+  @keyframes pointTask1-2Anim {
+    0%   {opacity: 0}
+    52%  {opacity: 0;transform: scale(1);top: 380px;left: 240px}
+    53%  {opacity: 1}
+    60%  {opacity: 0;transform: scale(3);top: 380px;left: 40px}
+    74%  {opacity: 0;transform: scale(1);top: 496px;left: 187px}
+    75%  {opacity: 1}
+    80%  {opacity: 0;transform: scale(3);top: 496px;left: 187px}
+    100% {opacity: 0}
+  }
+  .edu-ain-task1-2 {transform: translateY(740px)}
+  .task1-2-animate-active .edu-ain-task1-2{animation-name: task1-2Anim;animation-duration: 12s}
+  @keyframes task1-2Anim {
+    0%   {transform: translateY(730px)}
+    5%   {transform: translateY(660px)}
+    18%  {transform: translateY(660px)}
+    23%  {transform: translateY(610px)}
+    35%  {transform: translateY(610px)}
+    40%  {transform: translateY(330px)}
+    80%  {transform: translateY(330px)}
+    85%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  .task1-2-animate-active .edu-ain-cards-inmove{animation-name: task1-2AnimCards;animation-duration: 12s}
+  @keyframes task1-2AnimCards {
+    0%   {transform: translateX(-210px)}
+    5%   {transform: translateX(0px)}
+    58%  {transform: translateX(0px)}
+    63%  {transform: translateX(-210px)}
+    100% {transform: translateX(-210px)}
+  }
+  /*  -----------------------------  task 1-3 start  -----------------------------  */
+  .task1-3-animate-active .task1-3-animate-timer{animation-name: pointTimerAnim;animation-duration: 7.2s;animation-timing-function: linear}
+  .edu-ain-task1-3 {transform: translateY(450px)}
+  .task1-3-animate-active .edu-ain-task1-3{animation-name: task1-3Anim;animation-duration: 7.2s}
+  @keyframes task1-3Anim {
+    0%   {transform: translateY(450px)}
+    8%  {transform: translateY(380px)}
+    29%  {transform: translateY(380px)}
+    38%  {transform: translateY(330px)}
+    58%  {transform: translateY(330px)}
+    67%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+/* ----------------------------- task 1-4 start ----------------------------- */
+  .task1-4-animate-active .task1-4-animate-timer{animation-name: pointTimerAnim;animation-duration: 12.3s;animation-timing-function: linear}
+  .task1-4-animate-active .edu-pinter1{animation-name: pointTask1-4Anim;animation-duration: 12.3s}
+  @keyframes pointTask1-4Anim {
+    0%   {opacity: 0}
+    51%  {opacity: 0;transform: scale(1);top: 380px;left: 240px}
+    52%  {opacity: 1}
+    59%  {opacity: 0;transform: scale(3);top: 380px;left: 40px}
+    72%  {opacity: 0;transform: scale(1);top: 496px;left: 157px}
+    73%  {opacity: 1}
+    80%  {opacity: 0;transform: scale(3);top: 496px;left: 157px}
+    100% {opacity: 0}
+  }
+  .edu-ain-task1-4 {transform: translateY(750px)}
+  .task1-4-animate-active .edu-ain-task1-4{animation-name: task1-4Anim;animation-duration: 12.3s}
+  @keyframes task1-4Anim {
+    0%   {transform: translateY(750px)}
+    5%   {transform: translateY(680px)}
+    17%  {transform: translateY(680px)}
+    22%  {transform: translateY(630px)}
+    34%  {transform: translateY(630px)}
+    39%  {transform: translateY(330px)}
+    78%  {transform: translateY(330px)}
+    83%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  .task1-4-animate-active .edu-ain-cards-inmove{animation-name: task1-4AnimCards;animation-duration: 12.3s}
+  @keyframes task1-4AnimCards {
+    0%   {transform: translateX(-240px)}
+    5%   {transform: translateX(0px)}
+    56%  {transform: translateX(0px)}
+    63%  {transform: translateX(-240px)}
+    100% {transform: translateX(-240px)}
+  }
+  /*  -----------------------------  task 2-1 start  -----------------------------  */
+  .task2-1-animate-active .task2-1-animate-timer{animation-name: pointTimerAnim;animation-duration: 11.1s;animation-timing-function: linear}
+  .task2-1-animate-active .edu-pinter2{animation-name: pointTask2-1Anim;animation-duration: 11.1s}
+  @keyframes pointTask2-1Anim {
+    0%   {opacity: 0}
+    18%  {opacity: 0;transform: scale(1);top: 479px;left: 149px}
+    19%  {opacity: 1}
+    27%  {opacity: 0;transform: scale(3);top: 479px;left: 149px}
+    42%  {opacity: 0;transform: scale(1);top: 448px;left: 149px}
+    43%  {opacity: 1}
+    51%  {opacity: 0;transform: scale(3);top: 448px;left: 149px}
+    67%  {opacity: 0;transform: scale(1);top: 351px;left: 149px}
+    68%  {opacity: 1}
+    76%  {opacity: 0;transform: scale(3);top: 351px;left: 149px}
+    100% {opacity: 0}
+  }
+  .edu-ain-task2-1 {transform: translateY(560px);}
+  .task2-1-animate-active .edu-ain-task2-1{animation-name: task2-1Anim;animation-duration: 11.1s}
+  @keyframes task2-1Anim {
+    0%   {transform: translateY(560px)}
+    5%  {transform: translateY(230px)}
+    24%  {transform: translateY(230px)}
+    30%  {transform: translateY(170px)}
+    49%  {transform: translateY(170px)}
+    54%  {transform: translateY(130px)}
+    73%  {transform: translateY(130px)}
+    78%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 2-2 start  -----------------------------  */
+  .task2-2-animate-active .task2-2-animate-timer{animation-name: pointTimerAnim;animation-duration: 12.6s;animation-timing-function: linear}
+  .task2-2-animate-active .edu-pinter2{animation-name: pointTask2-2Anim;animation-duration: 12.6s}
+  @keyframes pointTask2-2Anim {
+    0%   {opacity: 0}
+    16%  {opacity: 0;transform: scale(1);top: 505px;left: 157px}
+    17%  {opacity: 1}
+    24%  {opacity: 0;transform: scale(3);top: 505px;left: 157px}
+    100% {opacity: 0}
+  }
+  .edu-ani-screen-cover.coupon{left:-100%;z-index:10}
+  .task2-2-animate-active .coupon{animation-name: task2-2Animcoupon;animation-duration: 12.6s}
+  @keyframes task2-2Animcoupon {
+    0%   {left:-100%}
+    38%  {left:-100%}
+    43%  {left:0}
+    55%  {left:0}
+    60%  {left:-100%}
+    100% {left:-100%}
+  }
+  .task2-2-animate-active .chat{animation-name: task2-2Animchat;animation-duration: 12.6s}
+  @keyframes task2-2Animchat {
+    0%   {left:0}
+    38%  {left:0}
+    43%  {left:100%}
+    55%  {left:100%}
+    60%  {left:0}
+    100% {left:0}
+  }
+  .edu-ain-task2-2 {transform: translateY(440px)}
+  .task2-2-animate-active .edu-ain-task2-2{animation-name: task2-2Anim;animation-duration: 12.6s}
+  @keyframes task2-2Anim {
+    0%   {transform: translateY(440px)}
+    5%  {transform: translateY(280px)}
+    21%  {transform: translateY(280px)}
+    26%  {transform: translateY(230px)}
+    38%  {transform: translate(0px,230px)}
+    43%  {transform: translate(338px,230px)}
+    55%  {transform: translate(338px,230px)}
+    60%  {transform: translate(0px,230px)}
+    64%  {transform: translateY(180px)}
+    76%  {transform: translateY(180px)}
+    81%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 2-3 start  -----------------------------  */
+  .task2-3-animate-active .task2-3-animate-timer{animation-name: pointTimerAnim;animation-duration: 13.8s;animation-timing-function: linear}
+  .task2-3-animate-active .edu-pinter2{animation-name: pointTask2-3Anim;animation-duration: 13.8s}
+  @keyframes pointTask2-3Anim {
+    0%   {opacity: 0}
+    14%  {opacity: 0;transform: scale(1);top: 481px;left: 150px}
+    15%  {opacity: 1}
+    22%  {opacity: 0;transform: scale(3);top: 481px;left: 150px}
+    34%  {opacity: 0;transform: scale(1);top: 505px;left: 252px}
+    35%  {opacity: 1}
+    41%  {opacity: 0;transform: scale(3);top: 505px;left: 252px}
+    53%  {opacity: 0;transform: scale(1);top: 566px;left: 158px}
+    54%  {opacity: 1}
+    61%  {opacity: 0;transform: scale(3);top: 566px;left: 158px}
+    73%  {opacity: 0;transform: scale(1);top: 208px;left: 294px}
+    74%  {opacity: 1}
+    80%  {opacity: 0;transform: scale(3);top: 208px;left: 294px}
+    100% {opacity: 0}
+  }
+  .edu-ani-screen-cover.checkout{bottom:-580px}
+  .task2-3-animate-active .checkout{animation-name: task2-3Animcheckout;animation-duration: 13.8s}
+  @keyframes task2-3Animcheckout {
+    0%   {bottom:-580px}
+    39%  {bottom:-580px}
+    43%  {bottom:0}
+    59%  {bottom:0}
+    63%  {bottom:-580px}
+    100% {bottom:-580px}
+  }
+  .edu-ani-screen-cover.checkout-done{bottom:-410px}
+  .task2-3-animate-active .checkout-done{animation-name: task2-3Animcheckoutdone;animation-duration: 13.8s}
+  @keyframes task2-3Animcheckoutdone {
+    0%   {bottom:-410px}
+    59%  {bottom:-410px}
+    63%  {bottom:0}
+    78%  {bottom:0}
+    82%  {bottom:-410px}
+    100% {bottom:-410px}
+  }
+  .edu-ain-task2-3 {transform: translateY(630px)}
+  .task2-3-animate-active .edu-ain-task2-3{animation-name: task2-3Anim;animation-duration: 13.8s}
+  @keyframes task2-3Anim {
+    0%   {transform: translateY(630px)}
+    4%   {transform: translateY(530px)}
+    20%  {transform: translateY(530px)}
+    24%  {transform: translateY(310px)}
+    78%  {transform: translateY(310px)}
+    82%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 2-4 start  -----------------------------  */
+  .task2-4-animate-active .task2-4-animate-timer{animation-name: pointTimerAnim;animation-duration: 16.5s;animation-timing-function: linear}
+  .task2-4-animate-active .edu-pinter2{animation-name: pointTask2-4Anim;animation-duration: 16.5s}
+  @keyframes pointTask2-4Anim {
+    0%   {opacity: 0}
+    12%  {opacity: 0;transform: scale(1);top: 495px;left: 150px}
+    13%  {opacity: 1}
+    18%  {opacity: 0;transform: scale(3);top: 495px;left: 150px}
+    28%  {opacity: 0;transform: scale(1);top: 510px;left: 160px}
+    29%  {opacity: 1}
+    35%  {opacity: 0;transform: scale(3);top: 510px;left: 160px}
+    44%  {opacity: 0;transform: scale(1);top: 515px;left: 160px}
+    45%  {opacity: 1}
+    51%  {opacity: 0;transform: scale(3);top: 515px;left: 160px}
+    61%  {opacity: 0;transform: scale(1);top: 495px;left: 160px}
+    62%  {opacity: 1}
+    67%  {opacity: 0;transform: scale(3);top: 495px;left: 160px}
+    77%  {opacity: 0;transform: scale(1);top: 60px;left: 310px}
+    78%  {opacity: 1}
+    84%  {opacity: 0;transform: scale(3);top: 60px;left: 310px}
+    100% {opacity: 0}
+  }
+  .edu-ani-screen-cover.shipping-address{bottom:-550px}
+  .task2-4-animate-active .shipping-address{animation-name: task2-4Animshipping-address;animation-duration: 16.5s}
+  @keyframes task2-4Animshipping-address {
+    0%   {bottom:-550px}
+    16%  {bottom:-550px}
+    20%  {bottom:0}
+    82%  {bottom:0}
+    85%  {bottom:-550px}
+    100% {bottom:-550px}
+  }
+  .edu-ani-screen-cover.shipping-card,.edu-ani-screen-cover.shipping-method,.edu-ani-screen-cover.shipping-thankyou{left:100%}
+  .task2-4-animate-active .shipping-method{animation-name: task2-4Animshipping-method;animation-duration: 16.5s}
+  @keyframes task2-4Animshipping-method {
+    0%   {bottom:0;left:100%}
+    33%  {bottom:0;left:100%}
+    36%  {bottom:0;left:0}
+    82%  {bottom:0;left:0}
+    85%  {bottom:-550px;left:0}
+    100% {bottom:-550px;left:0}
+  }
+  .task2-4-animate-active .shipping-card{animation-name: task2-4Animshipping-card;animation-duration: 16.5s}
+  @keyframes task2-4Animshipping-card {
+    0%   {bottom:0;left:100%}
+    49%  {bottom:0;left:100%}
+    53%  {bottom:0;left:0}
+    82%  {bottom:0;left:0}
+    85%  {bottom:-550px;left:0}
+    100% {bottom:-550px;left:0}
+  }
+  .task2-4-animate-active .shipping-thankyou{animation-name: task2-4Animshipping-thankyou;animation-duration: 16.5s}
+  @keyframes task2-4Animshipping-thankyou {
+    0%   {bottom:0;left:100%}
+    65%  {bottom:0;left:100%}
+    69%  {bottom:0;left:0}
+    82%  {bottom:0;left:0}
+    85%  {bottom:-550px;left:0}
+    100% {bottom:-550px;left:0}
+  }
+  .edu-ain-task2-4 {transform: translateY(190px)}
+  .task2-4-animate-active .edu-ain-task2-4{animation-name: task2-4Anim;animation-duration: 16.5s}
+  @keyframes task2-4Anim {
+    0%   {transform: translateY(190px)}
+    4%   {transform: translateY(80px)}
+    82%  {transform: translateY(80px)}
+    85%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 3-1 start  -----------------------------  */
+  .task3-1-animate-active .task3-1-animate-timer{animation-name: pointTimerAnim;animation-duration: 8.4s;animation-timing-function: linear}
+  .task3-1-animate-active .edu-pinter3{animation-name: pointTask3-1Anim;animation-duration: 8.4s}
+  @keyframes pointTask3-1Anim {
+    0%   {opacity: 0}
+    24%  {opacity: 0;transform: scale(1);top: 465px;left: 149px}
+    25%  {opacity: 1}
+    36%  {opacity: 0;transform: scale(3);top: 465px;left: 149px}
+    56%  {opacity: 0;transform: scale(1);top: 24px;left: 12px}
+    57%  {opacity: 1}
+    68%  {opacity: 0;transform: scale(3);top: 24px;left: 12px}
+    100% {opacity: 0}
+  }
+  .edu-ani-screen-cover.tracking{left:100%}
+  .task3-1-animate-active .tracking{animation-name: task3-1Animtracking;animation-duration: 8.4s}
+  @keyframes task3-1Animtracking {
+    0%   {left:100%}
+    32%  {left:100%}
+    39%  {left:0}
+    64%  {left:0}
+    71%  {left:100%}
+    100% {left:100%}
+  }
+  .edu-ain-task3-1 {transform: translateY(200px)}
+  .task3-1-animate-active .edu-ain-task3-1{animation-name: task3-1Anim;animation-duration: 8.4s}
+  @keyframes task3-1Anim {
+    0%   {transform: translateY(200px)}
+    7%   {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 3-2 start  -----------------------------  */
+  .task3-2-animate-active .task3-2-animate-timer{animation-name: pointTimerAnim;animation-duration: 14.1s;animation-timing-function: linear}
+  .task3-2-animate-active .edu-pinter3{animation-name: pointTask3-2Anim;animation-duration: 14.1s}
+  @keyframes pointTask3-2Anim {
+    0%   {opacity: 0}
+    44%  {opacity: 0;transform: scale(1);top: 465px;left: 149px}
+    45%  {opacity: 1}
+    51%  {opacity: 0;transform: scale(3);top: 465px;left: 149px}
+    100% {opacity: 0}
+  }
+  .edu-ain-task3-2 {transform: translateY(490px)}
+  .task3-2-animate-active .edu-ain-task3-2{animation-name: task3-2Anim;animation-duration: 14.1s}
+  @keyframes task3-2Anim {
+    0%   {transform: translateY(490px)}
+    4%   {transform: translateY(420px)}
+    15%  {transform: translateY(420px)}
+    19%  {transform: translateY(375px)}
+    30%  {transform: translateY(375px)}
+    34%  {transform: translateY(200px)}
+    49%  {transform: translateY(200px)}
+    53%  {transform: translateY(130px)}
+    64%  {transform: translateY(130px)}
+    68%  {transform: translateY(80px)}
+    79%  {transform: translateY(80px)}
+    83%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+  /*  -----------------------------  task 3-3 start  -----------------------------  */
+  .task3-3-animate-active .task3-3-animate-timer{animation-name: pointTimerAnim;animation-duration: 14.7s;animation-timing-function: linear}
+  .edu-ain-task3-3 {transform: translateY(860px)}
+  .task3-3-animate-active .edu-ain-task3-3{animation-name: task3-3Anim;animation-duration: 14.7s}
+  @keyframes task3-3Anim {
+    0%   {transform: translateY(860px)}
+    4%   {transform: translateY(640px)}
+    14%  {transform: translateY(640px)}
+    18%  {transform: translateY(590px)}
+    29%  {transform: translateY(590px)}
+    33%  {transform: translateY(430px)}
+    43%  {transform: translateY(430px)}
+    47%  {transform: translateY(380px)}
+    57%  {transform: translateY(380px)}
+    61%  {transform: translateY(300px)}
+    82%  {transform: translateY(300px)}
+    86%  {transform: translateY(0px)}
+    100% {transform: translateY(0px)}
+  }
+</style>
+<section id="ct-commerce-page-container" class="text-center">
+  <div class="promote-card o-f-hid m-b-lg">
+    <div class="promote-info large--one-half large--left">
+      <span class="block text-xl font-bold l-s-3x">GET 10% OFF</span>
+      <span class="block text-lg p-b-lg">Your first reorder with<br><span class="text-md-lg l-s-2x">Facebook Messenger</span></span>
+      <span class="block margin-auto max-width-md m-v">Stay gorgeous - never run<br>out of your favorite products</span>
+      <span class="block margin-auto max-width-md m-v hide">Receive upcoming offers,<br>exclusive deals, and more</span>
+      <span class="block margin-auto max-width-md m-v">Free shipping (USA only)<br>on all reorders<br>through Facebook Messenger</span>
+    </div>
+    <div class="image-container large--one-half large--right"></div>
+    <div class="action-btns large--one-half large--right">
+      <div id="fb-button-wrapper" class="max-width-lgx5 block pos-rlt o-f-hid margin-auto width-80 m-b-sm text-u-c" style="margin-top:100px">
+        <div id="genie-fb-bt" class="fb-send-to-messenger" messenger_app_id="1670737366292969" page_id="188059098496" color="blue" size="xlarge"></div>
+        <a id="genie-mme" style="display:none" onclick="mmeOptin()" class="fb-msg-btn" target="_blank">SHOP WITH MESSENGER</a>
+      </div>
+      <a href="#termsPopWindow" class="block text-xs text-u-l m-v-xs text-black-lt pointer m-b-lg purity-pop" pop-width="756px">Terms & conditions apply</a>
+      <span class="block text-xs m-t-xs m-b-lg text-black-lt hide">Having problems? <a href="#smsPopWindow" class="text-u-l text-black-lt pointer purity-pop" pop-width="750px">Try other solution</a></span>
+    </div>
+  </div>
+
+  <div class="education w-full text-left wrapper p-t-lg" id="education">
+    <h1 class="text-center">How to Use</h1>
+    <p class="text-center text-md-lg margin-auto large--three-quarters l-h">To begin reordering, open Facebook Messenger on your iPhone or iPad. It’s the blue chat bubble icon with a white lightning bolt inside, labeled “Messenger.”</p>
+    <div class="edu-add o-f-hid p-v-xl">
+      <div id="edu-add" class="task1-1-animate-active">
+        <div class="large--one-half medium-down--one-whole right p-lg">
+          <span class="text-md-lg font-bold m-b inline m-t-lg p-t-lg">Add product to cart</span>
+          <p class="text-md m-b-lg">There are multiple ways to add a product to your cart. Choose the way that’s most convenient for you.</p>
+          <ul class="m-h">
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-camera"></span> <span>Add a product by scan code</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task1-1-animate-timer" next="task1-2-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-map"></span> <span>Reorder product by history</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task1-2-animate-timer" next="task1-3-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-paragraph"></span> <span>Reorder product by name</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task1-3-animate-timer" next="task1-4-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-search"></span> <span>Search product by name</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task1-4-animate-timer" next="task1-1-animate-active"></div></div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="large--one-half medium-down--one-whole left edu-ani-container" style="height:600px">
+          <div class="edu-ain-phone pos-rlt b-a o-f-hid">
+            <img class="pos-abt w-full edu-ani-screen-cover" src="{{ 'fb-messenger-screen-cover.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover edu-ani-home" src="{{ 'fb-messenger-home.jpeg' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover edu-ani-people" src="{{ 'fb-messenger-people.PNG' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover edu-ani-scan" src="{{ 'fb-messenger-scan.jpg' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt edu-ani-sticker" src="{{ 'fb-messenger-sticker.png' | file_img_url: '600x' }}" alt="">
+            <span class="edu-pinter1 block w-20 pos-abt circle"></span>
+            <div class="edu-ain-chat-container w-full pos-abt o-f-hid">
+              <!-- animate 1-1 -->
+              <div class="edu-ain-task1-1 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt"> ✔️ Added to your cart!</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/5blVokGaSSKHZbIWaS8M_562767e6-f6c5-476b-9c1e-4abc62fd0051_grande.png?v=1501259733" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Extra Gentle Baby Lotion</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                      <span class="text-xxs block">price: $32.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Increase Quantity</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Decrease Quantity</span></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- animate 1-2 -->
+              <div class="edu-ain-task1-2 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Hi! 👋 I'm Susie. How can I help you? 😊 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Reorder</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Which of your favorites would you like to buy? 😍 </span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <div class="edu-ain-cards-inmove">
+                    <ul class="edu-ain-card no-margin b-a inline bg-white">
+                      <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/Az2148shT26viYdyHx8I_grande.png?v=1495037298" alt="" height="120"> </li>
+                      <li class="no-l-style no-margin b-b p-sm">
+                        <span class="text-xs alt-font block m-b-xs">Maracuja Mascara: Dark Chocolate</span>
+                        <span class="text-xxs block">price: $26.00</span>
+                      </li>
+                      <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                    </ul>
+                    <ul class="edu-ain-card no-margin b-a inline bg-white">
+                      <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/rWi3MDCPS1ihSpFzWTVW_grande.png?v=1509769378" alt="" height="120"> </li>
+                      <li class="no-l-style no-margin b-b p-sm">
+                        <span class="text-xs alt-font block m-b-xs">Coffee Bean Caffeine Eye Cream</span>
+                        <span class="text-xxs block">price: $26.00</span>
+                      </li>
+                      <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt"> ✔️ It's added!</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/rWi3MDCPS1ihSpFzWTVW_grande.png?v=1509769378" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Coffee Been Caffeine Eye Cream</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                      <span class="text-xxs block">price: $26.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Increase Quantity</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Decrease Quantity</span></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- animate 1-3 -->
+              <div class="edu-ain-task1-3 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Hi! 👋 I'm Susie. How can I help you? 😊 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Order Coffee Bean Cream</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt"> ✔️ It's added!</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/rWi3MDCPS1ihSpFzWTVW_grande.png?v=1509769378" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Coffee Been Caffeine Eye Cream</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                      <span class="text-xxs block">price: $26.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Increase Quantity</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Decrease Quantity</span></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- animate 1-4 -->
+              <div class="edu-ain-task1-4 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Hi! 👋 I'm Susie. How can I help you? 😊 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Blush</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">I found 38 resultss matching 'blush'. What would you like to buy?</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <div class="edu-ain-cards-inmove">
+                    <ul class="edu-ain-card no-margin b-a inline bg-white">
+                      <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'blush-strawberry.png' | file_img_url }}" alt="" height="120"> </li>
+                      <li class="no-l-style no-margin b-b p-sm">
+                        <span class="text-xs alt-font block m-b-xs">Fruit Pigmented Blush: Strawberry</span>
+                        <span class="text-xxs block">price: $36.00</span>
+                      </li>
+                      <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                    </ul>
+                    <ul class="edu-ain-card no-margin b-a inline bg-white">
+                      <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'blush-plum.png' | file_img_url }}" alt="" height="120"> </li>
+                      <li class="no-l-style no-margin b-b p-sm">
+                        <span class="text-xs alt-font block m-b-xs">Fruit Pigmented Blush: Plum</span>
+                        <span class="text-xxs block">price: $36.00</span>
+                      </li>
+                      <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                    </ul>
+                    <ul class="edu-ain-card no-margin b-a inline bg-white">
+                      <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'blush-chiffon.png' | file_img_url }}" alt="" height="120"> </li>
+                      <li class="no-l-style no-margin b-b p-sm">
+                        <span class="text-xs alt-font block m-b-xs">Fruit Pigmented Blush: Chiffon</span>
+                        <span class="text-xxs block">price: $36.00</span>
+                      </li>
+                      <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt"> ✔️ It's added!</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'blush-plum.png' | file_img_url }}" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Fruit Pigmented Blush: Plum</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                      <span class="text-xxs block">price: $36.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Increase Quantity</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Decrease Quantity</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-check o-f-hid p-v-xl">
+      <div id="edu-check" class="task2-1-animate-active">
+        <div class="large--one-half medium-down--one-whole left p-lg">
+          <span class="text-md-lg font-bold m-b inline m-t-lg p-t-lg">Edit cart and checkout</span>
+          <p class="text-md m-b-lg">You can edit your cart, add a discount code and pay securely all while in the app.</p>
+          <ul>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-upload"></span> <span>Change product quantity</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task2-1-animate-timer" next="task2-2-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-marquee-minus"></span> <span>Add a discount code</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task2-2-animate-timer" next="task2-3-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-check"></span> <span>Payment method - Facebook Pay</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task2-3-animate-timer" next="task2-4-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-check"></span> <span>Payment method - Credit Card</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task2-4-animate-timer" next="task2-1-animate-active"></div></div>
+            </li>
+          </ul>
+        </div>
+        <div class="large--one-half medium-down--one-whole left edu-ani-container" style="height:600px">
+          <div class="edu-ain-phone pos-rlt b-a o-f-hid">
+            <img class="pos-abt w-full edu-ani-screen-cover chat" src="{{ 'fb-messenger-screen-cover.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover coupon" src="{{ 'fb-messenger-coupon.jpeg' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover checkout-done" src="{{ 'fb-messenger-checkout-done.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover checkout" src="{{ 'fb-messenger-checkout.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover shipping-address" src="{{ 'fb-messenger-shipping-address.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover shipping-method" src="{{ 'fb-messenger-shipping-method.PNG' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover shipping-card" src="{{ 'fb-messenger-shipping-card.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover shipping-thankyou" src="{{ 'fb-messenger-shipping-thankyou.png' | file_img_url: '600x' }}" alt="">
+            <span class="edu-pinter2 block w-20 pos-abt circle"></span>
+            <div class="edu-ain-chat-container w-full pos-abt o-f-hid">
+              <!-- animate 2-1 -->
+              <div class="edu-ain-task2-1 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt"> ✔️ It's added!</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/rWi3MDCPS1ihSpFzWTVW_grande.png?v=1509769378" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Coffee Been Caffeine Eye Cream</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                      <span class="text-xxs block">price: $26.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Increase Quantity</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Decrease Quantity</span></li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">You have 2 in your cart. 🤓 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">You have 1 in your cart. 🤓 </span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light"><span class="text-xs l-h">How'd you like to pay? 🤓 </span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Facebook</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Enter Credit Card</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Apply Coupon First</span></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- animate 2-2 -->
+              <div class="edu-ain-task2-2 w-full o-f-hid pos-abt">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light"><span class="text-xs l-h">How'd you like to pay? 🤓 </span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Facebook</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Enter Credit Card</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Apply Coupon First</span></li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Please tell me the coupon code.</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Sample_Code</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Awesome! We'll apply coupon code Sample_Code to your order. 🎉 </span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light"><span class="text-xs l-h">How'd you like to pay? 🤓 </span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Facebook</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Enter Credit Card</span></li>
+                  </ul>
+                </div>
+              </div>
+              <!-- animate 2-3 -->
+              <div class="edu-ain-task2-3 w-full o-f-hid pos-abt">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light"><span class="text-xs l-h">How'd you like to pay? 🤓 </span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Facebook</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Enter Credit Card</span></li>
+                  </ul>
+                </div>
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="//cdn.shopify.com/s/files/1/0648/1955/products/Az2148shT26viYdyHx8I_grande.png?v=1495037298" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Maracuja Mascara: Dark Chocolate</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                    </li>
+                    <li class="no-l-style no-margin p-xs p-h-sm"> <span class="text-xs alt-font">$16.00</span> <span class="text-xs l-h right text-info-dk">Buy</span></li>
+                  </ul>
+                </div>
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin p-xs p-h-sm b-b"> <span class="text-xs">$Order confirmation</span></li>
+                    <li class="no-l-style no-margin text-left p-sm">
+                      <img class="b-a left m-r" src="//cdn.shopify.com/s/files/1/0648/1955/products/Az2148shT26viYdyHx8I_grande.png?v=1495037298" alt="" height="60">
+                      <span class="text-xs alt-font block m-b-xs m-t-sm">Maracuja Mascara: Dark Chocolate</span>
+                      <span class="text-xxs block">Quantity: 1</span>
+                    </li>
+                    <li class="no-l-style no-margin p-xs p-h-sm">
+                      <span class="text-xxs block">Paid with</span>
+                      <span class="text-xs text-black block">Visa XXXX-XXXX-XXXX-1234</span>
+                    </li>
+                    <li class="no-l-style no-margin p-xs p-h-sm b-b">
+                      <span class="text-xxs block">Ship to</span>
+                      <span class="text-xs text-black block">123 Pure Life Way</span>
+                      <span class="text-xs text-black block">Pureville,CA 94577</span>
+                    </li>
+                    <li class="no-l-style no-margin p-xs p-h-sm">
+                      <span class="text-xs">Total</span>
+                      <span class="text-xs alt-font right">$17.48</span>
+                    </li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Your order was placed! For reference, your order number is #OAK1234.</span>
+              </div>
+              <!-- animate 2-4 -->
+              <div class="edu-ain-task2-4 w-full o-f-hid pos-abt">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light"><span class="text-xs l-h">How'd you like to pay? 🤓 </span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Facebook</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Enter Credit Card</span></li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Your order was placed! For reference, your order number is #OAK1969</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edu-noti o-f-hid p-t-xl">
+      <div id="edu-noti" class="task3-3-animate-active">
+        <div class="large--one-half medium-down--one-whole right p-lg">
+          <span class="text-md-lg font-bold m-b inline m-t-lg p-t-lg">There’s More</span>
+          <p class="text-md m-b-lg">Need to clear your cart? Easy. You can also track your recent shipment through FB Messenger.</p>
+          <ul>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-flag"></span> <span>Product reminder</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task3-3-animate-timer" next="task3-2-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-trash"></span> <span>Clear cart</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task3-2-animate-timer" next="task3-1-animate-active"></div></div>
+            </li>
+            <li class="no-l-style pointer text-md m-v m-h">
+              <span class="text-sm icon icon-box"></span> <span>Track shipment</span>
+              <div class="edu-ani-timer-container max-width-xlg bg-light dk"><div class="task3-1-animate-timer" next="task3-3-animate-active"></div></div>
+            </li>
+          </ul>
+        </div>
+        <div class="large--one-half medium-down--one-whole left" style="height:600px">
+          <div class="edu-ain-phone pos-rlt b-a o-f-hid">
+            <img class="pos-abt w-full edu-ani-screen-cover" src="{{ 'fb-messenger-screen-cover.png' | file_img_url: '600x' }}" alt="">
+            <img class="pos-abt w-full edu-ani-screen-cover tracking" src="{{ 'fb-messenger-tracking.PNG' | file_img_url: '600x' }}" alt="">
+            <span class="edu-pinter3 block w-20 pos-abt circle"></span>
+            <div class="edu-ain-chat-container w-full pos-abt o-f-hid">
+              <!-- animate 3-1 -->
+              <div class="edu-ain-task3-1 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Woo! Your order #OAK1957 has shipped! 🎉 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">It's on the way! 📦 Track your package: <span class="special-url text-info-dk">https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=9274892699850054347579342</span></span>
+              </div>
+              <!-- animate 3-2 -->
+              <div class="edu-ain-task3-2 w-full o-f-hid pos-abt">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Hi! 👋 I'm Susie. How can I help you? 😊 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Cart</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline o-f-hid">
+                    <li class="no-l-style no-margin b-b p-xs p-l bg-light">
+                      <span class="text-base l-h">Here's your cart summary:</span>
+                      <span class="block text-base l-h"> 🔹 Total Items: 3</span>
+                      <span class="block text-base l-h"> 🔹 Total Price: $73.00</span>
+                    </li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Cart Details</span></li>
+                    <li class="no-l-style no-margin b-b text-center p-xs text-info-dk"><span class="text-xs l-h">Remove All</span></li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Place Order</span></li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Are you sure you'd like to empty your cart? 😬 </span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Yes</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">No problem! I removed everything. You've got a clean slate to start a new order. 😊 </span>
+              </div>
+              <!-- animate 3-3 -->
+              <div class="edu-ain-task3-3 w-full o-f-hid pos-abt">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'bamboo-blur-powder.png' | file_img_url: '120x'}}" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Bamboo Blur Powder</span>
+                      <span class="text-xxs block">price: $39.00</span>
+                    </li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                  </ul>
+                </div>
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Add</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Sorry, 'Bamboo Blur Powder' is currently out of stock.</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Would you like me to remind you when 'Bamboo Blur Powder' is back in stock?</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm user-talk text-white right ">Yes</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Ok, I'll let you know when Bamboo Blur Powder is back in stock.</span>
+                <br class="edu-ain-breaker">
+                <span class="edu-ain-talk inline m-sm p-sm susie-talk left pos-rlt">Great news! Bamboo Blur Powder is back in stock! Would you like to buy it now?</span>
+                <br class="edu-ain-breaker">
+                <div class="edu-ain-cards pos-rlt">
+                  <ul class="edu-ain-card no-margin b-a inline">
+                    <li class="no-l-style no-margin b-b text-center"> <img src="{{ 'bamboo-blur-powder.png' | file_img_url: '120x'}}" alt="" height="120"> </li>
+                    <li class="no-l-style no-margin b-b p-sm">
+                      <span class="text-xs alt-font block m-b-xs">Bamboo Blur Powder</span>
+                      <span class="text-xxs block">price: $39.00</span>
+                    </li>
+                    <li class="no-l-style no-margin text-center p-xs text-info-dk"><span class="text-xs l-h">Add</span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-opt-in text-center">
+      <!-- <h1>Join Us Now</h1>
+      <p class="text-md-lg m-t-md l-h">Try it. You will love it.</p> -->
+      <div id="fb-button-wrapper" class="max-width-lgx5 block pos-rlt o-f-hid margin-auto width-80 m-b-sm text-u-c" style="margin-top:100px">
+        <div id="genie-fb-bt2" class="fb-send-to-messenger" messenger_app_id="1670737366292969" page_id="188059098496" color="blue" size="xlarge"></div>
+        <a id="genie-mme2" style="display:none" onclick="mmeOptin()" class="fb-msg-btn" target="_blank">SHOP WITH MESSENGER</a>
+      </div>
+    </div>
+  </div>
+  <!-- pop windows -->
+  <div id="termsPopWindow" class="hide">
+    <div class="p">
+      <p class="text-center text-md-lg m-b-lg">Terms & Conditions Apply</p>
+      <p class="text-base l-h">By activating reminders and messages via SMS or Facebook, you agree to receive SMS and Facebook Messenger marketing related messages from 100% Pure. Standard text and data rates may apply. Once you opt in, you may use HELP for help or STOP to cancel at any time.</p>
+    </div>
+  </div>
+  <div id="smsPopWindow" class="hide">
+    <div class="m-h-lg m-v-lg large--text-center o-f-hid">
+      <div id="sms-form-wrapper" class="large--one-half large--left">
+        <p class="text-md-lg m-b-lg">Join With SMS Card</p>
+        <input type="text" id="phone_input" class="phone_input no-borders text-xs w-md p-l-lg p-r-xs inline" placeholder="Enter your phone number">
+        <br>
+        <button id="sms-button" class="sms-button btn-secondary p-h m-t">Confirm</button>
+        <p id="error" class="error"></p>
+      </div>
+      <div class="hide large--show sms-image large--one-half right"></div>
+    </div>
+  </div>
+  <a id="chatCommerceSuccessTrigger" href="#chatCommerceSuccess" class="hide purity-pop" pop-width="750px"></a>
+  <div id="chatCommerceSuccess" class="hide">
+    <div class="p-h p-v-xl">
+      <p class="text-center text-md-lg m-b-lg">You're in!</p>
+      <p class="text-md l-h text-center">Reordering your favorites is easier than ever 📦 💄</p>
+    </div>
+  </div>
+</section>
+<script id="fbPopWindowContainer" type="text/template">
+  <div id="fbPopWindow" class="standby p-h-lg">
+    <div class="wrapper o-f-hid text-left">
+      <span class="close-btn pointer inline icon icon-x text-black-lt text-md-lg p-sm"></span>
+      <div id="sms-form-wrapper" class="large--one-half large--left m-t p-l-lg">
+        <span class="text-md-lg m-v inline">You're in!</span>
+        <!-- <p class="text-md l-h text-center">Reordering your favorites is easier than ever 📦 💄</p> -->
+        <div id="fb-button-wrapper">
+          <div id="genie-fb-bt3" class="fb-send-to-messenger" messenger_app_id="1670737366292969" page_id="188059098496" color="blue" size="xlarge"></div>
+        </div>
+      </div>
+      <div class="hide large--show sms-image large--one-half right"></div>
+    </div>
+  </div>
+</script>
+<script type="text/javascript">
+var animateTrigger = function(taskname){
+  $(taskname + ' div[class$="animate-timer"]').bind("animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd", function(){
+    $(taskname).removeAttr("class").addClass($(this).attr("next"));
+  });
+  $(taskname + ' .pointer').click(function(){
+    $(taskname).removeAttr("class").addClass($(this).find('div[class$="animate-timer"]').attr("class").replace("timer","active"));
+  })
+}
+var adjustFbBtn = function(){
+  var currentElement = $(window).scrollTop() < $("body").height()/2 ? $(".fb-trigger").eq(0) : $(".fb-trigger").eq(1);
+  $("#fbPopWindow.standby").css({"width":currentElement.width()+20+"px",
+                                 "height":currentElement.height()+20+"px",
+                                 "left":currentElement.offset().left +"px",
+                                 "top":currentElement.offset().top - $(window).scrollTop() + "px"})
+}
+animateTrigger("#edu-add");
+animateTrigger("#edu-check");
+animateTrigger("#edu-noti");
+
+$("body").append($("#fbPopWindowContainer").html())
+// adjustFbBtn();
+$(window).scroll(function(){
+  // adjustFbBtn();
+})
+$(window).resize(function(){
+  if($("#fbPopWindow").hasClass("standby")){
+    // adjustFbBtn();
+  }else{
+    $("#fbPopWindow").css({"height":$(window).height()+"px","width":$(window).width()+"px"})
+  }
+
+})
+$("#fbPopWindow").click(function(e){
+  if( !$("#fbPopWindow .wrapper").is(e.target) && $("#fbPopWindow .wrapper").has(e.target).length === 0 && !$(this).hasClass("standby")){
+    $("#fbPopWindow").css("display","none");
+  }
+})
+$(".close-btn").click(function(){
+  $("#fbPopWindow").css("display","none");
+})
+$(".fb-trigger").click(function(){
+  $("#fbPopWindow").css("display","block");
+})
+
+</script>

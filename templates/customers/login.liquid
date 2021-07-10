@@ -1,0 +1,233 @@
+<!-- /templates/customers/login.liquid -->
+
+<style>
+    #pop01{display:none;}
+</style>
+  <script>
+ if(window.location.href=="https://www.100percentpure.com/account/login?utm_source=app"){
+    document.getElementById('pop01').style.display='block';
+     }
+
+  </script>
+<div class="bg-peach p-v-xlg">
+  <div class="wrapper p-v-md">
+    <div class="text-center large--three-quarters margin-auto p-v-xlg bg-white p-h-xlg">
+      {% comment %}
+        If a user has successfully requested a new password, the form.posted_successfully? variable
+        is set to true within the 'recover_customer_password' form only. Within that form you'll see
+        the variable 'resetPassword' set to true, which is used to initialize timber.resetPasswordSuccess().
+      {% endcomment %}
+      <p class="callout_s_text m-b-xs">HEY GORGEOUS</p>
+      <p class="page_title_text m-b">Welcome Back!</p>
+      <p class="caption_s_text m-b">Sign in below to access your Purist Perks account. </p>
+      <div class="note form-success" id="ResetSuccess" style="display:none;">
+        {{ 'customer.recover_password.success' | t }}
+      </div>
+
+      <div id="CustomerLoginForm" class="margin-auto pos-rlt">
+        {% form 'customer_login' %}
+
+          {{ form.errors | default_errors }}
+
+          <label for="CustomerEmail" class="hidden-label">{{ 'customer.login.email' | t }}</label>
+          <input type="email" name="customer[email]" id="CustomerEmail" style="width: 280px" class="large--m-h m-v-sm{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.login.email' | t }}" autocorrect="off" autocapitalize="off" autofocus>
+
+          {% if form.password_needed %}
+            <p class="large--m-h inline m-v-sm">
+              <label for="CustomerPassword" class="hidden-label">{{ 'customer.login.password' | t }}</label>
+              <input type="password" value="" name="customer[password]" id="CustomerPassword" class="w-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.login.password' | t }}">
+              <a href="#recover" id="RecoverPassword" class="right m-t-sm caption_s_text">{{ 'customer.login.forgot_password' | t }}</a>
+            </p>
+          {% endif %}
+          <p class="margin-auto">
+            <input type="submit" class="btn btn-secondary m-b p-h-xlg w-full" style="max-width: 250px" value="{{ 'customer.login.sign_in' | t }}">
+          </p>
+
+          <p class="callout_s_text p-v">{{ 'layout.customer.create_account' | t | customer_register_link }}</p>
+          <hr class="pos-abt w-full m-t">
+          <p class="text-center m-b-xs p-h-xlg m-t-sm bg-white inline pos-rlt">OR</p>
+          {%- if shop.name == "100% PURE" -%}
+            <div class="m-t-sm">
+              <script src='//open-signin.okasconcepts.com/customer/script?shop=100-pure.myshopify.com'></script>
+            </div>
+          {%- endif -%}
+
+        {% endform %}
+      </div>
+
+      {% comment %}
+        JS shows/hides this form in timber.loginForms()
+      {% endcomment %}
+      <div id="RecoverPasswordForm" class="form-vertical hide max-width-lg margin-auto ">
+        <h2>{{ 'customer.recover_password.title' | t }}</h2>
+        <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+        {% form 'recover_customer_password' %}
+          {{ form.errors | default_errors }}
+
+          {% if form.posted_successfully? %}
+            <span class="hide reset-password-success"></span>
+          {% endif %}
+
+          <label for="RecoverEmail" class="hidden-label">
+            {{ 'customer.recover_password.email' | t }}
+          </label>
+          <input type="email"
+                 name="email"
+                 id="RecoverEmail"
+                 placeholder="{{ 'customer.recover_password.email' | t }}"
+                 spellcheck="false"
+                 autocomplete="off"
+                 autocapitalize="off"
+                 class="input-full">
+
+          <p>
+            <input type="submit" class="btn btn--full btn-secondary" value="{{ 'customer.recover_password.submit' | t }}">
+          </p>
+
+          <button type="button" id="HideRecoverPasswordLink">
+            {{ 'customer.recover_password.cancel' | t }}
+          </button>
+        {% endform %}
+
+      </div>
+
+      {% comment %}
+        If accounts are set as optional, the following will be shown as an option
+        during checkout, not on the default /login page.
+      {% endcomment %}
+      {% if shop.checkout.guest_login %}
+        <hr>
+
+        <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+        {% form 'guest_login' %}
+          <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+        {% endform %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<!-- /templates/customers/login.liquid -->
+
+<div class="grid">
+
+  <div class="grid__item large--one-half text-center">
+
+    <div class="note form-success" id="ResetSuccess" style="display:none;">
+      {{ 'customer.recover_password.success' | t }}
+    </div>
+
+    <div id="CustomerLoginForm" class="form-vertical">
+      {% form 'customer_login' %}
+
+        <h1>{{ 'customer.login.title' | t }}</h1>
+
+        {{ form.errors | default_errors }}
+
+        <script src='//open-signin.okasconcepts.com/customer/script?shop=100-pure.myshopify.com'></script>
+        <!-- <div data-hull-component="login/shopify@hull">Loading Social Login...</div> -->
+
+        <label for="CustomerEmail" class="hidden-label">{{ 'customer.login.email' | t }}</label>
+        <input type="email" name="customer[email]" id="CustomerEmail" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.login.email' | t }}" autocorrect="off" autocapitalize="off" autofocus>
+
+        {% if form.password_needed %}
+          <label for="CustomerPassword" class="hidden-label">{{ 'customer.login.password' | t }}</label>
+          <input type="password" value="" name="customer[password]" id="CustomerPassword" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.login.password' | t }}">
+        {% endif %}
+
+        <p>
+          <input type="submit" class="btn btn--full" value="{{ 'customer.login.sign_in' | t }}">
+        </p>
+        <p><a href="/">{{ 'customer.login.cancel' | t }}</a></p>
+        <p>{{ 'layout.customer.create_account' | t | customer_register_link }}</p>
+        {% if form.password_needed %}
+          <p><a href="#recover" id="RecoverPassword">{{ 'customer.login.forgot_password' | t }}</a></p>
+        {% endif %}
+
+      {% endform %}
+    </div>
+
+
+    <div id="RecoverPasswordForm" class="hide">
+  <h2>{{ 'customer.recover_password.title' | t }}</h2>
+  <p>{{ 'customer.recover_password.subtext' | t }}</p>
+
+  {% form 'recover_customer_password' %}
+    {{ form.errors | default_errors }}
+
+    {% if form.posted_successfully? %}
+      <span class="hide reset-password-success"></span>
+    {% endif %}
+
+    <label for="RecoverEmail" class="label-hidden">
+      {{ 'customer.recover_password.email' | t }}
+    </label>
+    <input type="email"
+           name="email"
+           id="RecoverEmail"
+           placeholder="{{ 'customer.recover_password.email' | t }}"
+           spellcheck="false"
+           autocomplete="off"
+           autocapitalize="off">
+
+    <input type="submit" class="btn" value="{{ 'customer.recover_password.submit' | t }}">
+
+    <button type="button" id="HideRecoverPasswordLink">
+      {{ 'customer.recover_password.cancel' | t }}
+    </button>
+  {% endform %}
+
+</div>
+
+    {% if shop.checkout.guest_login %}
+      <hr>
+
+      <h2>{{ 'customer.login.guest_title' | t }}</h2>
+
+      {% form 'guest_login' %}
+        <input type="submit" class="btn" value="{{ 'customer.login.guest_continue' | t }}">
+      {% endform %}
+    {% endif %}
+
+  </div>
+
+
+  <div class="grid__item large--one-half text-center">
+
+    <h1>{{ 'customer.register.title' | t }}</h1>
+
+    <div class="form-vertical">
+      {% form 'create_customer' %}
+
+        {{ form.errors | default_errors }}
+        <script src='//open-signin.okasconcepts.com/customer/script?shop=100-pure.myshopify.com'></script>
+        <div class='oxi-social-login'></div>
+
+        <label for="FirstName" class="hidden-label">{{ 'customer.register.first_name' | t }}</label>
+        <input type="text" name="customer[first_name]" id="FirstName" class="input-full" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+
+        <label for="LastName" class="hidden-label">{{ 'customer.register.last_name' | t }}</label>
+        <input type="text" name="customer[last_name]" id="LastName" class="input-full" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+
+        <label for="Email" class="hidden-label">{{ 'customer.register.email' | t }}</label>
+        <input type="email" name="customer[email]" id="Email" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+
+        <label for="CreatePassword" class="hidden-label">{{ 'customer.register.password' | t }}</label>
+        <input type="password" name="customer[password]" id="CreatePassword" class="input-full{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.register.password' | t }}">
+
+        <p>
+          <input type="submit" value="{{ 'customer.register.submit' | t }}" class="btn btn--full">
+        </p>
+        <a href="{{ shop.url }}">{{ 'customer.register.cancel' | t }}</a>
+
+      {% endform %}
+    </div>
+
+  </div>
+
+</div>
+
+{% endcomment %}

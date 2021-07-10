@@ -1,0 +1,63 @@
+<!-- /templates/page.liquid -->
+<div class="grid">
+
+  <div class="grid__item large--one-whole">
+
+    <h1 class="m-t-md text-center">{{ page.title }}</h1>
+
+
+    {% comment %}
+      Regular page content goes here.
+    {% endcomment %}
+    <div class="rte">
+      {{ page.content }}
+     
+
+
+	  {% include 'sitemap_pages' %}
+      {% for p in s_pages %}
+      <p><a href="{{pages[p].url}}" title="{{pages[p].title}}">{{pages[p].title}}</a></p>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>
+
+{% comment %}
+<script>
+    function addToCart()
+    {
+        // construct data obj to send with POST
+        var payload = { "params": [
+            { "name": "param1", "param_type": "IN", "value": "1FMVCS" },
+            { "name": "StoreHostName", "param_type": "IN", "value": "100-pure" }
+        ]};
+
+        // Hit the RESTful route thru ajax
+        $.ajax({
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            url: "https://voila.puritypark.com/api/v2/netsuitedb/_proc/Top10RelatedProducts",
+            cache: false,
+            method: 'POST',
+            data: JSON.stringify(payload),
+            headers: {
+                "X-DreamFactory-API-Key": "4a815c7925a193b651990bdcd428412a1067a8c2c444e9fad95115cf5781acd0"
+            },
+            beforeSend: function() {
+                // init ajax mask
+            },
+            success:function (response) {
+                console.log(response);
+            },
+            error:function (response) {
+                console.log(response);
+                return false;
+            }
+        });
+    }
+  
+ // execute	
+  addToCart();
+</script>
+{% endcomment %}

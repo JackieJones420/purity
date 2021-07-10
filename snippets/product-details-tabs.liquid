@@ -1,0 +1,405 @@
+{% assign tabIndex = 2 %}
+{% assign mediaTag = false %}
+{%- if product_meta.consumer-study-data != nil and product_meta.consumer-study-data != "[empty]" -%}
+  {%- assign tabIndex = tabIndex | plus: 1 -%}
+{%- endif -%}
+{%- if product_meta.related-blog-posts != "[empty]" and product_meta.related-blog-posts != null -%}
+  {%- assign tabIndex = tabIndex | plus: 1 -%}
+  {% assign mediaTag = true %}
+{%- endif -%}
+{%- if product_meta.press-content.size > 0 and product_meta.press-content != null and mediaTag == false -%}
+  {%- assign tabIndex = tabIndex | plus: 1 -%}
+  {% assign mediaTag = true %}
+{%- endif -%}
+{%- assign tabWidth = 'medium-down--one-whole' -%}
+<ul class="tabs b-a pos-rlt">
+  <!-- Product Details -->
+  {%- if product.title contains 'Lip' and product_meta.finish == 'Matte' -%}
+    {% capture productFinishUrl %}product_finish_{{product_meta.finish | replace: ' ', '-' | downcase | trim }}-lip.png{% endcapture %}
+  {%- elsif product.title contains 'Lip' and product_meta.finish == 'Satin' -%}
+    {% capture productFinishUrl %}product_finish_{{product_meta.finish | replace: ' ', '-' | downcase | trim }}-lip.png{% endcapture %}
+  {%- else  -%}
+    {% capture productFinishUrl %}product_finish_{{product_meta.finish | replace: ' ', '-' | downcase | trim }}.png{% endcapture %}
+  {%- endif -%}
+  {% capture productCoverageUrl %}product_coverage_{{product_meta.coverage | replace: ' ', '-' | downcase | trim }}-img.png{% endcapture %}
+  {% assign missingFinish = '||' %}
+  {% assign missingCoverage = '||' %}
+  <li class="tab">
+    <input class="tab-radio" type="radio" id="tab-1" name="tab-group-1" aria-labelledby="Tab1">
+    <label class="b-b tab-label text-center l-s-1x {{tabWidth}} p-h-s w-s-no no-bgc" for="tab-1" id="Tab1">
+      <span>Product Details</span>
+      <span class="icon icon-plus down right pos-rlt" aria-hidden="true"></span>
+      <span class="icon icon-minus up right pos-rlt" aria-hidden="true"></span>
+    </label>
+    <div class="tab-panel">
+      <div class="tab-content o-f-hid">
+        <div class="max-width-lgx9 margin-auto">
+
+          {%- if product.tags contains "excludeFreeShipping" -%}
+            <p class="font-bold text-center">Free shipping valid only with purchase of $50+. Excluded from all promotions.</p>
+          {%- endif -%}
+
+          <ul class="no-bullets inline-list text-center main-font text-md-lg no-margin product__for-whom">
+            {%- if product_meta.skin_type != nil and product_meta.skin_type != "[empty]" -%}
+              <li class="m-t-md">
+                <em>For {{ product_meta.skin_type | replace: "|",", " | trim }} Skin Types</em>
+              </li>
+            {%- endif -%}
+            {%- if product_meta.coverage != nil and product_meta.coverage != "[empty]" -%}
+              <li class="m-t-md">
+                <em>{{ product_meta.coverage | trim }} Coverage</em>
+              </li>
+            {%- endif -%}
+            {%- if product_meta.finish != nil and product_meta.finish != "[empty]" -%}
+              <li class="m-t-md">
+                <em>{{ product_meta.finish | trim }} Finish</em>
+              </li>
+            {%- endif -%}
+          </ul>
+
+          {%- if product_meta.description != "[empty]" and product_meta.description != null -%}
+            <div class="text-center m-t l-h m-t product__description-tabs" itemprop="description">{{ product_meta.description | trim }}</div>
+          {%- endif -%}
+
+          <!-- Coverage/Finish -->
+          <div class="grid">
+            {%- if product_meta.coverage != nil and product_meta.coverage != "[empty]" -%}
+              {%- unless missingCoverage contains product_meta.coverage -%}
+                <div class="grid__item large--one-half">
+                  <p class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b-xs">Coverage</p>
+                  <img
+                    src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ productCoverageUrl | file_img_url: 'master', format: 'pjpg' }}"
+                    data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ productCoverageUrl | file_img_url: 'master' | format: 'pjpg' }}"
+                    data-sizes="auto"
+                    class="no-border cld-prepare"
+                    alt="Product Coverage: {{ product_meta.coverage | trim }}" />
+                </div>
+              {%- endunless -%}
+            {%- endif -%}
+            {%- if product_meta.finish != nil and product_meta.finish != "[empty]" -%}
+              {%- unless missingFinish contains product_meta.finish -%}
+                <div class="grid__item large--one-half">
+                  <p class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b-xs">Finish</p>
+                  <img
+                    src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ productFinishUrl | file_img_url: 'master', format: 'pjpg' }}"
+                    data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ productFinishUrl | file_img_url: 'master' }}"
+                    data-sizes="auto"
+                    class="no-border cld-prepare"
+                    alt="Product Finish: {{ product_meta.finish | trim }}" />
+                </div>
+              {%- endunless -%}
+            {%- endif -%}
+          </div>
+
+          <!-- Shade Chart -->
+          {%- if product.variants.size > 1 -%}
+            {%- if product.variants[0].metafields.purity-toolbox.shade != '[empty]' and product.variants[0].metafields.purity-toolbox.shade != nil  and product.variants[0].metafields.purity-toolbox.undertone != '[empty]' and product.variants[0].metafields.purity-toolbox.undertone != nil -%}
+              <div class="shade-chart">
+                <div class="text-center text-u-c text-md alt-font l-s-2x m-t-lg">Shade Chart</div>
+                <div class="grid grid-uniform">
+                  {% for variant in product.variants %}
+                    <div class="grid__item large--one-quarter medium--one-third small--one-half p shade-chart-item" variant-id="{{variant.id}}">
+                      <img
+                        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                        data-sizes="auto"
+                        class="inline cld-prepare"
+                        alt="{{ variant.sku | escape | replace: '.', '-' | downcase }}_{{variant.metafields.purity-toolbox.toolbox-assets.featured[0].category | downcase}}" />
+                      <div class="text-sm text-u-c m-t text-center m-b-xs alt-font l-s-1x">{{variant.title}}</div>
+                      <div class="text-center text-sm shade-description">{{ variant.metafields.purity-toolbox.shade | capitalize }} with {{ variant.metafields.purity-toolbox.undertone | downcase }} undertone</div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {%- elsif product.variants[0].metafields.purity-toolbox.color_shade_description != '[empty]' and product.variants[0].metafields.purity-toolbox.color_shade_description != nil -%}
+              <div class="shade-chart">
+                <div class="text-center text-u-c text-md alt-font l-s-2x m-t-lg">Shade Chart</div>
+                <div class="grid grid-uniform">
+                  {% for variant in product.variants %}
+                    <div class="grid__item large--one-quarter medium--one-third small--one-half p shade-chart-item" variant-id="{{variant.id}}">
+                      <img
+                        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                        data-sizes="auto"
+                        class="inline cld-prepare"
+                        alt="{{ variant.sku | escape | replace: '.', '-' | downcase }}_{{variant.metafields.purity-toolbox.toolbox-assets.featured[0].category | downcase}}" />
+                      <div class="text-sm text-u-c m-t text-center m-b-xs alt-font l-s-1x">{{variant.title}}</div>
+                      <div class="text-center text-sm shade-description">
+                        {%- if variant.metafields.purity-toolbox.color_shade_description != '[empty]' -%}
+                          {{ variant.metafields.purity-toolbox.color_shade_description | capitalize }}
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            {%- endif -%}
+
+          {%- endif -%}
+
+          <!-- Direction -->
+          {%- if product_meta.directions_for_use != "[empty]" and product_meta.directions_for_use != null -%}
+            <div class="m-v product-direction">
+              <div class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b">Directions</div>
+              <div class="text-center">{{ product_meta.directions_for_use | trim }}</div>
+            </div>
+          {%- endif -%}
+
+          <!-- Size -->
+          {%- if product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != "[empty]" and product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != null -%}
+            <div class="m-t m-b-md product-size">
+              <div class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b">Size</div>
+              <div class="text-center product-net-weight">{{ product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight | trim }}</div>
+            </div>
+          {%- endif -%}
+
+          <!-- Made in Country -->
+          {%- if product_meta.made_in_country != "[empty]" and product_meta.made_in_country != null -%}
+            <div class="m-v product-country">
+              <div class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b">Source</div>
+              <div class="text-center">Made in {{ product_meta.made_in_country | trim }}</div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </li>
+
+  <!-- Product Ingredients -->
+  {% assign keyIngredients = product_meta.key-ingredients-data | split: "|" %}
+  {% assign missingIngredients = '||' %}
+  <li class="tab">
+    <input class="tab-radio" type="radio" id="tab-2" name="tab-group-1">
+    <label class="b-b tab-label text-center l-s-1x {{tabWidth}} p-h-s w-s-no no-bgc" for="tab-2">
+      <span>Ingredients</span>
+      <span class="icon icon-plus down right pos-rlt" aria-hidden="true"></span>
+      <span class="icon icon-minus up right pos-rlt" aria-hidden="true"></span>
+    </label>
+    <div class="tab-panel">
+       <div class="tab-content o-f-hid">
+          <div class="max-width-lgx9 margin-auto">
+            {%- if keyIngredients.size >2 -%}
+              <div class="large--one-whole">
+                <div class="text-u-c text-md alt-font l-s-2x m-t-lg m-b-lg">Every ingredient we use is beneficial, here are a few:</div>
+              </div>
+              <div class="grid grid-uniform">
+                {%- for item in keyIngredients -%}
+                  {% assign i = forloop.index | minus: 1 %}
+                  {% assign oddOReven = i| modulo: 3 %}
+                  {%- if oddOReven == 0 -%}
+                  {% assign ingredientsTitle = keyIngredients[i] %}
+                  {%- elsif oddOReven == 1 -%}
+                  {% assign ingredientsDesc = keyIngredients[i] %}
+                  {%- elsif oddOReven == 2 -%}
+                    {% assign imageAvailable = '|' | append: ingredientsTitle | append: '|' %}
+                    {%- unless missingIngredients contains imageAvailable -%}
+                      <div class="grid__item large--one-fifth medium--one-third small--one-half key-ingredients p">
+                        <img
+                          src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ keyIngredients[i] | file_img_url: 'master' | format: 'pjpg' }}"
+                          data-src="https://cdn.no-toxic.com/image/fetch/q_auto:eco,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ keyIngredients[i] | file_img_url: 'master' | format: 'pjpg' }}"
+                          data-sizes="auto"
+                          class="circle no-border cld-prepare"
+                          original="{{keyIngredients[i]}}"
+                          alt="Product Page Key Ingredients: {{ ingredientsTitle | trim }}" />
+                        <div class="text-center m-v-md">
+                          <div class="text-sm text-u-c m-t text-center m-b-xs alt-font l-s-1x">{{ ingredientsTitle | trim }}</div>
+                          <div class="text-center text-xs">{{ ingredientsDesc | trim }}</div>
+                        </div>
+                      </div>
+                    {%- endunless -%}
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+            <!-- Direction -->
+            {%- if product.selected_or_first_available_variant.metafields.purity-toolbox.product-ingredients != "[empty]" and product.selected_or_first_available_variant.metafields.purity-toolbox.product-ingredients != null -%}
+              <div class="large--one-whole">
+                <p class="text-left alt-font text-u-c l-s-1x m-v">Complete list of ingredients:</p>
+                <div class="m-b-sm text-base l-h ingredient-container">{{ product.selected_or_first_available_variant.metafields.purity-toolbox.product-ingredients | strip_html | trim  }}</div>
+                <p class="m-b-sm callout_text">
+                  <a href="/pages/ingredient-glossary">Ingredient Glossary<span class="caret-right"></span></a>
+                </p>
+                <p class="m-b-md text-base">Natural ingredients may vary in color and consistency</p>
+              </div>
+            {%- endif -%}
+          </div>
+       </div>
+    </div>
+  </li>
+  <!-- Product Consumer Study -->
+  {%- if product_meta.consumer-study-data != nil and product_meta.consumer-study-data != "[empty]" -%}
+    {% assign consumerData = product_meta.consumer-study-data | split: "|" %}
+    <li class="tab">
+      <input class="tab-radio" type="radio" id="tab-3" name="tab-group-1">
+      <label class="b-b tab-label text-center l-s-1x {{tabWidth}} p-h-s w-s-no no-bgc" for="tab-3">
+        <span class="l-h-2x">Consumer Studies</span>
+        <span class="icon icon-plus down right pos-rlt" aria-hidden="true"></span>
+        <span class="icon icon-minus up right pos-rlt" aria-hidden="true"></span>
+      </label>
+      <div class="tab-panel">
+        <div class="tab-content o-f-hid">
+          <div class="max-width-lgx9 margin-auto o-f-hid">
+            {%- for item in consumerData -%}
+              {% assign i = forloop.index | minus: 1 %}
+              {% assign oddOReven = i| modulo: 2 %}
+              {%- if oddOReven == 0 -%}
+                {% assign consumerItem = consumerData[i] %}
+              {%- elsif oddOReven == 1 -%}
+                {% assign consumerItem = consumerItem | append: '|' | append: consumerData[i] %}
+                {% assign consumerItem = consumerItem | split: '||' %}
+                {% assign newConsumerData = newConsumerData | concat: consumerItem %}
+              {%- endif -%}
+            {%- endfor -%}
+            {% assign newConsumerData = newConsumerData | sort %}
+            <!--  -->
+            {%- for consumerItem in newConsumerData -%}
+              {% assign currentPrecent = consumerItem | split: '|' | first %}
+              {%- if currentPrecent == lastPrecent -%}
+                {% assign additionInfo = consumerItem | split: '|' | last  %}
+                {% assign prepareAppend = prepareAppend | append: '|' | append: additionInfo %}
+              {% else %}
+                {%- if prepareAppend -%}
+                  {% assign prepareAppend = prepareAppend | split: '||' %}
+                  {% assign finalConsumerData = finalConsumerData | concat: prepareAppend %}
+                {%- endif -%}
+                {% assign lastPrecent = consumerItem | split: '|' | first %}
+                {% assign prepareAppend = consumerItem %}
+              {%- endif -%}
+            {%- endfor -%}
+            {% assign prepareAppend = prepareAppend | split: '||' %}
+            {% assign finalConsumerData = finalConsumerData | concat: prepareAppend %}
+            {% assign adjust = finalConsumerData[0] | split: '|' | first %}
+            {%- if adjust == "100" -%}
+              {% assign loopStopAt = finalConsumerData.size | plus: 1 %}
+              {% assign prepareAppend = finalConsumerData[0] | split: '||' %}
+              {% assign finalConsumerData = finalConsumerData | concat: prepareAppend %}
+            {%- endif -%}
+            {% assign finalConsumerData = finalConsumerData | reverse %}
+            <!--  -->
+            {%- for presents in finalConsumerData -%}
+              {% assign present = presents | split: '|' %}
+              {%- unless forloop.index == loopStopAt -%}
+                <div class="large--one-half medium-down--one-whole o-f-hid m-b-md left">
+                  {%- for item in present -%}
+                    {%- if forloop.index == 1 -%}
+                      <div class="left large--one-third medium--one-third small--two-fifths p-l m-v-lg">
+                        <div class="max-width-xxs right w-full">
+                          <div class="consumer-study-chart pos-rlt">
+                            <svg viewBox="0 0 32 32" class="pos-abt">
+                              <circle class="circle" r="16" cx="16" cy="16" style="stroke-dasharray: 10 100;stroke-dasharray:{{item | plus: 1}} 100" />
+                            </svg>
+                            <span class="consumer-study-number-container pos-abt text-center inline rounded bg-white">
+                              <span class="consumer-study-number block brand-deep-guava">{{item}}<span>%</span></span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- the div is not aligned for reason, it's not wrong code -->
+                      <ul class="left large--two-thirds medium--two-thirds small--three-fifths p-l-lg p-t m-t-lg no-margin-l">
+                    {% else %}
+                      <li class="text-base l-h" style="list-style: disc;">{{item}}</li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                  </ul>
+                  <!-- the div is not aligned for reason, it's not wrong code -->
+                </div>
+              {%- endunless -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </li>
+  {%- endif -%}
+  <!-- Product Media -->
+  {%- if mediaTag -%}
+    {% assign consumerData = product_meta.consumer-study-data | split: "|" %}
+    <li class="tab">
+      <input class="tab-radio" type="radio" id="tab-4" name="tab-group-1">
+      <label class="b-b tab-label text-center l-s-1x {{tabWidth}} p-h-s w-s-no no-bgc" for="tab-4">
+        <span class="l-h-2x">Media</span>
+        <span class="icon icon-plus down right pos-rlt" aria-hidden="true"></span>
+        <span class="icon icon-minus up right pos-rlt" aria-hidden="true"></span>
+      </label>
+      <div class="tab-panel">
+        <div class="tab-content o-f-hid">
+          <div class="max-width-lgx9 margin-auto o-f-hid">
+            <!-- press -->
+            {%- if product_meta.press-content.size > 0 and product_meta.press-content != null -%}
+              <div class="grid__item medium-down--one-whole large--one-whole">
+                <p class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b">In The Press</p>
+
+                {%- for press in product.metafields.purity-toolbox.press-content -%}
+                  <a href="#pressPopWindow{{ forloop.index0 }}" class="purity-pop left p large--one-half no-borders {% if product.metafields.purity-toolbox.press-content.size < 2 %}push--large--one-quarter{% endif %}" pop-width="750px">
+                    <div class="o-f-hid">
+                      <div class="left one-third">
+                        <img
+                          src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ settings.cloudinary_image_version }}/{{ press.thumbnail_asset.name }}"
+                          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ press.thumbnail_asset.name }}"
+                          data-sizes="auto"
+                          class="cld-prepare"
+                          alt="Press Release: {{ press.title }}"/>
+                      </div>
+                      <div class="left two-thirds p-l-md">
+                        <p class="main-font text-md-lg m-b-sm l-h-1x">{{ press.title }}</p>
+                        <p class="text-sm">{{ press.subtitle }}</p>
+                      </div>
+                    </div>
+                  </a>
+                  <div id="pressPopWindow{{ forloop.index0 }}" class="hide">
+                    <div class="one-whole">
+                      <img
+                        src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_800,c_limit,dpr_1/{{ settings.cloudinary_image_version }}/{{ press.mobile_asset.name }}"
+                        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ press.mobile_asset.name }}"
+                        data-sizes="auto"
+                        class="cld-prepare large--hide"
+                        alt="Press Release: {{ press.title }}"/>
+                      <img
+                        src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_800,c_limit,dpr_1/{{ settings.cloudinary_image_version }}/{{ press.desktop_asset.name }}"
+                        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ press.desktop_asset.name }}"
+                        data-sizes="auto"
+                        class="cld-prepare medium-down--hide"
+                        alt="Press Release: {{ press.title }}"/>
+                      {%- if press.url != null  -%}
+                        <p class="text-right p-r text-u-l"><a href="{{ press.url }}" target="_blank" rel="noopener">Read More</a></p>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+            <!-- end press -->
+            <!-- blog -->
+            {% assign blogsData = product_meta.related-blog-posts | split: "|" %}
+            {%- if product_meta.related-blog-posts != "[empty]" and product_meta.related-blog-posts != null -%}
+              <div class="grid__item medium-down--one-whole large--one-whole">
+                <p class="text-center text-u-c text-md alt-font l-s-2x m-t-lg m-b">Read Our Blog</p>
+                {%- for blogHandle in blogsData -%}
+                  {% assign ArticleHandle = 'feed/' | append: blogHandle %}
+                  {% assign selectedArticle = articles[ArticleHandle] %}
+                  <a href="{{ selectedArticle.url }}" target="_blank" class="block p left large--one-half no-borders {% if blogsData.size < 2 %}push--large--one-quarter{% endif %}">
+                    <div class="o-f-hid">
+                      <div class="left one-third">
+                        <img
+                          src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ selectedArticle.image.src | img_url: '600x' | format: 'pjpg' }}"
+                          data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ selectedArticle.image.src | img_url: '600x' | format: 'pjpg' }}"
+                          data-sizes="auto"
+                          class="cld-prepare"
+                          alt="blog {{selectedArticle.title}} feature image"/>
+                      </div>
+                      <div class="left two-thirds p-l-md">
+                        <p class="main-font text-md-lg m-b-sm l-h-1x">{{selectedArticle.title}}</p>
+                        <p class="text-sm">{{ selectedArticle.excerpt_or_content | strip_html | truncate: 160 }}</p>
+                      </div>
+                    </div>
+                  </a>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+            <!-- end blog -->
+          </div>
+        </div>
+      </div>
+    </li>
+  {%- endif -%}
+
+</ul>

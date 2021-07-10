@@ -1,0 +1,81 @@
+<div class="product-recommendations" data-product-id="{{ product.id }}" data-limit="4">
+  {%- if recommendations.products_count > 0 -%}
+  <aside class="grid grid-uniform">
+    <div class="grid__item">
+        <header class="section-header">
+          <p class="section_title_text m-v-lg">You May Also Like</p>
+        </header>
+    </div>
+  </aside>
+  <div class="related-products">
+    <div class="recommendation">
+      {%- for product in recommendations.products -%}
+        {% include 'product-grid-item', iten_index_num: forloop.rindex0 %}
+      {%- endfor -%}
+    </div>
+    <div class="recommendation-mobile">
+      {%- for product in recommendations.products -%}
+        {% include 'product-grid-item', iten_index_num: forloop.rindex0 %}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- endif -%}
+</div>
+
+{% javascript %}
+var loadProductRecommendationsIntoSection = function() {
+  // Look for an element with class 'product-recommendations'
+  var productRecommendationsSection = document.querySelector(".product-recommendations");
+  if (productRecommendationsSection === null) { return; }
+  // Read product id from data attribute
+  var productId = productRecommendationsSection.dataset.productId;
+  // Read limit from data attribute
+  var limit = productRecommendationsSection.dataset.limit;
+  // Build request URL
+  var requestUrl = "/recommendations/products?section_id=product-recommendations&limit="+limit+"&product_id="+productId;
+  // Create request and submit it using Ajax
+  var request = new XMLHttpRequest();
+  request.open("GET", requestUrl);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 300) {
+      var container = document.createElement("div");
+      container.innerHTML = request.response;
+      productRecommendationsSection.parentElement.innerHTML = container.querySelector(".product-recommendations").innerHTML;
+      try {
+        cloudinaryimg.responsive();
+        Purity.sameHeight.set()
+      }
+      catch(err) {
+        <!-- console.log(err) -->
+        console.log('recommended product onload functions delay')
+      }
+    }
+  };
+  request.send();
+};
+// If your section has theme settings, the theme editor
+// reloads the section as you edit those settings. When that happens, the
+// recommendations need to be fetched again.
+// See https://help.shopify.com/en/themes/development/sections/integration-with-theme-editor
+document.addEventListener("shopify:section:load", function(event) {
+  if (event.detail.sectionId === "product-recommendations") {
+    loadProductRecommendationsIntoSection();
+  }
+});
+// Fetching the recommendations on page load
+loadProductRecommendationsIntoSection();
+
+{% endjavascript %}
+<script type="text/javascript">
+  var checkExist = setInterval(function() {
+   if ($('.recommendation-mobile').length) {
+      $('.recommendation-mobile').slick({
+        slidesToShow: 2,
+        dots: true,
+        arrows: true
+      });
+      clearInterval(checkExist);
+   }
+  }, 100);
+</script>

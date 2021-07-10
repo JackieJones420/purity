@@ -1,0 +1,351 @@
+{%- if page.metafields.100pure.mobile_banner -%}
+  {% capture mobile_image %}https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ page.metafields.100pure.mobile_banner }}{% endcapture %}
+{%- endif -%}
+<section
+  class="collection-banner__inner banner-img__{% if page.metafields.100pure.bunner-position == 'left' %}left{% elsif page.metafields.100pure.bunner-position == 'right' %}right{% else %}center{% endif %} {% if mobile_image %}small--hide{% endif %}"
+  style="background-image: url('https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/{{page.metafields.100pure.banner}}')"
+  aria-label="collection page banner"
+>
+  <div class="one-whole wrapper">
+    <div class="large--one-half p-h-lg text-center {% if page.metafields.100pure.text-position == 'left' %}{% elsif page.metafields.100pure.text-position == 'right' %}right{% else %}margin-auto{% endif %} {% if page.metafields.purity-toolbox.text-position == "hide" %}hide{% endif %}">
+      <h1 class="page_title_text" {% if page.metafields.100pure.desktop_title_color %}style="color:{{ page.metafields.100pure.desktop_title_color }}" {% endif %}>{{page.title}}</h1>
+      <p class="caption_text max-width-lgx6 margin-auto">{{page.content}}</p>
+    </div>
+  </div>
+</section>
+{%- if mobile_image -%}
+  <img
+    src="{{mobile_image}}"
+    alt="{{ page.title }} image"
+    class="w-full hide small--show">
+    <h1 class="page_title_text text-center hide small--show medium-down--m-t-md">{{page.title}}</h1>
+    <p class="caption_text hide small--show max-width-lgx6 margin-auto text-center">{{page.content}}</p>
+{%- endif -%}
+{% assign banner_image = page.metafields.100pure.mobile_banner %}
+{% assign banner_mobile_image = page.metafields.100pure.mobile_banner %}
+{% assign banner_title = page.title %}
+{% assign banner_short_description = page.content %}
+{% assign banner_alignment = page.metafields.100pure.bunner-position %}
+{% assign banner_text_position = page.metafields.100pure.text-position %}
+{% assign banner_desktop_text_color = page.metafields.100pure.desktop_title_color %}
+{%- include '_banner' -%}
+
+{% assign product = all_products[page.metafields.100pure.product] %}
+<div class="wrapper">
+  {%- if page.metafields.100pure.product -%}
+    <div class="o-f-hid m-v-lg">
+      <div class="large--one-half left large--p-r-lg">
+        <img
+          src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ settings.cloudinary_image_version }}/{{settings.cloudinary_image_version}}/{{page.metafields.100pure.product-img}}"
+          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{page.metafields.100pure.product-img}}"
+          id="ProductPhotoImg"
+          class="cld-prepare w-full"
+          alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+      </div>
+      <div class="large--one-half left large--p-l-lg">
+    <!-- form section start -->
+
+        {% assign current_variant = product.selected_or_first_available_variant %}
+        <h1 class="section_title_text m-t-xlg">{{ product.title }}</h1>
+        <!-- Product form icon -->
+        {%- include 'product-form-icon', targetproduct: product -%}
+
+        <!-- Product form short description -->
+        {%- if product.metafields.purity-toolbox.short_description ！= nil and product.metafields.purity-toolbox.short_description != "[empty]" -%}
+          <div class="short-description caption_text m-b-sm">{{ product.selected_or_first_available_variant.metafields.purity-toolbox.short_description | trim }}</div>
+        {%- endif -%}
+
+        <div class="m-b-sm">
+          <span class="stamped-product-reviews-badge" data-id="{{ product.id }}">{{ product.metafields.stamped.badge }}</span>
+        </div>
+
+        <!-- Product form -->
+        <form action="/cart/add" data-productid="{{product.id}}" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-horizontal">
+          <!-- Product form swatch start -->
+
+          <select name="id" id="productSelect" class="product-single__variants" style="position: absolute; left: 99999px;">
+            {% if product.variants.first.available %}
+              <option selected="selected" data-sku="{{ product.variants.first.sku }}" value="{{ product.variants.first.id }}">
+                {{ product.variants.first.title }} - {{ product.variants.first.price | money_with_currency }}
+              </option>
+            {% else %}
+              <option disabled="disabled">
+                {{ product.variants.first.title }} - {{ 'products.product.sold_out' | t }}
+              </option>
+           {% endif %}
+          </select>
+          <!-- Product form swatch end -->
+
+          <!-- Product price -->
+          <div class="product--price-block">
+            <span id="ProductPrice" class="section_title_text inline original_price" itemprop="price">
+            {{ current_variant.price | money }}
+            </span>
+            {% if product.compare_at_price_max > product.price %}
+              {%- if product.tags contains "BundleProduct" -%}
+              <span class="module_title_text">
+                (<span id="ComparePrice">{{ current_variant.compare_at_price | money }}</span> value)
+              </span>
+              {%- else -%}
+                <span class="text-l-t module_title_text" id="ComparePrice">
+                  {{ current_variant.compare_at_price | money }}
+                </span>
+              {%- endif -%}
+            {% endif %}
+
+            <span class="icon-fallback-text right">
+              <a href="#">
+                <span class="fallback-text">Wishlist</span>
+                {%- include 'wish-list-btn' -%}
+              </a>
+            </span>
+            <p id="after-pay-cart-container"></p>
+          </div>
+
+          <!-- Product add to cart -->
+          {%- include 'product-add-to-cart' -%}
+          {%- include 'product-details-promo-message' -%}
+          <div id="review-pop" class="hide">
+            <div class="p-lg">
+              {{ product.metafields.stamped.reviews }}
+            </div>
+          </div>
+          {%- if product.metafields.purity-toolbox.bundle_handles -%}
+            <div class="callout_text m-t m-b-sm">THIS KIT INCLUDES:</div>
+
+            <div class="product-bundle-list">
+              {%- for variant in product.variants -%}
+                <div class="bundle-list-{{variant.id}} {% if forloop.index0 > 0 %}hide{% endif %}">
+                  <!-- {{variant.metafields.purity-toolbox.bundle_handles}} -->
+                  {% assign bundle_product_handles = variant.metafields.purity-toolbox.bundle_handles | trim %}
+                  {% assign bundle_product_handles = bundle_product_handles | split: '|' %}
+                  {% for handle in bundle_product_handles %}
+                    {% assign x_product = handle | split: '?' %}
+                    {% assign listNumber = forloop.index0 %}
+                    {%- if x_product.size >1 -%}
+                    <!-- handle has ? mark -->
+                      {%- if all_products[x_product[0]].variants.size > 1 -%}
+                      <!-- product with many variants -->
+                        {%- for variant in all_products[x_product[0]].variants -%}
+                          {% capture current_id %}variant={{ variant.id }}{% endcapture %}
+                          {%- if current_id == x_product[1] -%}
+                            {% assign b_variant = variant %}
+                            {% include 'pp-bundle' %}
+                          {%- endif -%}
+                        {%- endfor -%}
+                      {%- else -%}
+                        <!-- product with one variant -->
+                        {% assign b_variant = all_products[x_product[0]].variants.first %}
+                        {% include 'pp-bundle' %}
+                      {%- endif -%}
+                    {%- else -%}
+                      <!-- handle doesn't have ? mark -->
+                      {% assign b_variant = all_products[handle].variants.first %}
+                      {% include 'pp-bundle' %}
+                    {%- endif -%}
+                  {% endfor %}
+                </div>
+              {%- endfor -%}
+
+            </div>
+          {%- endif -%}
+          <div id="fb-messenger"></div>
+        </form>
+
+    <!-- form section end -->
+      </div>
+    </div>
+  {%- else -%}
+    <div class=" product-bundle-list hide">
+      {%- for item in page.metafields.100pure.individual-products -%}
+        {% assign x_product = item.handle | split: '?' %}
+        {% assign listNumber = forloop.index0 %}
+        {% assign b_variant = all_products[item.handle].variants.first %}
+        {% include 'pp-bundle' %}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+  <!-- <p class="text-center page_title_text">Shop Individual Products</p> -->
+  <div class="shop-individual margin-auto large--four-fifths"></div>
+
+  {%- if page.metafields.100pure.ingredients -%}
+    <div class="medium-down--p-h-lg">
+      <p class="text-center section_title_text m-v p-t-xlg medium-down--p-t-xs">Key Ingredients</p>
+      <div class="no-padding flex j-c-center medium-down--f-d-column">
+        {%- for ingredient in page.metafields.100pure.ingredients -%}
+          <div class="large--one-quarter p">
+            <div class="pos-rlt">
+              <img alt="{{ingredient.title}}"
+              class="cld-prepare pos-rlt one-whole"
+              src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/{{ingredient.src}}"
+              data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/{{ingredient.src}}">
+              <p class="text-center text-white pos-abt one-whole z-1 p" style="top:30%">
+                <span class="section_title_text">{{ingredient.title}}</span>
+                <br>
+                <span class="callout_text">{{ingredient.short_description}}</span>
+              </p>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if page.metafields.100pure.video-id -%}
+    <div class="block four-fifths margin-auto pos-rlt o-f-hid" style="padding-top: 44.95%">
+      <div id="video-container" class="pos-abt" style="top:-0.5%; left:-0.5%; max-width:101%"></div>
+    </div>
+    <script>
+      if(!window['YT']){
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/player_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        function onYouTubePlayerAPIReady() {
+          let player = new YT.Player('video-container', {
+            height: '101%',
+            width: '101%',
+            videoId: '{{page.metafields.100pure.video-id}}',
+            playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0, 'playlist': '{{page.metafields.100pure.video-id}}', 'loop': 1 }
+          });
+        }
+      }else{
+        let player = new YT.Player('video-container', {
+          height: $('#video-container').width()*0.598,
+          width: $('#video-container').width(),
+          videoId: '{{page.metafields.100pure.video-id}}',
+          playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0, 'playlist': '{{page.metafields.100pure.video-id}}', 'loop': 1 }
+        });
+      }
+    </script>
+  {%- endif -%}
+
+  {%- if page.metafields.100pure.blogs -%}
+    <div>
+      <p class="text-center section_title_text m-v p-t-xlg medium-down--p-t-xs">Related Blogs</p>
+      {% assign relatedArticle = page.metafields.100pure.blogs | split: '|' %}
+      <div class="init-blog-carousel no-padding m-t-md">
+        {% for articleHandle in relatedArticle %}
+          {% assign featurearticle = articles[articleHandle] %}
+          {% if featurearticle.image.src != blank and featurearticle.title != article.title %}
+              <div class="p-h small--p-h-xs grid__item large--one-third medium--one-half small--one-whole pos-rlt">
+                <a href="{{ featurearticle.url }}">
+                  <img class="block" src="{{ featurearticle.image.src | img_url: 'large', scale: 1 }}" alt="Blog Feed Article Feature Image Carousel: {{ featurearticle.title }} ">
+                </a>
+                <div class="blog-content no-padding m-b-lg">
+                  <h3 class="m-t text-md-lg l-h m-b"><a href="{{ featurearticle.url }}" >{{ featurearticle.title }}</a></h3>
+                  <a href="{{ featurearticle.url }}" class="to-article text-center b-b b-dark text-sm font-bold l-s-2x p-b-xs">EXPLORE MORE <span class="icon icon-arrow-right"></span> </a>
+                </div>
+              </div>
+              <!-- ajax item spliter -->
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {%- endif -%}
+
+  {%- if page.metafields.100pure.related-collection -%}
+    {% assign PRcollection = collections[page.metafields.100pure.related-collection] %}
+    <div class="">
+      <p class="text-center section_title_text m-v-xlg p-t-xlg">RELATED PRODUCTS</p>
+      <div class="init-product-carousel no-padding">
+        {%- for product in PRcollection.products -%}
+          {% include 'product-grid-item' %}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+</div>
+<script id="individual-product" type="text/template">
+  <div class="o-f-hid m-t-xlg m-b-xlg flex position medium-down--f-d-column">
+    <div class="large--one-half large--p-md">
+      <img
+        alt="p-title"
+        class="cld-prepare"
+        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{settings.cloudinary_image_version}}/p-img"
+        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/p-img">
+    </div>
+    <div class="large--one-half large--p-md text-center flex f-d-column j-c-center p-h-sm">
+      <!-- <p class="module_title_text m-t-xlg p-t-xlg m-b-xs">Step index:</p> -->
+      <p class="section_title_text m-t">p-title</p>
+      <p class="content_text m-t-lg medium-down--m-t">p-content</p>
+      <p class="module_title_text m-t medium-down--m-t-xs">p-price product-compare-money</p>
+      <div>p-button</div>
+      <p class="m-t">
+        {%- if page.metafields.100pure.product -%}
+          <a href="#bundle-handle-placeholder" class="purity-pop content_s_text text-u-l" pop-width="750px">More Details</a>
+        {%- else -%}
+          <a href="../products/bundle-handle-placeholder" class="content_s_text text-u-l">Product Details</a>
+        {%- endif -%}
+      </p>
+    </div>
+  </div>
+</script>
+<script type="text/javascript">
+let individualProducts = {{ page.metafields.100pure.individual-products | json }};
+for (let i = 0; i < individualProducts.length; i++) {
+  let position = i%2==0 ? "f-d-row-r" : "";
+  let cta = "";
+  let element = $('.product-bundle-list .bundle-product').eq(i);
+  let state = element.attr('variant-available');
+  if (state == "add" || state == "alert" || state == "alertBuffer") {
+    cta = `<button class="select-btn btn btn-secondary no-m-v-gutter p-h-lg multiple-add-to-cart p h-auto m-t-sm" data-variant-id="${element.attr('variant-id')}">ADD TO TOTE</button>`
+  } else if (state == "email" || state == "soon") {
+    cta = `<a href="#-${element.attr('product-id')}" data-product-handle="${element.attr('product-handle')}" class="btn BIS_trigger in-stock-modal BIS-collection-btn w-full">NOTIFY ME</a>`
+  } else if (state == "release" || state == "login") {
+    cta = '';
+  } else if (state == "discontinued") {
+    cta = `<button type="submit" name="add" class="btn btn-secondary no-borders disabled no-m-v-gutter p-h-lg p h-auto m-t-sm" disabled="disabled">Discontinued</button>`;
+  }else if (state == "out") {
+    cta = `<button type="submit" name="add" class="btn btn-secondary no-borders disabled no-m-v-gutter p-h-lg p h-auto m-t-sm" disabled="disabled">Sold Out</button>`;
+  }
+
+  $('.shop-individual')
+    .append($('#individual-product')
+              .html()
+              .replace(/position/g,position)
+              .replace(/p-img/g,individualProducts[i].img)
+              .replace(/index/g,i+1)
+              .replace(/p-title/g,element.find('.title').html())
+              .replace(/p-content/g,individualProducts[i].description)
+              .replace(/p-price/g,element.find('.product-money').html())
+              .replace(/bundle-handle-placeholder/g,element.attr('product-handle'))
+              .replace(/p-button/g,cta)
+              .replace(/product-compare-money/g,`${ element.find('.product-compare-money').length>0 ? element.find('.product-compare-money').html() : ''}`)
+            );
+}
+$('.init-blog-carousel').slick({
+  lazyLoad: 'ondemand',
+  slidesToShow: 3,
+  dots: true,
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 769,
+      settings: {
+        arrows: false,
+        slidesToShow: 1
+      }
+    }
+  ]
+});
+$('.init-product-carousel').slick({
+  lazyLoad: 'ondemand',
+  slidesToShow: 4,
+  dots: true,
+  arrows: true,
+  responsive: [
+    {
+      breakpoint: 769,
+      settings: {
+        arrows: false,
+        slidesToShow: 2
+      }
+    }
+  ]
+});
+$('.stamped-badge').click(()=>{
+  Purity.popwindow.open('#review-pop', 'content', {width:'1200px'})
+})
+</script>

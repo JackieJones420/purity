@@ -1,0 +1,49 @@
+<div class="wrapper">
+	<h1 class="m-v-lg text-center">100% PURE<span class="text-md v-sup l-h-1x">™</span> in the Press</h1>
+	<div class="press-container"></div>
+</div>
+<script type="text/javascript">
+let currentPage = 0;
+let updateContent = false;
+let pressSuccessCallBack = (rawdata)=>{
+
+	let data = rawdata.contents;
+
+    data = JSON.parse(data);
+
+	data.resource.forEach(function(element){
+		$('.press-container').append(`
+			<a href="#press-${element.Id}" class="block large--one-quarter medium--one-half small--one-whole left p-sm purity-pop" pop-width="750px">
+				<img class="b-shadow" src="${element.MainAssetUrl}" alt="${element.Title}">
+			</a>
+			<div id="press-${element.Id}" class="hide">
+				<img
+					src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/${element.DesktopAssetUrl}"
+					data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/${element.DesktopAssetUrl}"
+					class="cld-prepare medium-down--hide w-full"
+					alt="Press Release: ${element.Title}"
+					/>
+				<img
+					src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/${element.MobileAssetUrl}"
+					data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/${element.MobileAssetUrl}"
+					class="cld-prepare large--hide w-full"
+					alt="Press Release: ${element.Title}"
+					/>
+					${ element.Url ? '<p class="text-right p-r text-u-l"><a href="'+element.Url+'" target="_blank" rel="noopener">Read More</a></p>' : '' }
+			</div>
+		`)
+	});
+	currentPage++;
+	updateContent = true;
+}
+
+$(document).ready(function() {
+	Holly.ajaxBackendData('https://api.allorigins.win/get?url=' + encodeURIComponent(`https://toolbox.puritycosmetics.com//services/press_contents/list.php?order=publicationdate%20DESC&limit=20&offset=0&filter=MainAssetUrl!=`), pressSuccessCallBack);
+	$(window).scroll(function(){
+		if($('body').height()-$(window).height()-$('#Footer').height() < $(this).scrollTop() && updateContent) {// ${currentPage*20}
+			updateContent = false;
+			Holly.ajaxBackendData('https://api.allorigins.win/get?url=' + encodeURIComponent(`https://toolbox.puritycosmetics.com//services/press_contents/list.php?order=publicationdate%20DESC&limit=20&offset=0&filter=MainAssetUrl!=`), pressSuccessCallBack);
+		}
+	})
+})
+</script>

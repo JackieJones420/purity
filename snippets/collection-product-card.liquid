@@ -1,0 +1,235 @@
+{%- include 'product-add-badges' -%}
+<div
+  product-id="{{product.id}}"
+  id="item-{{product.id}}"
+  class="grid clearfix product-card b-b productGrid {{' '}}
+          {%- for tag in product.tags -%}
+            {%- for step in steps -%}
+              {%- case tag -%}
+                {%- when step -%}
+                {{step}}
+              {%- endcase -%}
+            {%- endfor -%}
+          {%- endfor -%}">
+
+  <!-- Main product image column -->
+  <div class="grid__item large--four-tenths text-center no-padding">
+    <div class="product-single__photos">
+      <a href="/products/{{product.handle}}" class="grid__image">
+        <img
+          src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+          data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+          class="cld-prepare hero-image"
+          alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+      </a>
+    </div>
+  </div>
+
+  <!-- Product Form column -->
+  <div class="grid__item large--one-half m-t-lg push--large--one-tenth">
+    <div class="product-form--wrapper p">
+      <h2 class="text-2x">{{ product.title }}</h2>
+
+      <!-- Product form icon -->
+      {%- include 'product-form-icon', targetproduct: product -%}
+
+      <!-- Product form short description -->
+      {%- if product.metafields.purity-toolbox.ShortDesc != "[empty]" or product.metafields.purity-toolbox.ShortDesc != null %}
+        <p>{{ product.metafields.purity-toolbox.ShortDesc | trim }}</p>
+      {% endif -%}
+
+      <div>
+        <!-- Product price -->
+        <div class="product--price-block m-t-md h3">
+
+          {% if product.variants.size > 1 %}
+            {%- if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price -%}
+              <span class="min-price brand-primary">{{ product.selected_or_first_available_variant.price | money }}</span>
+              <span class="max-price text-l-t">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+            {%- else -%}
+              <span class="min-price">{{ product.selected_or_first_available_variant.price | money }}</span>
+              <span class="max-price text-l-t hide">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+          	  <!-- <span class="original_price">{{ product.selected_or_first_available_variant.price | money }}</span> -->
+              {%- if settings.beauty_start -%}
+                {%- for tag in product.tags -%}
+                  {%- if tag == 'Beauty Deal 5' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price5 | money }} <span class="text-l-t">{{ product.price | money }}</span> </span>
+                  {%- elsif tag == 'Beauty Deal 10' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price10 | money }} <span class="text-l-t">{{ product.price | money }}</span></span>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endif -%}
+
+          {% else %}
+            {%- if product.compare_at_price > product.price -%}
+              <span class="min-price brand-primary">{{ product.price | money }}</span>
+              <span class="max-price text-l-t">{{ product.compare_at_price | money }}</span>
+            {%- else -%}
+          	  <span class="original_price">{{ product.price | money }}</span>
+              {%- if settings.beauty_start -%}
+                {%- for tag in product.tags -%}
+                  {%- if tag == 'Beauty Deal 5' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price5 | money }} <span class="text-l-t">{{ product.price | money }}</span> </span>
+                  {%- elsif tag == 'Beauty Deal 10' -%}
+                    <span class="beauty_deal_price hide">{{ settings.beauty_deal_price10 | money }} <span class="text-l-t">{{ product.price | money }}</span> </span>
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endif -%}
+          {% endif %}
+        </div>
+
+        <hr class="no-margin">
+
+        <form
+          action="/cart/add"
+          method="post"
+          enctype="multipart/form-data"
+          id="AddToCartForm"
+          class="form-horizontal">
+
+          <!-- options -->
+          <label class="product-single__variants">
+            <select name="id" id="productSelect">
+              {%- for variant in product.variants -%}
+                {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+                {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}
+                  <option disabled="disabled">
+                    {{ variant.title }} - <span>{{productVariantsAvailableState}}</span>
+                  </option>
+                {% else %}
+                  <option {% if forloop.index == 1 %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+                    {{ variant.title }} - {{ variant.price | money }}
+                  </option>
+                {% endif %}
+              {%- endfor -%}
+            </select>
+            <span>variant selector for {{product.title}}</span>
+          </label>
+
+
+          <!-- Product form swatch -->
+          {%- if product.options.size > 0 -%}
+            <div class="m-v">
+              <!-- Variants Swatch-->
+              {%- unless product.type == "Gift Card" -%}
+                {% if product.variants.size > 1 %}
+                  {% assign selectedOption = product.options | first %}
+                  <p>
+                    <span class="text-u-c text-xs alt-font l-s-1x">Select a {{selectedOption}}:</span>
+                    <span class="variant-container"></span>
+                  </p>
+                  {% include 'swatch' with selectedOption %}
+                {% endif %}
+              {%- endunless -%}
+            </div>
+          {%- endif -%}
+
+          <!-- Product add to cart -->
+          <div class="submit-btn-container small--text-center medium--text-center m-t">
+            {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+            {%- case productVariantsAvailableState -%}
+              {%- when 'add' -%}
+                <button
+                  class="btn btn__bg-filled--secondary w-full"
+                  type="submit"
+                  name="add"
+                  data-variant-qty="1"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.variants.first.id }}"
+                  data-variant-sku="{{ product.variants.first.sku }}"
+                  data-variant-price="{{ product.price }}"
+                  data-variant-title="{{ product.variants.title }}">
+                  Add To Tote
+                </button>
+              {%- when 'email' -%}
+                <div class="m-v bis-block" >
+                  <a href="#" class="btn margin-auto block big-add-to-cart BIS_trigger" data-product-handle="{{product.handle}}" data-variant-id='{{product.variants.first.id}}'>NOTIFY ME</a>
+                </div>
+              {%- when 'release' -%}
+                <ul class="no-bullets">
+                  {%- if product.metafields.purity-toolbox.early_release_date -%}
+                    <li class="alt-font-regular text-sm l-s-1x m-b-xs">VIP Early Access: estimated {{ product.metafields.purity-toolbox.early_release_date | date: "%A, %b %d, %Y" }}</li>
+                  {% endif %}
+                  {%- if product.metafields.purity-toolbox.standard_release_date -%}
+                    <li class="alt-font-regular text-sm l-s-1x m-b-xs">Standard Release: estimated {{ product.metafields.purity-toolbox.standard_release_date | date: "%A, %b %d, %Y" }}</li>
+                  {%- endif -%}
+                </ul>
+              {%- when 'soon' -%}
+                <ul class="no-bullets">
+                  <li class="alt-font-regular text-sm l-s-1x m-b-xs">Coming soon</li>
+                </ul>
+              {%- when 'login' -%}
+                <p class="alt-font-regular text-sm l-s-1x m-v">You must be a PURE ACTIVIST, PURE REVOLUTIONIST, or PURIST PRO for early access to this product.
+                  <span class="thick-u-l">{{ 'Log In' | customer_login_link }}</span> or
+                  <a class="thick-u-l" href="/pages/purist-perks" target="_blank">Learn More</a>.
+                </p>
+                {%- if product.metafields.purity-toolbox.early_release_date or product.metafields.purity-toolbox.standard_release_date -%}
+                  <ul class="no-bullets">
+                    {%- if product.metafields.purity-toolbox.early_release_date -%}
+                      <li class="alt-font-regular text-sm l-s-1x m-b-xs">
+                        VIP Early Access:
+                        {% if product.metafields.purity-toolbox.early_release_date == "delay" %}
+                          Coming soon
+                        {% else %}
+                          estimated {{ product.metafields.purity-toolbox.early_release_date | date: "%A, %b %d, %Y" }}
+                        {% endif %}
+                      </li>
+                    {% endif %}
+                    {%- if product.metafields.purity-toolbox.standard_release_date -%}
+                      <li class="alt-font-regular text-sm l-s-1x m-b-xs">
+                        Standard Release:
+                        {% if product.metafields.purity-toolbox.standard_release_date == "delay" %}
+                          Coming soon
+                        {% else %}
+                          estimated {{ product.metafields.purity-toolbox.standard_release_date | date: "%A, %b %d, %Y" }}
+                        {% endif %}
+                      </li>
+                    {%- endif -%}
+                  </ul>
+                {%- endif -%}
+              {%- when 'discontinued' -%}
+                <button type="submit" name="add" class="btn btn__bg-filled--secondary m-t w-full is-added block disabled" disabled="disabled">Discontinued</button>
+              {%- when 'alert' -%}
+                <button
+                  class="btn btn__bg-filled--secondary w-full"
+                  type="submit"
+                  name="add"
+                  data-variant-qty="1"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.variants.first.id }}"
+                  data-variant-sku="{{ product.variants.first.sku }}"
+                  data-variant-price="{{ product.price }}"
+                  data-variant-title="{{ product.variants.title }}">
+                  Add To Tote
+                </button>
+              {%- when 'alertBuffer' -%}
+                <button
+                  class="btn btn__bg-filled--secondary w-full"
+                  type="submit"
+                  name="add"
+                  data-variant-qty="1"
+                  data-product-id="{{ product.id }}"
+                  data-variant-id="{{ product.variants.first.id }}"
+                  data-variant-sku="{{ product.variants.first.sku }}"
+                  data-variant-price="{{ product.price }}"
+                  data-variant-title="{{ product.variants.title }}">
+                  Add To Tote
+                </button>
+              {%- when 'out' -%}
+                <button type="submit" name="add" class="btn btn__bg-filled--secondary m-t w-full is-added block disabled" disabled="disabled">Sold Out</button>
+              {%- else -%}
+                <script type="text/javascript">
+                  console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+                </script>
+            {%- endcase -%}
+          </div>
+        </form>
+        <div class="m-v">
+          <a href="/products/{{product.handle}}" class="btn margin-auto m-v-md block">SEE FULL PRODUCT DETAILS <span class="icon icon-arrow-right"></span> </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

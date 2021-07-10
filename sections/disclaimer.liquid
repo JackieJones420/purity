@@ -1,0 +1,35 @@
+{% for block in section.blocks %}
+  <div class="grid__item large--one-whole m-v">
+    <div class="text-md font-bold m-b">{{ block.settings.title }}</div>
+    <p>{{ block.settings.content }}</p>
+  </div>
+{%- endfor -%}
+
+{% schema %}
+  {
+  "name": "disclaimer",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "disclaimer",
+      "name": "disclaimer",
+      "settings": [
+        {
+          "id": "title",
+          "type": "text",
+          "label": "Header"
+        },
+        {
+          "id": "content",
+          "type": "textarea",
+          "label": "Content"
+        },
+        {
+          "type": "paragraph",
+          "content": "use <br> to change line"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

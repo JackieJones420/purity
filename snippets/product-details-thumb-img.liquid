@@ -1,0 +1,59 @@
+{% comment %}
+Create thumbnails if we have more than one product image
+{% endcomment %}
+<div class="all-image hide">
+  {%- for image in product.metafields.purity-toolbox.toolbox-assets -%}
+    {%- if image[0] != 'featured' -%}
+      <span class="image-url-storage" filter="parent_{{ image[1][0].category | downcase }}">https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if image[1][0].category contains "primary" or image[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ image[1][0].version }}/{{ image[1][0].name }}</span>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- for variant in product.variants -%}
+    {%- for variantImages in variant.metafields.purity-toolbox.toolbox-assets -%}
+      {%- if variantImages[0] != 'featured' -%}
+        <span class="image-url-storage" filter="{{ variant.sku | escape | replace: '.', '-' | downcase }}_{{ variantImages[1][0].category | downcase }}">https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if variantImages[1][0].category contains "primary" or variantImages[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ variantImages[1][0].version }}/{{ variantImages[1][0].name }}</span>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+</div>
+<div class="hide" id="image-load-place"></div>
+<div class="slick-verical--product-thumb m-t text-center no-padding medium-down--m-h-md o-f-hid large--four-fifths margin-auto" id="ProductThumbs">
+
+  {%- for image in product.metafields.purity-toolbox.toolbox-assets -%}
+    {%- if image[0] != 'featured' -%}
+      <div class="one-third left b-a circle o-f-hid">
+        <a href="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if image[1][0].category contains "primary" or image[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ image[1][0].version }}/{{ image[1][0].name }}" class="product-single__thumbnail m-b">
+          <img
+            src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ image[1][0].version }}/{{ image[1][0].name }}"
+            data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if image[1][0].category contains "primary" or image[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ image[1][0].version }}/{{ image[1][0].name }}"
+            class="cld-prepare block w-full"
+            alt="parent_{{ image[1][0].category | downcase }}"/>
+        </a>
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- for variant in product.variants -%}
+    {%- for variantImages in variant.metafields.purity-toolbox.toolbox-assets -%}
+      {%- if variantImages[0] != 'featured' -%}
+        <div class="one-third left large--b-a circle o-f-hid">
+          <a href="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if variantImages[1][0].category contains "primary" or variantImages[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ variantImages[1][0].version }}/{{ variantImages[1][0].name }}" class="product-single__thumbnail m-b">
+            <img
+              src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ variantImages[1][0].version }}/{{ variantImages[1][0].name }}"
+              data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if variantImages[1][0].category contains "primary" or variantImages[1][0].category contains "Primary" -%}{{badgesURL}}{%- endif -%}/{{ variantImages[1][0].version }}/{{ variantImages[1][0].name }}"
+              class="cld-prepare block w-full"
+              alt="{{ variant.sku | escape | replace: '.', '-' | downcase }}_{{ variantImages[1][0].category | downcase }}"/>
+          </a>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+</div>
+<script type="text/template" id="slide-image-template">
+  <div class="one-third left large--b-a circle o-f-hid">
+    <div class="inline left" style="width:1px; margin-left:-1px; padding-top:100%;"></div>
+    <a href="imgURL" class="product-single__thumbnail m-b">
+      <img data-src="imgURL" alt="imageAlt" class="cld-responsive block w-full"/>
+    </a>
+  </div>
+</script>

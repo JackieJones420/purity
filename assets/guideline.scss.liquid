@@ -1,0 +1,90 @@
+// color
+$colorPurityPeach: {{ settings.color_purity_peach }};
+$colorPurityGuava: {{ settings.color_purity_guava }};
+$colorPurityRespberry: {{ settings.color_purity_respberry }};
+$colorPurityDark: {{ settings.color_purity_dark }};
+$colorPurityLight: {{ settings.color_purity_light }};
+$colorPurityWhite: {{ settings.color_purity_white }};
+$colorDarkADAPurple: #a81d46;
+// font
+.hed_title_text{
+  font: {{ settings.HED_text_style_D }} {{ settings.HED_text_family }};
+  letter-spacing: {{ settings.HED_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.HED_text_style_M }} {{ settings.HED_text_family }};
+    letter-spacing: {{ settings.HED_text_space_M }};
+  }
+}
+.dek_title_text{
+  font: {{ settings.DEK_text_style_D }} {{ settings.DEK_text_family }};
+  letter-spacing: {{ settings.DEK_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.DEK_text_style_M }} {{ settings.DEK_text_family }};
+    letter-spacing: {{ settings.DEK_text_space_M }};
+  }
+}
+.page_title_text{
+  font: {{ settings.page_title_text_style_D }} {{ settings.page_title_text_family }};
+  letter-spacing: {{ settings.page_title_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.page_title_text_style_M }} {{ settings.page_title_text_family }};
+    letter-spacing: {{ settings.page_title_text_space_M }};
+  }
+}
+.section_title_text{
+  font: {{ settings.section_title_text_style_D }} {{ settings.section_title_text_family }};
+  letter-spacing: {{ settings.section_title_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.section_title_text_style_M }} {{ settings.section_title_text_family }};
+    letter-spacing: {{ settings.section_title_text_space_M }};
+    font-size: 28px;
+  }
+}
+.module_title_text{
+  font: {{ settings.module_title_text_style_D }} {{ settings.module_title_text_family }};
+  letter-spacing: {{ settings.module_title_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.module_title_text_style_M }} {{ settings.module_title_text_family }};
+    letter-spacing: {{ settings.module_title_text_space_M }};
+  }
+}
+.content_text{
+  font: {{ settings.content_text_style_D }} {{ settings.content_text_family }};
+  letter-spacing: {{ settings.content_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.content_text_style_M }} {{ settings.content_text_family }};
+    letter-spacing: {{ settings.content_text_space_M }};
+  }
+}
+.caption_text{
+  font-family: "Avenir Next Regular","Times New Roman",serif;
+  letter-spacing: {{ settings.caption_text_space_D }};
+  @include respond-to('medium'){
+    letter-spacing: {{ settings.caption_text_space_M }};
+    font-size: 16px;
+  }
+}
+.caption_s_text{
+  font: {{ settings.caption_s_text_style_D }} {{ settings.caption_s_text_family }};
+  letter-spacing: {{ settings.caption_s_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.caption_s_text_style_M }} {{ settings.caption_s_text_family }};
+    letter-spacing: {{ settings.caption_s_text_space_M }};
+  }
+}
+.callout_text{
+  font: {{ settings.callout_text_style_D }} {{ settings.callout_text_family }};
+  letter-spacing: {{ settings.callout_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.callout_text_style_M }} {{ settings.callout_text_family }};
+    letter-spacing: {{ settings.callout_text_space_M }};
+  }
+}
+.callout_s_text{
+  font: {{ settings.callout_s_text_style_D }} {{ settings.callout_s_text_family }};
+  letter-spacing: {{ settings.callout_s_text_space_D }};
+  @include respond-to('medium'){
+    font: {{ settings.callout_s_text_style_M }} {{ settings.callout_s_text_family }};
+    letter-spacing: {{ settings.callout_s_text_space_M }};
+  }
+}

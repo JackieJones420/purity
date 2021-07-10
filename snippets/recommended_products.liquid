@@ -1,0 +1,45 @@
+<div class="grid__item large--one-third medium--one-third small--one-third
+{% if product.tags contains 'Pick' %}
+  pick-grid__item
+{% endif %}">
+{% capture right_title %}{%- if c_product.variants -%}{{ c_product.title | escape }}{%- else -%}{{ all_products[x_product[0]].title | escape }}: {{ c_product.title | escape }}{%- endif -%}{% endcapture %}
+{% capture right_id %}{%- if c_product.variants.first.id -%}{{ c_product.variants.first.id }}{%- else -%}{{ c_product.id }}{%- endif -%}{% endcapture %}
+{% capture right_sku %}{%- if c_product.variants.first.sku -%}{{ c_product.variants.first.sku }}{%- else -%}{{ c_product.sku }}{%- endif -%}{% endcapture %}
+{%- if c_product.variants -%}
+  {% assign right_img = c_product.featured_image %}
+{%- else -%}
+  {%- for image in all_products[x_product[0]].images -%}
+    {% assign imagealt = right_sku | append: '_primary' %}
+    {%- if image.alt contains imagealt -%}
+      {% assign right_img = image %}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+  <div class="checkbox-add-to-cart"
+    data-variant-id="{{ right_id }}"
+    data-variant-sku="{{ right_sku }}"
+    data-variant-price="{{ c_product.price }}"
+    data-variant-title="{{ right_title }}">
+    <div class="m-b">
+      <img
+        src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ right_img.src | img_url: 'master', format: 'pjpg' }}"
+        data-src="https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ right_img.src | img_url: 'master' | format: 'pjpg' }}"
+        data-sizes="auto"
+        class="cld-prepare grid__image fade-in no-margin"
+        alt="Recommended Product: {{ c_product.featured_image.alt | escape }}"/>
+    </div>
+
+    <div class="text-center upsell-description m-v-xs">
+      <div class="m-v-sm">
+        <span class="upsell-checkbox"></span>
+        {% unless product.tags contains "Pick" %}
+          <span class="alt-font l-s text-xxs v-sup upsell__price">{{ c_product.price | money }}</span>
+        {% endunless %}
+        <span class="alt-font l-s text-xxs text-u-c upsell__confirmation v-sup">Added!</span>
+      </div>
+
+      <p class="text-xs upsell__title">{{ right_title }}</p>
+    </div>
+  </div>
+</div>

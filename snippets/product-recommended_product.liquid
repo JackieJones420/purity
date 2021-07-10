@@ -1,0 +1,22 @@
+
+  {% capture right_title %}{{ all_products[x_product[0]].title | escape }}{%- if c_product.title != "Default Title" -%}: {{ c_product.title | escape }}{%- endif -%}{% endcapture %}
+  {% capture tags %}{{ all_products[x_product[0]].tags }}{% endcapture %}
+  {% assign right_id = c_product.id %}
+  {% assign right_sku = c_product.sku %}
+  {% assign right_img = c_product.metafields.purity-toolbox.toolbox-assets.featured[0].name %}
+  {% assign right_img_version = c_product.metafields.purity-toolbox.toolbox-assets.featured[0].version %}
+
+<div class="o-f-hid p-v large--b-a m-t medium-down--p-h-xlg" variant-id="{{ right_id }}">
+  <img
+    src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ right_img_version }}/{{ right_img }}"
+    data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ right_img_version }}/{{ right_img }}"
+    class="cld-prepare grid__image large--two-fifths grid__item p-h-lg"
+    alt="Recommended Product: parent_primary"
+    data-width="312">
+  <div class="large--three-fifths p-h-sm grid__item medium-down--text-center">
+    <p class="callout_text m-b-sm m-t medium-down--hide">USE IT WITH</p>
+    <p class="m-b-xs caption_text m-b-xs p-r">{{ right_title }}</p>
+    <span class="m-b-xs money block caption_text m-b-sm">{{ c_product.price | money }}</span>
+    <button class="btn p-h pointer text-u-c upsell-add l-s-1x p-h-lg">Add To Tote</button>
+  </div>
+</div>

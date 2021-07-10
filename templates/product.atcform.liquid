@@ -1,0 +1,101 @@
+{% layout none %}
+
+  {% comment %}
+  This form is used by dynamic yield's product recommendations component via an ajax call
+  {% endcomment %}
+
+  <div class="text-center m-t-sm collection__add-to-cart-btn">
+    {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+    <form
+      action="/cart/add"
+      method="post"
+      enctype="multipart/form-data"
+      id="AddToCartForm"
+      class="form-horizontal {% unless product.variants.size == 1 or productVariantsAvailableState contains 'release' or productVariantsAvailableState contains 'login' %} hide {% endunless %}">
+
+      <!-- options -->
+      <select name="id" id="productSelect" class="product-single__variants" aria-label="product {{product.handle}} variant selector">
+        {%- for variant in product.variants -%}
+          {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+          {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}
+            <option disabled="disabled" data-sku="{{ variant.sku }}">
+              {{ variant.title }} - <span>{{productVariantsAvailableState}}</span>
+            </option>
+          {% else %}
+            <option {% if forloop.index == 1 %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+              {{ variant.title }} - {{ variant.price | money }}
+            </option>
+          {% endif %}
+        {%- endfor -%}
+      </select>
+
+      <!-- Variants Swatch -->
+      {% if product.variants.size > 1 %}
+        <div class="collection-swatch p-h-lg m-b">
+          {% assign selectedOption = product.options | first %}
+          <p>{{selectedOption}}: <span class="variant-container"></span> </p>
+          {% include 'swatch' with selectedOption %}
+        </div>
+      {% endif %}
+
+      <div class="submit-btn-container">
+
+        {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+        {%- case productVariantsAvailableState -%}
+          {%- when 'add' -%}
+            {%- if product.type == "Sample" -%}
+              <a href="/pages/sample" class="btn btn-secondary no-m-v-gutter w-full">Select Sample</a>
+            {%- else -%}
+              <button type="submit" name="add" id="AddToCart" class="btn btn-secondary add-to-cart-modal no-m-v-gutter w-full">
+                <span id="AddToCartText">Add To Tote</span>
+              </button>
+            {%- endif -%}
+          {%- when 'email' -%}
+            <a href="#-{{product.id}}" data-product-handle="{{ product.handle }}"
+                class="btn BIS_trigger in-stock-modal BIS-collection-btn w-full">NOTIFY ME</a>
+          {%- when 'release' -%}
+            <ul class="no-bullets">
+              {%- if product_meta.standard_release_date -%}
+                <li class="caption_s_text m-b-xs">
+                  Estimated Release Date:
+                  <br>
+                  {{ product_meta.standard_release_date | date: "%A, %b %d, %Y" }}
+                </li>
+              {%- endif -%}
+            </ul>
+          {%- when 'soon' -%}
+            <a href="#-{{product.id}}" data-product-handle="{{ product.handle }}"
+                class="btn BIS_trigger in-stock-modal BIS-collection-btn w-full">NOTIFY ME</a>
+          {%- when 'login' -%}
+            <a href="{{ product.url | within: collection }}"
+                class="btn btn-secondary w-full no-m-v-gutter">Coming soon</a>
+          {%- when 'discontinued' -%}
+            <button type="submit" name="add" class="btn no-borders disabled w-full" disabled="disabled">
+              <span>Discontinued</span>
+            </button>
+          {%- when 'alert' -%}
+            <button type="submit" name="add" id="AddToCart" class="btn btn-secondary add-to-cart-modal w-full no-m-v-gutter">
+              <span id="AddToCartText">Add To Tote</span>
+            </button>
+          {%- when 'alertBuffer' -%}
+            <button type="submit" name="add" id="AddToCart" class="btn btn-secondary w-full add-to-cart-modal no-m-v-gutter">
+              <span id="AddToCartText">Add To Tote</span>
+            </button>
+          {%- when 'out' -%}
+            <button type="submit" name="add" class="btn no-borders disabled w-full" disabled="disabled">
+              <span>Sold Out</span>
+            </button>
+          {%- else -%}
+            <script type="text/javascript">
+              console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+            </script>
+        {%- endcase -%}
+
+      </div>
+    </form>
+
+    {% unless product.variants.size == 1 or productVariantsAvailableState contains 'release' or productVariantsAvailableState contains 'login' %}
+      <span class="btn btn-secondary collection-show-form w-full">
+        CHOOSE {{selectedOption}}
+      </span>
+    {% endunless %}

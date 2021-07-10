@@ -1,0 +1,163 @@
+{% assign variant = product.selected_or_first_available_variant %}
+
+<div class="small--text-center medium--text-center m-t">
+
+  {%- if product.type == "Gift Card" -%}
+    <button type="submit" name="add" class="btn btn__bg-filled--secondary w-full multiple-add-to-cart productAddJS"
+      data-variant-qty="1"
+      data-product-id="{{ product.id }}"
+      data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+      data-variant-sku="{{ product.selected_or_first_available_variant.sku }}"
+      data-variant-price="{{ product.price }}"
+      data-variant-title="{{ product.variants.title }}"
+      >
+      <span id="AddToCartText">Add To Tote</span>
+    </button>
+  {%- elsif product.type == "Sample" -%}
+    <a href="/pages/sample" class="btn btn__bg-filled--secondary w-full">Select Sample</a>
+  {%- else -%}
+    {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.selected_or_first_available_variant -%}
+    {%- case productVariantsAvailableState -%}
+      {%- when 'add' -%}
+        <button
+          class="btn btn__bg-filled--secondary w-full multiple-add-to-cart productAddJS"
+          type="submit"
+          name="add"
+          data-variant-qty="1"
+          data-product-id="{{ product.id }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          data-variant-sku="{{ product.selected_or_first_available_variant.sku }}"
+          data-variant-price="{{ product.price }}"
+          data-variant-title="{{ product.variants.title }}">
+          <span id="AddToCartText">Add To Tote</span>
+
+         
+        </button>
+         {%if product.metafields.duo.mini != blank %} 
+              <h2 class="" style="font-size: 1.2em;">Available for first-time customers only. While supplies last.</h2>
+   
+          {% endif %}
+        {% assign emailHide = true %}
+        {% assign emailMessageHide = false %}
+      {%- when 'email' -%}
+        <button class="btn w-full btn__bg-filled--secondary multiple-add-to-cart productAddJS disabled" disabled="disabled">Sold Out</button>
+      {%- when 'release' -%}
+        {% assign emailHide = true %}
+        <ul class="no-bullets">
+          {%- if product_meta.early_release_date -%}
+            <li class="alt-font-regular text-sm l-s-1x m-b-xs">VIP Early Access: estimated {{ product_meta.early_release_date | date: "%A, %b %d, %Y" }}</li>
+          {% endif %}
+          {%- if product_meta.standard_release_date -%}
+            <li class="alt-font-regular text-sm l-s-1x m-b-xs">Standard Release: estimated {{ product_meta.standard_release_date | date: "%A, %b %d, %Y" }}</li>
+            {%- unless product_meta.early_release_date -%}
+              {% assign emailHide = false %}
+              {% assign emailMessageHide = true %}
+            {%- endunless -%}
+          {%- endif -%}
+        </ul>
+      {%- when 'soon' -%}
+        <ul class="no-bullets">
+          <li class="alt-font-regular text-md l-s-1x m-b-xs">Coming soon</li>
+          {% assign emailHide = false %}
+          {% assign emailMessageHide = true %}
+        </ul>
+      {%- when 'login' -%}
+      {% assign emailHide = true %}
+        <!-- <p class="alt-font l-s small--text-center medium--text-center text-xs text-u-c m-v">Coming soon!</p> -->
+        <p class="alt-font-regular text-sm l-s-1x m-v">You must be a PURE ACTIVIST, PURE REVOLUTIONIST, or PURIST PRO for early access to this product.
+          <span class="thick-u-l">{{ 'Log In' | customer_login_link }}</span> or
+          <a class="thick-u-l" href="/pages/purist-perks" target="_blank">Learn More</a>.
+        </p>
+        {%- if product_meta.early_release_date or product_meta.standard_release_date -%}
+          <ul class="no-bullets">
+            {%- if product_meta.early_release_date -%}
+              <li class="alt-font-regular text-sm l-s-1x m-b-xs">
+                VIP Early Access:
+                {% if product_meta.early_release_date == "delay" %}
+                  Coming soon
+                {% else %}
+                  estimated {{ product_meta.early_release_date | date: "%A, %b %d, %Y" }}
+                {% endif %}
+              </li>
+            {% endif %}
+            {%- if product_meta.standard_release_date -%}
+              <li class="alt-font-regular text-sm l-s-1x m-b-xs">
+                Standard Release:
+                {% if product_meta.standard_release_date == "delay" %}
+                  Coming soon
+                {% else %}
+                  estimated {{ product_meta.standard_release_date | date: "%A, %b %d, %Y" }}
+                {% endif %}
+              </li>
+              {%- unless product_meta.early_release_date -%}
+                {% assign emailHide = false %}
+                {% assign emailMessageHide = true %}
+              {%- endunless -%}
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      {%- when 'discontinued' -%}
+        <button class="btn w-full btn__bg-filled--secondary multiple-add-to-cart productAddJS disabled" disabled="disabled">Discontinued</button>
+        {% assign emailHide = true %}
+      {%- when 'alert' -%}
+        <div class="m-t-xs m-b inventory-left">
+          <div>Less than <span class="inventory-left">{{ product.selected_or_first_available_variant.inventory_quantity }}</span> left.</div>
+        </div>
+        <button
+          class="btn btn__bg-filled--secondary w-full multiple-add-to-cart productAddJS"
+          type="submit"
+          name="add"
+          data-variant-qty="1"
+          data-product-id="{{ product.id }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          data-variant-sku="{{ product.selected_or_first_available_variant.sku }}"
+          data-variant-price="{{ product.price }}"
+          data-variant-title="{{ product.variants.title }}">
+          <span id="AddToCartText">Add To Tote</span>
+        </button>
+        {% assign emailHide = true %}
+      {%- when 'alertBuffer' -%}
+        <div class="m-t-xs m-b inventory-left">
+          <div>Less than <span class="inventory-left">{{ buffer_inventory }}</span> left.</div>
+        </div>
+        <button
+          class="btn btn__bg-filled--secondary w-full multiple-add-to-cart productAddJS"
+          type="submit"
+          name="add"
+          data-variant-qty="1"
+          data-product-id="{{ product.id }}"
+          data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+          data-variant-sku="{{ product.selected_or_first_available_variant.sku }}"
+          data-variant-price="{{ product.price }}"
+          data-variant-title="{{ product.variants.title }}">
+          <span id="AddToCartText">Add To Tote</span>
+        </button>
+        {% assign emailHide = true %}
+      {%- when 'out' -%}
+        <button class="btn w-full btn__bg-filled--secondary multiple-add-to-cart productAddJS disabled" disabled="disabled">Sold Out</button>
+        {% assign emailHide = true %}
+      {%- else -%}
+        <script type="text/javascript">
+          console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+        </script>
+    {%- endcase -%}
+  {%- endif -%}
+
+  {%- if product.type == "Gift Card" or product.type == "Sample" -%}
+    {% assign emailHide = true %}
+  {%- endif -%}
+
+  {%- if product.variants.size > 1 -%}
+    {% assign all_variant_soldout = true %}
+    {% for variant in product.variants %}
+      {% if variant.inventory_quantity > 50 %}
+        {% assign all_variant_soldout = false %}
+      {% endif %}
+    {% endfor %}
+  {%- endif -%}
+  <div class="bis-block" {% if emailHide %}style="display:none"{% endif %}>
+    <p class="large--text-center l-s-1x m-b hide">Your favorite {% if all_variant_soldout %}product{% else %}shade{% endif %} is sold out?</p>
+    <a href="#" class="btn margin-auto block big-add-to-cart" id="BIS_trigger">NOTIFY ME</a>
+  </div>
+
+</div>

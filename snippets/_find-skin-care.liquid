@@ -1,0 +1,89 @@
+{% assign finding = "skincare" %}
+{% assign content = "I'm looking for my perfect skin care routine 🔎. My skin type is  | . My top skin concern is | ." %}
+{% assign originalHandle = "skin-care" %}
+{% assign resultHandle = "sc-finder" %}
+{% assign steps = "FinderStep-sc-cleanser|FinderStep-sc-scrub|FinderStep-sc-toner|FinderStep-sc-mask|FinderStep-sc-serum|FinderStep-sc-night-serum|FinderStep-sc-facial-oil|FinderStep-sc-moisturizer|FinderStep-sc-night-cream|FinderStep-sc-day-eye-cream|FinderStep-sc-night-eye-cream|FinderStep-sc-bonus" | split: '|' %}
+{% assign stepNames = "Cleanser|Scrub|Toner|Mask|Serum|Night Serum|Facial Oil|Day Moisturizer|Night Cream|Day Eye Cream|Night Eye Cream|Bonus" | split: '|' %}
+{% assign finderTitle = 'SKIN CARE ROUTINE' %}
+{% assign selectMatchForm = 'skin_type|skin_concern' %}
+{% capture selectMatch %}{{ customer.metafields.purity-toolbox.skin_type }}|{{customer.metafields.purity-toolbox.skin_concern}}{% endcapture %}
+
+<script type="text/javascript">
+  {{finding}}Data = [{"name": "Dry",
+                      "value":[
+                                {"name": "Aging",
+                                "value": "finder-sc-dry-aging"
+                                },
+                                {"name": "Brightening/Dark Spots",
+                                "value": "finder-sc-dry-brightening"
+                                },
+                                {"name": "Dehydration",
+                                "value": "finder-sc-dry-dehydration"
+                                },
+                                {"name": "Redness/Sensitivity",
+                                "value": "finder-sc-dry-redness"
+                                }
+                              ]
+                      },
+                      {"name": "Oily",
+                      "value":[
+                                {"name": "Aging",
+                                "value": "finder-sc-oily-aging"
+                                },
+                                {"name": "OILY Acne",
+                                "value": "finder-sc-oily-acne"
+                                },
+                                {"name": "Brightening/Dark Spots",
+                                "value": "finder-sc-oily-brightening"
+                                },
+                                {"name": "Redness/Sensitivity",
+                                "value": "finder-sc-oily-redness"
+                                },
+                                {"name": "Pores",
+                                "value": "finder-sc-oily-pores"
+                                }
+                              ]
+                      },
+                      {"name": "Combo",
+                      "value":[
+                                {"name": "Aging",
+                                "value": "finder-sc-combo-aging"
+                                },
+                                {"name": "COMBO Acne",
+                                "value": "finder-sc-combo-acne"
+                                },
+                                {"name": "Brightening/Dark Spots",
+                                "value": "finder-sc-combo-brightening"
+                                },
+                                {"name": "Dehydration",
+                                "value": "finder-sc-combo-dehydration"
+                                },
+                                {"name": "Redness/Sensitivity",
+                                "value": "finder-sc-combo-redness"
+                                },
+                                {"name": "Pores",
+                                "value": "finder-sc-combo-pores"
+                                }
+                              ]
+                      },
+                      {"name": "Normal",
+                      "value":[
+                                {"name": "Aging",
+                                "value": "finder-sc-normal-aging"
+                                },
+                                {"name": "Brightening/Dark Spots",
+                                "value": "finder-sc-normal-brightening"
+                                },
+                                {"name": "Dehydration",
+                                "value": "finder-sc-normal-dehydration"
+                                },
+                                {"name": "Redness/Sensitivity",
+                                "value": "finder-sc-normal-redness"
+                                },
+                                {"name": "Pores",
+                                "value": "finder-sc-normal-pores"
+                                }
+                              ]
+                      }
+                    ]
+</script>

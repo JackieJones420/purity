@@ -1,0 +1,238 @@
+<style>
+.colorstext {
+    color: #1ac6ff;
+}
+.colorsbg{
+    /*background: #1ac6ff ! important;*/
+}
+.service span i {
+    color: #1ac6ff;
+}
+.service:hover span {
+
+}
+
+
+/*text*/
+.text{
+    color: #333333
+}
+.colorstext {
+    color: #1ac6ff;
+}
+.colorsbg{
+    /*background: #1ac6ff ! important;*/
+    /*color: #fff;*/
+    background-color: #F9F9F9;
+}
+/*Section */
+.sections {
+    padding-top: 80px;
+    padding-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+/*text*/
+
+.white-text{
+    color: #fff
+}
+.black-text {
+    color: #000;
+}
+.number {
+    position: absolute;
+    background-color: #fff;
+    border: 2px solid #6e9a31;
+    color: #6e9a31;
+    font-size: 23px;
+    width: 56px;
+    height: 56px;
+    border-radius: 28px;
+    line-height: 53px;
+    text-align: center;
+    top: -24px;
+    left: 24px;
+}
+/* ======================
+Features & service
+======================*/
+.service span{
+    display: inline-block;
+    width: 300px;
+    height: 200px;
+    line-height: 355%;
+    font-size: 50px;
+    /*border: 5px solid #f882aa;*/
+    -webkit-border-radius: 5%;
+    -moz-border-radius: 5%;
+    -o-border-radius: 5%;
+    border-radius: 5%;
+/*     background: #F0F0F0; */
+    text-align: center;
+    margin-bottom: 210px;
+    transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+
+}
+.service span i {
+    color: #1ac6ff;
+    font-size: 30px;
+    line-height: 90px;
+    transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -webkit-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+}
+.service:hover span {
+
+}
+.service:hover span i {
+    color: #ffffff;
+}
+.h5-text-size {
+    font-size: 22px;
+}
+.p-text-font {
+    font-size: 16px;
+}
+
+@media (min-width:1200px) {
+
+}
+
+@media (max-width: 1199px) and (min-width:992px) {
+    .number {
+        left: -12px;
+    }
+}
+
+@media (max-width: 991px) and (min-width: 768px){
+    .number{
+        top: -17px;
+        left: 205px;
+    }
+}
+
+@media (max-width: 767px)  {
+    .number{
+        top: -21px;
+        left: 190px;
+    }
+}
+
+@media (max-width: 766px) and (min-width: 482px) {
+    .number {
+        top: -22px;
+        left: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .number {
+        top: -20px;
+        left: 15px;
+    }
+}
+</style>
+
+<section id="" class="hero-section" style="padding: 60px 0;">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12 text-center">
+            <div class="section-3-inner">
+               <h1>Purist Perks Referral Program</h1>
+               <p style="font-size: 24px;">Be a bestie and refer a friend to 100% PURE®. You get 200 points.</p>
+            </div>
+         </div>
+      </div>
+   </div>
+</section>    
+
+<section id="service" class="sections colorsbg">
+    <div class="grid">
+        <div class="grid__item large--one-whole text-center">
+            <h2 style="font-weight:300;">How It Works</h2>
+        </div>
+    </div>
+    <div class="grid">                    
+        <div class="grid__item large--one-third">
+            <div class="service text-center">
+              <img  class="" src="//cdn.shopify.com/s/files/1/0648/1955/files/referafriend_landingpage_09.jpg?8696722298291670915" alt="#"  width="300" />
+                <h2>Refer Your Friends</h2>
+                {% if customer %}
+                <p class="p-text-font">
+                    Use social media or email to <br>share your unique referral link.
+                </p>
+                 <p>
+                   <a href="javascript:void(0);" class="btn m-t-sm" data-lion-refer>REFER NOW</a>
+                </p>                              
+                {% else %}
+                <p class="p-h-md">
+                    <a href="/account/login">Login</a> to Invite Friends and Family. Don't have an account? <a href="/account/register">Sign-Up</a>
+                </p>
+                {% endif %}             
+            </div>
+        </div>
+        <div class="grid__item large--one-third">
+            <div class="service text-center">
+              <img class="" src="//cdn.shopify.com/s/files/1/0648/1955/files/referafriend_landingpage_11.jpg?8696722298291670915" alt="" width="290" />
+                <h2>Your Referral<br> Makes a Purchase</h2>
+                <p class="p-text-font p-h-md">
+                   <i>It must be their first purchase</i>.
+                </p>
+            </div>
+        </div>
+        <div class="grid__item large--one-third">
+            <div class="service text-center">
+              <img class="" src="//cdn.shopify.com/s/files/1/0648/1955/files/referafriend_landingpage_13.jpg?8696722298291670915" alt="" width="256" />
+                <h2>Get Your Points</h2>
+                <p class="p-text-font p-h-md">
+                    When your bestie <i>buys</i>, you'll <br> recieve 200 points for the referral!
+                </p>
+            </div>
+        </div>
+    </div>        
+</section>
+
+    <section class="colorsbg">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2 style="font-weight:300;">Useful Info</h2>
+                </div>
+                <div class="col-md-6 m-v-lg p-md">
+                    <p>
+                        <strong>How does this work?</strong>
+                    </p>
+                    <p> Refer a friend to 100% PURE® and earn 200 Purist Perks points for each successful referral.  You can send this link to as many friends as you like, or tweet it or post in on your Facebook wall or anywhere else you want to.  </p>
+                    <p>
+                        <strong>How soon will I get my points?</strong>
+                    </p>
+                    <p> The points will be added to your account as soon as the referrer places a purchase. The points will be available for use after the 7 days pending period.</p>
+                </div>
+                <div class="col-md-6 m-v-lg p-md">
+                    <p>
+                      <strong>Is there a limit to the number of friends I can refer?</strong>
+                    </p>
+                    <p>No. You can share your Refer-a-Friend unique link with as many friends and family as you like.</p>
+
+                    <p>
+                        <strong>I never received my points, what happened?</strong>
+                    </p>
+                    <p>
+                        No worries, please provide us with your and the referral's email addresses. We can investigate.
+                    </p>
+                </div>
+            </div>
+	   </div>
+  </section>
+
+  <script>
+  fbq('track', 'ViewContent', {
+      content_category: '{{ page.handle }}-page'
+  });
+  </script>

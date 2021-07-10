@@ -1,0 +1,50 @@
+<ul class="no-bullets inline-list icon-block">
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "Fruit Dyed Makeup" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_fruit_pigmented.svg' | asset_url }}" alt="Fruit Pigmented® icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Fruit Pigmented®</span>
+    </li>
+  {%- endif -%}
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "Natural" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_natural.svg' | asset_url }}" alt="Natural icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Natural</span>
+    </li>
+  {%- endif -%}
+  {% if targetproduct.metafields.purity-toolbox.claims contains "Vegan" %}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_vegan.svg' | asset_url }}" alt="Vegan icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Vegan</span>
+    </li>
+  {% endif %}
+  {% if targetproduct.metafields.purity-toolbox.claims contains "Vegetarian" %}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_vegetarian.svg' | asset_url }}" alt="Vegetarian icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Vegetarian</span>
+    </li>
+  {% endif %}
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "Cruelty Free" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_cruelty_free.svg' | asset_url }}" alt="Cruelty free icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Cruelty Free</span>
+    </li>
+  {%- endif -%}
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "Gluten Free-Yes" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'icon_gluten_free.svg' | asset_url }}" alt="Gluten free icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Gluten Free</span>
+    </li>
+  {%- endif -%}
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "Made in USA" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'USA-product.svg' | asset_url }}" alt="Gluten free icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Made in USA</span>
+    </li>
+  {%- endif -%}
+  {%- if targetproduct.metafields.purity-toolbox.claims contains "MothersChoice-Yes" -%}
+    <li class="m-r-sm">
+      <img height="15" width="15" src="{{ 'mom-choice.svg' | asset_url }}" alt="Mom's Choice icon - Product Page">
+      <span class="text-muted-dk text-xxs v-text-t">Mom's Choice</span>
+    </li>
+  {%- endif -%}
+</ul>

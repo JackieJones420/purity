@@ -1,0 +1,134 @@
+<section id="product-list-{{section.id}}" class="m-b-xlg o-f-hid grid section-{{ section.settings.title_text | strip_html | handleize }}">
+  <a href="{% if section.settings.link_to %}{{section.settings.link_to}}{% else %}/collections/{{collections[section.settings.selected_collection].handle}}{% endif %}" class="text-center block">
+    <h3 class="section_title_text inline b-b p-h no-margin">{{section.settings.title_text}}</h3>
+  </a>
+  {% comment %}
+    Use class grid-uniform to have evenly sized columns clear
+    each other properly at each breakpoint.
+  {% endcomment %}
+  <div class="init-carousel m-b no-padding">
+    {% comment %}
+      Loop through products in your Frontpage collection.
+      This collection is created by default, but you must add products to it.
+    {% endcomment %}
+    {% for product in collections[section.settings.selected_collection].products limit: section.settings.show_number %}
+      {% include 'product-grid-item', iten_index_num: forloop.index %}
+    {% else %}
+      {% include 'onboarding-featured-products' %}
+    {% endfor %}
+  </div>
+</section>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('#product-list-{{section.id}} .init-carousel').slick({
+    lazyLoad: 'ondemand',
+    slidesToShow: {{section.settings.number_in_line}},
+    dots: true,
+    arrows: true,
+    responsive: [
+      {
+        breakpoint: 769,
+        settings: {
+          arrows: false,
+          centerPadding: '20px',
+          centerMode: false,
+          slidesToShow: 2
+        }
+      }
+    ]
+  })
+})
+</script>
+{% schema %}
+{
+  "name": "Product List",
+  "class": "index-product-list wrapper",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title text"
+    },
+    {
+      "type": "url",
+      "id": "link_to",
+      "label": "Link to page(empty will link to collection)"
+    },
+    {
+      "type": "collection",
+      "id": "selected_collection",
+      "label": "Link to collection"
+    },
+    {
+      "type": "select",
+      "id": "show_number",
+      "label": "Show how many items in total",
+      "options": [
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        },
+        {
+          "value": "7",
+          "label": "7"
+        },
+        {
+          "value": "8",
+          "label": "8"
+        },
+        {
+          "value": "9",
+          "label": "9"
+        },
+        {
+          "value": "10",
+          "label": "10"
+        }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "select",
+      "id": "number_in_line",
+      "label": "Show how many items in one line",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        },
+        {
+          "value": "5",
+          "label": "5"
+        },
+        {
+          "value": "6",
+          "label": "6"
+        },
+        {
+          "value": "7",
+          "label": "7"
+        }
+      ],
+      "default": "4"
+    }
+  ],
+  "presets": [{
+    "name": "Product List",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

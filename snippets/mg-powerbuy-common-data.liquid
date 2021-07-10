@@ -1,0 +1,34 @@
+<div id='mg-powerbuy-common-data' 
+	                                        data-shopdomain='{{shop.domain}}'
+	                                        data-template='{{template}}' 
+	                                        data-templatename='{{template.name}}'     
+	                                        data-itemid='{{product.id}}' 
+	                                        data-clientid='2sk2gt23bj72obs1pivhoks4m3'
+	                                        data-variant='{{product.selected_or_first_available_variant.id}}'
+	                                        data-cusaccountsenabled='{{shop.customer_accounts_enabled}}'
+	                                        data-cusaccountsoptional='{{shop.customer_accounts_optional}}'
+	                                        data-customerid='{{customer.id}}'
+	                                        data-sitetype='1'
+	                                        data-productavailable='{{product.available}}'
+                                            data-page='share'
+	                                        style='display: none'>
+		                                        <script type='text/javascript'>
+			                                        var __mgPowerBuyComponent = {
+				                                        pageUrl: window.location.href
+			                                        }
+                                                    var __mgPowerBuyComponentCommonData = {
+                                                      shopInfo: {
+                                                        money_format: '{{ shop.money_format}}',
+                                                        domain: '{{ shop.domain}}',
+                                                        currency: '{{shop.currency}}',
+                                                        money_with_currency_format:'{{shop.money_with_currency_format}}',
+                                                        permanent_domain: '{{shop.permanent_domain}}',
+                                                        email:'{{shop.email}}',
+                                                        phone:'{{shop.phone}}',
+                                                        name:'{{shop.name}}'
+                                                        
+                                                      },
+                                                      productInfo: {{ product | json }},                                                      
+			                                        }
+		                                        </script >
+	                                        </div>

@@ -1,0 +1,106 @@
+<nav class="breadcrumb breadcrumb-nav text-muted text-sm" role="navigation" aria-label="breadcrumbs">
+  <a href="/account">Account</a>
+  <span aria-hidden="true">›</span>
+  <span>Profile</span>
+</nav>
+<div class="grid max-width-lgx8 margin-auto">
+  <div class="grid__item large--one-whole">
+    <div class="m-v p-xs">
+      <p class="main h1 text-center m-b-lg">Profile</p>
+      <p class="text-center m-b-lg text-md p-h-lg l-h-md max-width-lgx6 margin-auto">Help us customize your shopping experience! You'll find product recommendations and curated content just for you.</p>
+      <form action="/tools/customer_profile" method="GET" id="custmeta">
+        <input type="hidden" name="user_id" value="{{ customer.id }}" />
+
+        <hr id="basic">
+        <p class="h4 main text-center">Basic Information</p>
+        <div class="m-v-md">
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="firstname" class="text-md inline m-b-sm cursor-text">First Name</label>
+            <br>
+            <input class="select" id="firstname" type="text" name="first_name" value="{{customer.first_name}}">
+          </div>
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="lastname" class="text-md inline m-b-sm cursor-text">Last Name</label>
+            <br>
+            <input class="select" id="lastname" type="text" name="last_name" value="{{customer.last_name}}">
+          </div>
+          <div class="one-whole p-h-md m-b text-center">
+            <a href="/account/addresses" class="btn select alt-font-regular l-s-2x" style="text-transform:none">Edit <span class="small--hide">Shipping </span>Addresses</a>
+          </div>
+          <div class="clear-both"></div>
+        </div>
+
+        <hr id="skin">
+        <p class="h4 main text-center">Skin Profile</p>
+        <div class="m-v-md">
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="SkinType" class="text-md inline m-b-sm">Skin Type</label>
+            <br>
+            <select id="SkinType" name="skin_type">
+              <option value="Default" {% if customer.metafields.purity-toolbox.skin_type == "Default" %} selected {% endif %}>-- Not Set --</option>
+              <option value="Dry" {% if customer.metafields.purity-toolbox.skin_type == "Dry" %} selected {% endif %}>Dry</option>
+              <option value="Oily" {% if customer.metafields.purity-toolbox.skin_type == "Oily" %} selected {% endif %}>Oily</option>
+              <option value="Combo" {% if customer.metafields.purity-toolbox.skin_type == "Combo" %} selected {% endif %}>Combo</option>
+              <option value="Normal" {% if customer.metafields.purity-toolbox.skin_type == "Normal" %} selected {% endif %}>Normal</option>
+            </select>
+          </div>
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="SkinShade" class="text-md inline m-b-sm">Skin Tone</label>
+            <br>
+            <select id="SkinShade" name="skin_tone">
+              <option value="Default" {% if customer.metafields.purity-toolbox.skin_tone == "Default" %} selected {% endif %}>-- Not Set --</option>
+              <option value="Fair" {% if customer.metafields.purity-toolbox.skin_tone == "Fair" %} selected {% endif %}>Fair</option>
+              <option value="Light" {% if customer.metafields.purity-toolbox.skin_tone == "Light" %} selected {% endif %}>Light</option>
+              <option value="Medium" {% if customer.metafields.purity-toolbox.skin_tone == "Medium" %} selected {% endif %}>Medium</option>
+              <option value="Tan" {% if customer.metafields.purity-toolbox.skin_tone == "Tan" %} selected {% endif %}>Tan</option>
+              <option value="Dark" {% if customer.metafields.purity-toolbox.skin_tone == "Dark" %} selected {% endif %}>Dark</option>
+              <option value="Deep" {% if customer.metafields.purity-toolbox.skin_tone == "Deep" %} selected {% endif %}>Deep</option>
+            </select>
+          </div>
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="SkinConcern" class="text-md inline m-b-sm">Skin Concern (Primary)</label>
+            <br>
+            <select id="SkinConcern" name="skin_concern">
+              <option value="Default" {% if customer.metafields.purity-toolbox.skin_concern == "Default" %} selected {% endif %}>-- Not Set --</option>
+              <option value="Acne" {% if customer.metafields.purity-toolbox.skin_concern == "Acne" %} selected {% endif %}>Acne</option>
+              <option value="Aging" {% if customer.metafields.purity-toolbox.skin_concern == "Aging" %} selected {% endif %}>Aging</option>
+              <option value="Dehydration" {% if customer.metafields.purity-toolbox.skin_concern == "Dehydration" %} selected {% endif %}>Dehydration</option>
+              <option value="Pores" {% if customer.metafields.purity-toolbox.skin_concern == "Pores" %} selected {% endif %}>Pores</option>
+              <option value="Redness/Rosacea" {% if customer.metafields.purity-toolbox.skin_concern == "Redness/Rosacea" %} selected {% endif %}>Redness / Rosacea</option>
+              <option value="Sensitivity" {% if customer.metafields.purity-toolbox.skin_concern == "Sensitivity" %} selected {% endif %}>Sensitivity</option>
+              <option value="Brightening" {% if customer.metafields.purity-toolbox.skin_concern == "Brightening" %} selected {% endif %}>Brightening</option>
+              <option value="Dark Age/Sun Spots" {% if customer.metafields.purity-toolbox.skin_concern == "Dark Age/Sun Spots" %} selected {% endif %}>Dark Age / Sun Spots</option>
+            </select>
+          </div>
+          <div class="medium-down--one-whole large--one-half left p-h-md m-b">
+            <label for="SkinConcern2" class="text-md inline m-b-sm">Skin Concern (Secondary)</label>
+            <br>
+            <select id="SkinConcern2" name="skin_concern_2">
+              <option value="Default" {% if customer.metafields.purity-toolbox.skin_concern2 == "Default" %} selected {% endif %}>-- Not Set --</option>
+              <option value="Acne" {% if customer.metafields.purity-toolbox.skin_concern2 == "Acne" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Acne" %}type="hide"{% endif %}>Acne</option>
+              <option value="Aging" {% if customer.metafields.purity-toolbox.skin_concern2 == "Aging" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Aging" %}type="hide"{% endif %}>Aging</option>
+              <option value="Dehydration" {% if customer.metafields.purity-toolbox.skin_concern2 == "Dehydration" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Dehydration" %}type="hide"{% endif %}>Dehydration</option>
+              <option value="Pores" {% if customer.metafields.purity-toolbox.skin_concern2 == "Pores" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Pores" %}type="hide"{% endif %}>Pores</option>
+              <option value="Redness/Rosacea" {% if customer.metafields.purity-toolbox.skin_concern2 == "Redness/Rosacea" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Redness/Rosacea" %}type="hide"{% endif %}>Redness / Rosacea</option>
+              <option value="Sensitivity" {% if customer.metafields.purity-toolbox.skin_concern2 == "Sensitivity" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Sensitivity" %}type="hide"{% endif %}>Sensitivity</option>
+              <option value="Brightening" {% if customer.metafields.purity-toolbox.skin_concern2 == "Brightening" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Brightening" %}type="hide"{% endif %}>Brightening</option>
+              <option value="Dark Age/Sun Spots" {% if customer.metafields.purity-toolbox.skin_concern2 == "Dark Age/Sun Spots" %} selected {% endif %} {% if customer.metafields.purity-toolbox.skin_concern == "Default" or customer.metafields.purity-toolbox.skin_concern == "Dark Age/Sun Spots" %}type="hide"{% endif %}>Dark Age / Sun Spots</option>
+            </select>
+          </div>
+          <div class="clear-both"></div>
+        </div>
+        <hr>
+        <button type="submit" class="cus-pfl-submit-btn btn btn-primary v-t p-v block margin-auto m-t-lg m-b-lg">Update Profile</button>
+      </form>
+      <div class="text-center">
+        {%- if customer.metafields.purity-toolbox.skin_type != "Default" and customer.metafields.purity-toolbox.skin_type and customer.metafields.purity-toolbox.skin_concern and customer.metafields.purity-toolbox.skin_concern != "Default" -%}
+          <a href="/collections/sc-finder/finder-sc-{{ customer.metafields.purity-toolbox.skin_type }}-{{ customer.metafields.purity-toolbox.skin_concern }}" target="_blank" class="btn btn-primary">Shop Results</a>
+        {%- else condition -%}
+          <span>Please complete your skin profile to view your skin care routine.</span>
+        {%- endif -%}
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- End of sineLABS example //-->

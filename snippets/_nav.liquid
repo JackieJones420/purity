@@ -1,0 +1,115 @@
+<nav class="no-p-h-gutter--medium-up medium-down--hide megamenu_container wrapper {{ navClass }}">
+  <ul class="megamenu text-center">
+    {% for linkT1 in linklists.[settings.main_nav].links %}
+      <li>
+        {%- if linkT1.url == '/' -%}
+          {%- if linkT1.title == 'SPECIALS' -%}
+            <a class="callout_s_text default-cursor text-dark-dk pos-rlt">
+              {{ linkT1.title }}
+            </a>
+          {%- else -%}
+            <a class="callout_s_text default-cursor text-dark-dk">{{ linkT1.title }}</a>
+          {%- endif -%}
+        {%- else -%}
+          <a class="callout_s_text" href="{{ linkT1.url }}" {%- if linkT1.url contains 'http' -%}
+            {%- unless linkT1.url contains '100percentpure.com' -%}
+              target="_blank"
+            {%- endunless -%}
+          {%- endif -%}>{{ linkT1.title }}</a>
+        {%- endif -%}
+        {%- if linkT1.levels == 0 -%}
+        {%- elsif linkT1.levels == 1 -%}
+          <div class="dropdown_fullwidth o-f-hid">
+            <div class="wrapper p-t-lg p-b-md no-padding-h flex j-c-center">
+              {%- for lineT2 in linkT1.links -%}
+                {%- include 'mega-menu-item', MmLabel: lineT2.title, MmHref: lineT2.url, MmClass: 'p-h', MmLinkText: 'callout_s_text text-u-c' -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- else -%}
+          <div class="dropdown_fullwidth o-f-hid">
+            <!-- Begin Item Container -->
+            <div class="wrapper p-t-lg p-b-md no-padding-h flex j-c-center">
+              {% assign listNum = linkT1.links.size | minus: 1 %}
+              {% assign listGroup1 = '<div class="one-sixth p-h text-left">' %}
+              {% assign listGroup2 = '<div class="one-sixth p-h text-left">' %}
+              {% assign listGroup3 = '<div class="one-sixth p-h text-left">' %}
+              {% assign imageGroup = '' %}
+              {% assign sameHeightId = 'megamenu-' | append: forloop.index | append: '-' %}
+              {%- for lineT2 in linkT1.links -%}
+                {%- if lineT2.title != 'placeholder' -%}
+                  {%- if forloop.index < listNum  -%}
+                    {% assign groupNumber = forloop.index | modulo: 3 %}
+                    {% assign groupRow = forloop.index0 | divided_by: 3 | floor %}
+                    {%- if groupNumber == 1 -%}
+                      {% capture listGroup1 %}
+                        {{listGroup1}}
+                        <div class="callout_s_text text-u-c m-b-sm">
+                          <a {% if lineT2.url != '/' %}href="{{ lineT2.url }}"{% else %}class="default-cursor text-dark-dk"{% endif %}>{{ lineT2.title }}</a>
+                        </div>
+                        {%- if lineT2.links.size > 0 -%}
+                        <ul class="list_unstyled caption_s_text same-height" same-height-id="{{ sameHeightId }}{{groupRow}}">
+                          {%- for lineT3 in lineT2.links -%}
+                            <li><a href="{{ lineT3.url }}" class="inline p-t-xs">{{ lineT3.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                        {%- endif -%}
+                      {% endcapture %}
+                    {%- elsif groupNumber == 2 -%}
+                      {% capture listGroup2 %}
+                        {{listGroup2}}
+                        <div class="callout_s_text text-u-c m-b-sm">
+                          <a {% if lineT2.url != '/' %}href="{{ lineT2.url }}"{% else %}class="default-cursor text-dark-dk"{% endif %}>{{ lineT2.title }}</a>
+                        </div>
+                        {%- if lineT2.links.size > 0 -%}
+                        <ul class="list_unstyled caption_s_text same-height" same-height-id="{{ sameHeightId }}{{groupRow}}">
+                          {%- for lineT3 in lineT2.links -%}
+                            <li><a href="{{ lineT3.url }}" class="inline p-t-xs">{{ lineT3.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                        {%- endif -%}
+                      {% endcapture %}
+                    {%- else -%}
+                      {% capture listGroup3 %}
+                        {{listGroup3}}
+                        <div class="callout_s_text text-u-c m-b-sm">
+                          <a {% if lineT2.url != '/' %}href="{{ lineT2.url }}"{% else %}class="default-cursor text-dark-dk"{% endif %}>{{ lineT2.title }}</a>
+                        </div>
+                        {%- if lineT2.links.size > 0 -%}
+                        <ul class="list_unstyled caption_s_text same-height" same-height-id="{{ sameHeightId }}{{groupRow}}">
+                          {%- for lineT3 in lineT2.links -%}
+                            <li><a href="{{ lineT3.url }}" class="inline p-t-xs">{{ lineT3.title }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                        {%- endif -%}
+                      {% endcapture %}
+                    {%- endif -%}
+                  {%- else -%}
+                    {% capture imageGroup %}
+                      {{imageGroup}}
+                      {%- include 'mega-menu-item', MmLabel: lineT2.title, MmHref: lineT2.url, MmClass: 'p-h', MmLinkText: 'caption_text' -%}
+                    {% endcapture %}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if listGroup1 contains '</a>' -%}
+                {{ listGroup1 }}</div>
+              {%- endif -%}
+              {%- if listGroup2 contains '</a>' -%}
+                {{ listGroup2 }}</div>
+              {%- endif -%}
+              {%- if listGroup3 contains '</a>' -%}
+                {{ listGroup3 }}</div>
+              {%- endif -%}
+              {%- if imageGroup contains '</a>' -%}
+                {{ imageGroup }}
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </li>
+    {% endfor %}
+    <li class="pos-abt nav-bk w-full bg-white pos-rlt"></li>
+  </ul>
+</nav>
+{% assign navClass = '' %}

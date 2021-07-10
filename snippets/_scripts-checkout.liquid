@@ -1,0 +1,40 @@
+<script type="text/javascript">
+'use strict';
+var CheckoutObj = CheckoutObj || {}
+CheckoutObj = {
+  init: function() {
+    this.initCouponAjax()
+  },
+  initCouponAjax: function() {
+    var $el = $('#checkout_reduction_code')
+    $el.change('click', function() {
+      var $this = $(this)
+      if ($this.val() == 'coupon_ajax_test_01') {
+        $.ajax({
+          url: '/cart/update.js',
+          method: 'POST',
+          dataType: 'json',
+          data: {
+            updates: {[39139155598]: 1}
+          }
+        }).then(function(data) {
+          location.reload();
+          if (data) {
+
+            // setTimeout(function() {
+            //   console.log('in timeout')
+            //   // location.reload();
+            // }, 1000)
+          }
+        });
+      }
+    });
+  }
+}
+
+
+$( document ).ready(function() {
+  CheckoutObj.init()
+});
+
+</script>

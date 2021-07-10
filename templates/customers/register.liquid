@@ -1,0 +1,58 @@
+<!-- /templates/customers/register.liquid -->
+<div class="bg-peach p-v-xlg">
+  <div class="wrapper p-v-md">
+    <div class="text-center large--three-quarters margin-auto p-v-xlg bg-white p-h-xlg">
+      {% comment %}
+        If a user has successfully requested a new password, the form.posted_successfully? variable
+        is set to true within the 'recover_customer_password' form only. Within that form you'll see
+        the variable 'resetPassword' set to true, which is used to initialize timber.resetPasswordSuccess().
+      {% endcomment %}
+      <p class="callout_s_text m-b-xs">WANT INSIDER ACCESS?</p>
+      <p class="page_title_text m-b">Create Your Account</p>
+      <p class="caption_s_text m-b">Sign up to receive exclusive offers, redeemable points, and more!</p>
+      <div class="margin-auto pos-rlt">
+        {% form 'create_customer' %}
+          {{ form.errors | default_errors }}
+
+          <label for="FirstName" class="hidden-label">{{ 'customer.register.first_name' | t }}</label>
+          <input type="text" name="customer[first_name]" id="FirstName" style="width: 280px" class="large--m-h m-v-sm" placeholder="{{ 'customer.register.first_name' | t }}" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+
+          <label for="LastName" class="hidden-label">{{ 'customer.register.last_name' | t }}</label>
+          <input type="text" name="customer[last_name]" id="LastName" style="width: 280px" class="large--m-h m-v-sm" placeholder="{{ 'customer.register.last_name' | t }}" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+
+          <label for="Email" class="hidden-label">{{ 'customer.register.email' | t }}</label>
+          <input type="email" name="customer[email]" id="Email" style="width: 280px" class="large--m-h m-v-sm{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'customer.register.email' | t }}" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+
+          <label for="CreatePassword" class="hidden-label">{{ 'customer.register.password' | t }}</label>
+          <input type="password" name="customer[password]" id="CreatePassword" style="width: 280px" class="large--m-h m-t-sm m-b-lg{% if form.errors contains 'password' %} error{% endif %}" placeholder="{{ 'customer.register.password' | t }}">
+
+          <div class="text-left margin-auto caption_s_text m-b-lg" style="max-width: 600px;">
+            <p>By creating an account, you will automatically be part of our rewards program (Purist Perks). <a class="text-u-l" href="/pages/purist-perks" target="_blank" rel="noopener">LEARN MORE</a></p>
+            <input id="policy" type="checkbox" name="policy" required checked>
+            <label for="policy">Yes, I agree with 100%PURE  <a class="text-u-l" href="/pages/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a> and <a class="text-u-l" href="/pages/legal-terms-conditions" target="_blank" rel="noopener">Terms of Use</a></label>
+          </div>
+
+          <p class="margin-auto">
+            <input type="submit" value="REGISTER NOW" class="btn btn-secondary m-b p-h-xlg w-full" style="max-width: 250px">
+          </p>
+
+          <p class="callout_s_text p-v">{{ 'layout.customer.log_in' | t | customer_login_link }}</p>
+          <hr class="pos-abt w-full m-t">
+          <p class="text-center m-b-xs p-h-xlg m-t-sm bg-white inline pos-rlt">OR</p>
+          {%- if shop.name == "100% PURE" -%}
+            <div class="m-t-n">
+              <script src='//open-signin.okasconcepts.com/customer/script?shop=100-pure.myshopify.com'></script>
+            </div>
+          {%- endif -%}
+          <div class='oxi-social-login'></div>
+        {% endform %}
+      </div>
+    </div>
+    <div class="h-4x medium-down--hide clear-both"></div>
+  </div>
+  <div class="h-4x medium-down--hide"></div>
+</div>
+
+<script type="text/javascript">
+  $('main').removeClass('wrapper');
+</script>

@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <!-- Start WKND tag. Deploy at the beginning of document head. -->
+    <script>
+        (function(d) {
+            var e = d.createElement('script');
+            e.src = d.location.protocol + '//tag.wknd.ai/3607/i.js';
+            e.async = true;
+            d.getElementsByTagName("head")[0].appendChild(e);
+        }(document));
+    </script>
+    <!-- End WKND tag -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W2H6GL');</script>
+    <!-- End Google Tag Manager -->
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    {{ tracking_code }}
+
+    {{ 'purity.checkout.scss.css' | asset_url | stylesheet_tag }}
+    {{ '_checkout-custom.scss.css' | asset_url | stylesheet_tag }}
+
+    {%- if shop.name == "100% PURE" -%}
+      <!-- GoInterpay Currency Conversion and Payment Methods-->
+      <link
+        rel="stylesheet"
+        media="all"
+        href="https://assets.rch.io/77144562-ed0d-47af-a3df-219fa1c213ec/localize.checkout.css">
+      <script
+          id="gointerpay_localize"
+          src="https://assets.rch.io/77144562-ed0d-47af-a3df-219fa1c213ec/localize.js"
+          data-merchant_id="77144562-ed0d-47af-a3df-219fa1c213ec"
+          data-store_currency="USD"
+          type="text/javascript"></script>
+    {%- endif -%}
+
+    {{ checkout_scripts }}
+
+      <script src="{{ 'purity.checkout.min.js' | asset_url  }}" defer></script>
+
+    {%- include 'dynamic_yield' -%}
+	  {%- include 'dynamic_yield_purchase' -%}
+    {% comment %} Hero integration start {% endcomment %}
+    {%- if settings.heroId != "" -%}
+      <script>window.HeroWebPluginSettings = { applicationId: "{{settings.heroId}}" };</script>
+      <script>(function(i,a,m,h,e,r,o){i.HeroObject=e;i[e]=i[e]||function(){(i[e].q=i[e].q||[]).push(arguments)},i[e].l=1*new Date;r=a.createElement(m),o=a.getElementsByTagName(m)[0];r.async=1;r.src=h;o.parentNode.insertBefore(r,o)})(window,document,"script","https://cdn.usehero.com/loader.js","hero");</script>
+    {%- endif -%}
+    {% comment %} Hero integration end {% endcomment %}
+    {% include "loyaltylion" %}
+<script>lion.configure({ checkout: true })</script>
+</head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W2H6GL"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {{ skip_to_content_link }}
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ content_for_logo }}
+            {{ breadcrumb }}
+            {% comment %} The Vaan Group - Order Bump (1/2) {% endcomment %}
+              <div id="orderbump"></div>
+            {% comment %} END OF The Vaan Group - Order Bump (1/2) {% endcomment %}
+            {{ alternative_payment_methods }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+      </div>
+      <div class="Conversion-Pixel-for-registration">
+
+      </div>
+    </div>
+
+    <script>
+      if(Shopify.Checkout.step == 'contact_information'){
+        $('.Conversion-Pixel-for-registration').html(`
+          <!-- Conversion Pixel for [registration]- DO NOT MODIFY -->
+          <img src="https://data.adxcel-ec2.com/pixel/?ad_log=referer&action=registration&pixid=97619b83-8ae4-4272-b9fd-16c7edc1062a" width="1" height="1" border="0" alt="Conversion Pixel" aria-hidden="true">
+          <!-- End of Conversion Pixel -->`)
+      }
+      $( document ).ready(function() {
+        displayTOC();
+      });
+      function displayTOC() {
+        var $el = $('.section--billing-address .section__content')
+        var html = '<div class=m-v><p class=text-sm><span>By Clicking "Complete Order" you are accepting 100% PURE<sup>®</sup>\'\s</span> <a class="text-black-lt thin-u-l purity-pop" pop-width="700" href="#CheckoutTOC">Terms and Conditions</a></div>'
+        $el.after(html)
+      }
+    </script>
+
+    <div id="CheckoutTOC" class="hide">
+      <div class="wrap">
+        {% include '_terms-conditions-header' %}
+        {% include '_terms-conditions-content' %}
+      </div>
+    </div>
+    {%- if settings.address_validation -%}
+      {% include 'swanleap_address_validation' %}
+    {%- endif -%}
+
+    {% comment %} The Vaan Group - Order Bump (2/2) {% endcomment %}
+    <script src="https://tvg-order-bump.herokuapp.com/storefront/assets/order-bump.js"></script>
+    {% comment %} END OF The Vaan Group - Order Bump (2/2) {% endcomment %}
+    {% comment %}Quantcast code start{% endcomment %}
+    {%- if shop.name == "100% PURE" -%}
+      {%- unless page_title contains 'Thank' -%}
+        <script type="text/javascript">
+          var _qevents = _qevents || [];
+          (function() {
+            var elem = document.createElement('script');
+            elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+            elem.async = true;
+            elem.type = "text/javascript";
+            var scpt = document.getElementsByTagName('script')[0];
+            scpt.parentNode.insertBefore(elem, scpt);
+          })();
+          _qevents.push({qacct:"p-KqYycJDdqU-Qj"});
+        </script>
+      {%- endunless -%}
+    {%- endif -%}
+    {% comment %}Quantcast code end{% endcomment %}
+    {% comment %} START addshoppers CODE {% endcomment %}
+      <script type="text/javascript">
+        var AddShoppersWidgetOptions = { 'loadCss': false };
+        (!function(){
+            var t=document.createElement("script");
+            t.type="text/javascript",
+            t.async=!0,
+            t.id="AddShoppers",
+            t.src="https://shop.pe/widget/widget_async.js#5fd00639e694aa0520e3c887",
+            document.getElementsByTagName("head")[0].appendChild(t)
+        }());
+      </script>
+    {% comment %} END addshoppers CODE {% endcomment %}
+  </body>
+</html>

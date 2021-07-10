@@ -1,0 +1,75 @@
+<!-- /templates/page.liquid -->
+<div class="large--four-fifths margin-auto">
+	<div class="grid ">
+		<div class="grid__item large--two-fifths">
+			<img
+			src="https://cdn.no-toxic.com/{{settings.cloudinary_image_version}}/pure_temporary/influencer/test/main"
+      data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}//pure_temporary/influencer/test/main"
+			class="cld-prepare"
+			alt="{{ page.title }}" />
+		</div>
+	  <div class="grid__item large--three-fifths small--text-center">
+	    <h1 class="m-t-md page_title_text">{{ page.title }}</h1>
+	    <div class="rte content_text">
+	      {{ page.content }}
+	    </div>
+			<a href="#suggest-item" class="btn btn-secondary m-t-lg p-h-lg">SHOP WITH ME</a>
+	  </div>
+	</div>
+	<div class="grid m-t-xlg influencer_carousel">
+		{% assign holder1 = '1,2,3' | split: ',' %}
+		{%- for item in holder1 -%}
+			<div class="grid__item large--one-third">
+				<img
+				src="https://cdn.no-toxic.com/{{settings.cloudinary_image_version}}/pure_temporary/influencer/test/personal{{item}}"
+				data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}//pure_temporary/influencer/test/personal{{item}}"
+				class="cld-prepare"
+				alt="personal image {{item}}" />
+			</div>
+		{%- endfor -%}
+	</div>
+	<div id="suggest-item"></div>
+	<div  class="m-t-xlg1 large--p-xlg large--b-a b-2x">
+		<h2 class="text-center section_title_text">My Must-Haves</h2>
+		<div class="grid m-t-lg">
+			{% assign holder = '1,2,3,4' | split: ',' %}
+			{%- for item in holder -%}
+				<a class="grid__item large--one-half block m-t-md" href="https://www.100percentpure.com/products/fruit-pigmented-cocoa-butter-matte-lipstick" target="_blank">
+					<div class="grid__item two-fifths">
+						<img
+						src="https://cdn.no-toxic.com/{{settings.cloudinary_image_version}}/pure_temporary/influencer/test/product{{item}}"
+						data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}//pure_temporary/influencer/test/product{{item}}"
+						class="cld-prepare"
+						alt="product 1" />
+					</div>
+					<div class="grid__item three-fifths">
+						<p class="caption_text m-b-xs">Product Name</p>
+						<p class="caption_text font-bold">$ 45</p>
+						<p class="caption_s_text font-s-i">“Lorem Ipsum is simply dummy text of the printing and typeset lpsum is simpley dummy text of the printing”</p>
+					</div>
+				</a>
+			{%- endfor -%}
+		</div>
+	</div>
+	<div class="text-center m-b-xlg">
+		<a href="https://www.100percentpure.com/collections/best-sellers" class="btn btn-secondary m-t-lg p-h-lg">SHOP ALL MY FAVORITES</a>
+	</div>
+</div>
+<script type="text/javascript">
+$('.influencer_carousel').slick({
+	lazyLoad: 'ondemand',
+	slidesToShow: 3,
+	dots: true,
+	arrows: true,
+	responsive: [
+		{
+			breakpoint: 769,
+			settings: {
+				arrows: false,
+				centerMode: true,
+				slidesToShow: 1
+			}
+		}
+	]
+})
+</script>

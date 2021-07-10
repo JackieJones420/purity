@@ -1,0 +1,15 @@
+<div id="search-bar">
+  <form action="/search" method="get" role="search">
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder='Search e.g. "Mascara"' class="input-group-field main-font" aria-label="{{ 'general.search.placeholder' | t }}">
+    <label class="off-screen" id="searchbutton_desktop">Search Button Desktop</label>
+    <input style="visibility: hidden;" type="submit" aria-labelledby="searchbutton_desktop" />
+    <button id="open-search-btn">
+      <span class="icon-fallback-text">
+        <span class="icon icon-search" aria-hidden="true"></span>
+        <span class="fallback-text">Search</span>
+      </span>
+    </button>
+  </form>
+  <div class="medium-down--hide search-label">Search</div>
+</div>
+<div class="search-bar-line">&nbsp;</div>

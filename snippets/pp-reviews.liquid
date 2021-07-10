@@ -1,0 +1,26 @@
+
+<div class="grid">
+  <div class="grid__item large--one-whole">
+    <header class="section-header">
+      <p class="section_title_text m-v-lg">Reviews & Testimonials</p>
+    </header>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="grid__item">
+    <div id="stamped-main-widget" class="stamped-main-widget"
+    data-product-id="{{ product.id }}"
+    data-name="{{ product.title | escape }}"
+    data-url="{{ shop.url }}{{ product.url }}"
+    data-image-url="https://cdn.no-toxic.com/q_auto:best,fl_lossy,c_limit/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+    data-description="{{ product.description | escape }}"
+    data-product-sku="{{product.handle}}">
+      {{ product.metafields.stamped.reviews }}
+    </div>
+
+    {% if section.settings.show_share_buttons %}
+      {% include 'social-sharing', share_title: product.title, share_permalink: product.url, share_image: product %}
+    {% endif %}
+  </div>
+</div>

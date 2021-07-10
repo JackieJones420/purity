@@ -1,0 +1,21 @@
+<div class="m-b email-signup">
+  {% form 'customer' %}
+  <div class="input-group">
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <input type="email"
+      placeholder="{{ 'general.newsletter_form.newsletter_email' | t }}"
+      name="contact[email]"
+      id="Email"
+      value="{% if customer %}{{ customer.email }}{% endif %}"
+      class="input-group-field no-border">
+    <span class="input-group-btn no-border">
+      <input type="submit" class="btn no-borders" name="commit" value="&#10095;">
+    </span>
+
+  </div>
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <p class="m-v">Thanks for subscribing</p>
+    {% endif %}
+  {% endform %}
+</div>

@@ -1,0 +1,110 @@
+<script>
+$(document).ready(function(){
+  $('form#custmeta').submit(function(e) {
+    e.preventDefault();
+    $(".cus-pfl-submit-btn").html("updating ....").addClass("disabled");
+    $.ajax({
+      url: $(this).attr('action'),
+      type: "GET",
+      contentType: "application/liquid",
+      data: $(this).serialize()
+    }).done(function() {
+      document.location='/pages/customer-profile';
+    }).fail(function(data) {
+      alert("We are so sorry but seems some error occurred. Please try again");
+      console.log("fail to submit!!", "error");
+    })
+    return false;
+  });
+  /*
+  Reference: http://jsfiddle.net/BB3JK/47/
+  */
+
+  $("select").each(function() {
+    var $this = $(this),
+      numberOfOptions = $(this).children("option").length;
+
+    $this.addClass("select-hidden");
+    $this.wrap('<div class="select"></div>');
+    $this.after('<div class="select-styled pointer"></div>');
+
+    var $styledSelect = $this.next("div.select-styled");
+    if($this.children("option[selected]").length == 0){
+      $styledSelect.text(
+        $this
+          .children(":first")
+          .text()
+      );
+    }else{
+      $styledSelect.text(
+        $this
+          .children("option[selected]")
+          .text()
+      );
+    }
+
+    var $list = $("<ul />", {
+      class: "select-options"
+    }).insertAfter($styledSelect);
+
+    for (var i = 0; i < numberOfOptions; i++) {
+      $("<li />", {
+        text: $this
+          .children("option")
+          .eq(i)
+          .text(),
+        rel: $this
+          .children("option")
+          .eq(i)
+          .val(),
+        class: $this
+          .children("option")
+          .eq(i)
+          .attr("type")
+      }).appendTo($list);
+    }
+
+    var $listItems = $list.children("li");
+
+    $styledSelect.click(function(e) {
+      e.stopPropagation();
+      $("div.select-styled.active")
+        .not(this)
+        .each(function() {
+          $(this)
+            .removeClass("active")
+            .next("ul.select-options")
+            .hide();
+        });
+      $(this)
+        .toggleClass("active")
+        .next("ul.select-options")
+        .toggle();
+    });
+
+    $listItems.click(function(e) {
+      e.stopPropagation();
+      $styledSelect.text($(this).text()).removeClass("active");
+      $this.val($(this).attr("rel"));
+      $list.hide();
+      if($this.attr("name") == "skin_concern"){
+        $("#SkinConcern2").parent().find(".select-options li").removeClass("hide");
+        if($this.val() == "Default"){
+          $("#SkinConcern2").parent().find(".select-styled").html("--- Not Set ---");
+          $("#SkinConcern2").parent().find(".select-options li[rel='Default']").siblings().addClass("hide");
+          $("#SkinConcern2").val("Default");
+        }else{
+          $("#SkinConcern2").parent().find(".select-styled").html("--- Not Set ---");
+          $("#SkinConcern2").val("Default");
+          $("#SkinConcern2").parent().find(".select-options li[rel='"+$(this).attr("rel")+"']").addClass("hide");
+        }
+      }
+    });
+
+    $(document).click(function() {
+      $styledSelect.removeClass("active");
+      $list.hide();
+    });
+  });
+})
+</script>

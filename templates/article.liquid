@@ -1,0 +1,505 @@
+<!-- /templates/article.liquid -->
+{% comment %}
+  Comments will not appear right after they are submitted, either to be checked for spam
+  or to await moderation. When a comment is submitted, the browser is redirected to a page
+  that includes the new comment id in its URL.
+    Example: http://shopname.myshopify.com/blogs/news/2022072-my-post?comment=3721372
+  More information:
+    - http://docs.shopify.com/themes/liquid-variables/comment
+{% endcomment %}
+{% assign number_of_comments = article.comments_count %}
+
+{% comment %}
+  If a comment was just submitted and it has no blank fields, we have an extra comment to count.
+{% endcomment %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count | plus: 1 %}
+{% endif %}
+
+{% comment %}
+{% include 'breadcrumb' %}
+{% endcomment %}
+
+{% comment %}
+  FB Live Streaming Widget
+{% endcomment %}
+{% comment %}
+<section id="FbLiveWidget" class="grid medium-down--hide">
+  <div class="grid__item">
+    <div class="fb-video"
+    data-href="https://www.facebook.com/100percentpure/videos/10155099519313497/"
+    data-width="360"
+    data-show-text="true">
+      <blockquote
+      cite="https://www.facebook.com/100percentpure/videos/10155099519313497/"
+      class="fb-xfbml-parse-ignore">
+        <a href="https://www.facebook.com/100percentpure/videos/10155099519313497/"></a>
+        <p>Loading Video..</p>
+        <p>Bamboo Blur Tinted Moisturizer</p>
+        <span>Posted by</span>
+        <a href="https://www.facebook.com/100percentpure/">100% Pure</a>
+        <span>on Thursday, March 16, 2017</span>
+      </blockquote>
+    </div>
+  </div>
+</section>
+{% endcomment %}
+{% assign blogsInCover = "<a href='/blogs/feed/tagged/Ingredients'>Ingredients</a> <span class='closer-line inline m-r-xs'>//</span> :Ingredients|<a href='/blogs/feed/tagged/Makeup'>Makeup</a> <span class='closer-line inline m-r-xs'>//</span> :Makeup|<a href='/blogs/feed/tagged/Skin-Care'>Skincare</a> <span class='closer-line inline m-r-xs'>//</span> :Skin Care|<a href='/blogs/feed/tagged/Wellness'>Wellness</a> <span class='closer-line inline m-r-xs'>//</span> :Wellness|<a href='/blogs/feed/tagged/how-to'>How-To's</a> <span class='closer-line inline m-r-xs'>//</span> :how-to|<a href='/blogs/feed/tagged/Body'>Hair & Body</a> <span class='closer-line inline m-r-xs'>//</span> :Body|<a href='/blogs/feed/tagged/Clean-Living'>Clean Living</a> <span class='closer-line inline m-r-xs'>//</span> :Clean Living" %}
+{% assign selectedTags = blogsInCover | split: "|" %}
+
+{%- if article.metafields.100pure.product -%}
+  {% assign shopBlogList = article.metafields.100pure.product %}
+{%- else -%}
+  {% assign shopBlogList = "" %}
+  {% assign currentArticle = article.title | handleize %}
+  {% assign currentColl = collections[currentArticle] %}
+  {% for product in currentColl.products %}
+    {%- if forloop.index > 1 -%}
+      {% assign shopBlogList = shopBlogList | append: '|' %}
+    {%- endif -%}
+    {% assign shopBlogList = shopBlogList | append: product.handle %}
+  {% endfor %}
+{%- endif -%}
+
+{%- if blog.title contains 'How To' -%}
+  <div class="p-t-lg text-center large--hide">
+    <p class="text-md font-bold l-s-3x">HOW TO</p>
+    <p class="main-font text-lg-xl">{{ article.title }}</p>
+  </div>
+  <div  class="banner bg-lt-gauva">
+    <div class="wrapper flex j-c-center" style="height: 450px">
+      <img
+        data-src="{{ article.image.src | img_url: '1024x' }}"
+        data-srcset="
+          {{ article.image.src | img_url: '1024x' }} 1000w,
+          {{ article.image.src | img_url: '800x' }} 800w,
+          {{ article.image.src | img_url: '600x' }} 600w,
+          {{ article.image.src | img_url: '400x' }} 400w
+        "
+        class="lazyload fade-in block a-s-center"
+        alt="play-sign"
+        style="width:450px"
+      >
+      <div class="b-a b-4x b-white p-lg flex a-s-center f-d-column j-c-center medium-down--hide m-l-lg">
+        <p class="text-md font-bold l-s-3x">HOW TO</p>
+        <p class="main-font text-lg-xl m-b-lg">{{ article.title }}</p>
+        <p class="">{{article.excerpt}}</p>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="wrapper p-t-lg">
+  {% if blog.title contains 'How To' %}
+    <div id="video-container" class="p block m-h-lg"></div>
+    <script>
+      if(!window['YT']){
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/player_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        function onYouTubePlayerAPIReady() {
+          let player = new YT.Player('video-container', {
+            height: $('#video-container').width()*0.7,
+            width: $('#video-container').width(),
+            videoId: '{{article.metafields.howto.video-id}}',
+            playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0, 'playlist': '{{article.metafields.howto.video-id}}', 'loop': 1 }
+          });
+        }
+      }else{
+        let player = new YT.Player('video-container', {
+          height: $('#video-container').width()*0.7,
+          width: $('#video-container').width(),
+          videoId: '{{article.metafields.howto.video-id}}',
+          playerVars: { 'controls': 1, 'showinfo': 0, 'rel': 0, 'playlist': '{{article.metafields.howto.video-id}}', 'loop': 1 }
+        });
+      }
+    </script>
+    <a href="https://www.youtube.com/embed/{{article.metafields.howto.video-id}}" class="purity-pop p block m-h-lg hide" pop-type="youtube" pop-ytid="{{ article.metafields.howto.video-id }}" pop-ratio="0.5618" pop-autoplay="1" pop-rel="0">
+      <div
+        class="bg-img b-a pos-rlt"
+        style="padding-top: 53%;background-image: url('{{ article.metafields.howto.video-cover-url | file_img_url: '1024x' | format: 'pjpg' }}')"
+      >
+        <span
+          class="pos-abt inline h-full w-full flex j-c-center"
+          style="
+            top: 0;
+            left: 0;
+            align-items: center;
+            background-color: rgba(255,255,255,0.2);
+          "
+        >
+          <img
+            data-src="{{ 'play-sign.png' | file_img_url: '1024x' | format: 'pjpg' }}"
+            data-srcset="{{ 'play-sign.png' | file_img_url: '1024x' | format: 'pjpg' }} 1000w,
+                         {{ 'play-sign.png' | file_img_url: '800x' | format: 'pjpg' }} 800w,
+                         {{ 'play-sign.png' | file_img_url: '600x' | format: 'pjpg' }} 600w,
+                         {{ 'play-sign.png' | file_img_url: '400x' | format: 'pjpg' }} 400w"
+            class="lazyload fade-in inline w-64 pos-abt"
+            alt="play-sign"
+          >
+        </span>
+      </div>
+      <p class="text-center m-v">{{videoType}}</p>
+    </a>
+  {% endif %}
+
+
+
+  <div class="blog-pictures {% unless blog.title contains 'How To' %}large--three-quarters left medium-down--one-whole{% endunless %}  b-r m-b-lg">
+    <article class="grid__item large--one-whole">
+      <header class="blog-header section-header">
+        <div class="section-header__left">
+          <h1 class="text-center {% if blog.title contains 'How To' %}hide{% endif %}">{{ article.title }}</h1>
+
+          {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
+          {% capture author %}{{ article.author }}{% endcapture %}
+
+        </div>
+      </header>
+
+      <!--div class="grid__item large--one-whole">
+        <img src="{{ article.image.src | img_url: 'large' }}" alt="{{ article.image.alt }}" class="blog-image" />
+      </div-->
+
+      <div class="blog-body">
+        <!--  -->
+        {{ article.content }}
+      </div>
+
+      {%- if blog.title contains 'How To' -%}
+        <div class="medium-down--p-t-xlg" id="shop-the-blog">
+          <p class="text-center text-md-lg m-t-xlg m-b-lg l-s-2x font-bold medium-down--p-t-xlg">SHOP THE LOOK</p>
+          <div class="grid__item featured-carousel large--one-whole shop">
+            <!-- /snippets/shop-the-look.liquid -->
+            {% assign shopBlogList = shopBlogList | split: '|' %}
+            {%- for productURL in shopBlogList -%}
+              {% assign product = all_products[productURL] %}
+              {% include 'product-grid-item', grid_item_width: 'large--one-quarter' %}
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+
+      {% comment %}
+        Show off meta information like comments and tags.
+      {% endcomment %}
+      <ul class="inline-list">
+        {% include 'tags-article' %}
+      </ul>
+      <p><em>We carefully hand-select products based on strict purity standards, and only recommend products we feel meet this criteria. 100% PURE™ may earn a small commission for products purchased through affiliate links.</em></p>
+      <p><em>The information in this article is for educational use, and not intended to substitute professional medical advice, diagnosis, or treatment and should not be used as such.</em></p>
+
+      {% comment %}
+        Create links to the next and previous articles, if available.
+      {% endcomment %}
+
+      {% if blog.next_article or blog.previous_article %}
+        <p class="clearfix text-center m-t-lg text-md">
+          {% if blog.previous_article %}
+
+              &lt;&nbsp;{{ 'blogs.article.older_post' | t | link_to: blog.previous_article }}
+
+          {% endif %} |
+          {% if blog.next_article %}
+
+              {{ 'blogs.article.newer_post' | t | link_to: blog.next_article }}&nbsp;&gt;
+
+          {% endif %}
+        </p>
+      {% endif %}
+
+      <div id="related-article">
+        {%- if blog.title contains 'How To' -%}
+          <p class="text-center text-md-lg m-t-xlg m-b-lg l-s-2x font-bold">Explore Other Looks</p>
+          <div class="init-carousel no-padding">
+            {% for featurearticle in blogs['how-to'].articles limit: 5 %}
+              {% if featurearticle.image.src != blank and featurearticle.title != article.title %}
+                  <div class="p-h small--p-h-xs grid__item large--one-third medium--one-half small--one-whole pos-rlt">
+                    <a href="{{ featurearticle.url }}">
+                      <img class="block" src="{{ featurearticle.image.src | img_url: 'large', scale: 1 }}" alt="Blog Feed Article Feature Image Carousel: {{ featurearticle.title }} ">
+                    </a>
+                    <div class="blog-content no-padding m-b-lg">
+                      <h3 class="m-t text-md-lg l-h m-b"><a href="{{ featurearticle.url }}" >{{ featurearticle.title }}</a></h3>
+                      <a href="{{ featurearticle.url }}" class="to-article text-center b-b b-dark text-sm font-bold l-s-2x p-b-xs">EXPLORE MORE <span class="icon icon-arrow-right"></span> </a>
+                    </div>
+                  </div>
+                  <!-- ajax item spliter -->
+              {% endif %}
+            {% endfor %}
+          </div>
+        {%- else -%}
+          <p class="text-center text-md-lg m-t-xlg m-b-lg l-s-2x font-bold">RELATED POSTS</p>
+          <div class="init-carousel ajax-content no-padding">
+
+          </div>
+        {%- endif -%}
+
+      </div>
+
+      {% if blog.comments_enabled? %}
+        <hr>
+
+        <h3>{{ 'blogs.comments.with_count' | t: count: number_of_comments }}</h3>
+
+        <hr>
+
+        {% comment %}
+          Just like blog.liquid page, define how many comments should be on each page.
+        {% endcomment %}
+        {% paginate article.comments by 5 %}
+          {% comment %}
+            #comments is required, it is used as an anchor link by Shopify.
+          {% endcomment %}
+          <div id="comments">
+
+            {% if comment and comment.created_at %}
+              <p class="note form-success">
+                {% if blog.moderated? %}
+                  {{ 'blogs.comments.success_moderated' | t }}
+                {% else %}
+                  {{ 'blogs.comments.success' | t }}
+                {% endif %}
+              </p>
+            {% endif %}
+
+            {% if number_of_comments > 0 %}
+              <ul class="no-bullets">
+                {% comment %}
+                  If a comment was just submitted with no blank field, show it.
+                {% endcomment %}
+                {% if comment and comment.created_at %}
+                  <li id="{{ comment.id }}" class="comment first{% if article.comments_count == 0 %} last{% endif %}">
+                    {% include 'comment' %}
+                  </li>
+                {% endif %}
+
+                {% comment %}
+                  Showing the rest of the comments.
+                {% endcomment %}
+                {% for comment in article.comments %}
+                  <li id="{{ comment.id }}" class="comment{% unless number_of_comments > article.comments_count %}{% if forloop.first %} first{% endif %}{% endunless %}{% if forloop.last %} last {% endif %}">
+                    {% include 'comment' %}
+                  </li>
+
+                  {% unless forloop.last %}
+                    <li><hr></li>
+                  {% endunless %}
+                {% endfor %}
+              </ul>
+
+              {% if paginate.pages > 1 %}
+                <div class="pagination">
+                  {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+                </div>
+              {% endif %}
+
+              <hr>
+
+            {% endif %}
+
+            <div class="form-vertical">
+              {% form 'new_comment', article %}
+                <h3>{{ 'blogs.comments.title' | t }}</h3>
+
+                {{ form.errors | default_errors }}
+
+                <div class="grid">
+
+                  <div class="grid__item large--one-half">
+                    <label for="CommentAuthor" class="hidden-label">{{ 'blogs.comments.name' | t }}</label>
+                    <input type="text" name="comment[author]" id="CommentAuthor" class="input-full{% if form.errors contains 'author' %} error{% endif %}" placeholder="{{ 'blogs.comments.name' | t }}" value="{{ form.author }}" autocapitalize="words">
+
+                    <label for="CommentEmail" class="hidden-label">{{ 'blogs.comments.email' | t }}</label>
+                    <input type="email" name="comment[email]" id="CommentEmail" class="input-full{% if form.errors contains 'email' %} error{% endif %}" placeholder="{{ 'blogs.comments.email' | t }}" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+                  </div>
+
+                  <div class="grid__item large--one-half">
+                    <label for="CommentBody" class="hidden-label">{{ 'blogs.comments.message' | t }}</label>
+                    <textarea name="comment[body]" id="CommentBody" class="input-full{% if form.errors contains 'body' %} error{% endif %}" placeholder="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+                  </div>
+
+                </div>
+
+                {% if blog.moderated? %}
+                  <p>{{ 'blogs.comments.moderated' | t }}</p>
+                {% endif %}
+
+                <input type="submit" class="btn" value="{{ 'blogs.comments.post' | t }}">
+              {% endform %}
+            </div>
+
+          </div>
+        {% endpaginate %}
+      {% endif %}
+
+    </article>
+
+    {% comment %}
+    <aside class="grid__item large--one-quarter" role="complementary">
+      {% include 'blog-sidebar' %}
+    </aside>
+    {% endcomment %}
+
+  </div>
+  {%- if blog.title contains 'Feed' -%}
+    <div class="side-panel pos-rlt large--one-quarter right medium-down--one-whole">
+      <section id="blogSection">
+        {% if shopBlogList != ""%}
+          <div class="medium-down--p-t-xlg" id="shop-the-blog">
+            <h2 class="text-center m-b-md text-lg margin-auto medium-down--p-t-xlg">SHOP THE STORY</h2>
+            <div class="grid__item featured-carousel large--one-whole shop">
+              <!-- /snippets/shop-the-look.liquid -->
+              {% assign shopBlogList = shopBlogList | split: '|' %}
+              {%- for productURL in shopBlogList -%}
+                {% assign product = all_products[productURL] %}
+                {% include 'product-grid-item', grid_item_width: 'large--one-whole', iten_index_num: forloop.index %}
+              {%- endfor -%}
+            </div>
+          </div>
+        {% endif %}
+      </section>
+    </div>
+  {%- endif -%}
+</div>
+
+<!-- Needed to post on Pinterest -->
+<script
+    type="text/javascript"
+    async defer
+    src="//assets.pinterest.com/js/pinit.js">
+</script>
+<script type="text/template" id="social-template">
+  <section class="grid text-center p-v-sm text-md-lg">
+    <a class="icon-fallback-text no-borders inline m-h-sm" href="https://www.facebook.com/sharer/sharer.php?u=https://www.100percentpure.com/{{ article.url }}" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=https://www.100percentpure.com/{{ article.url }}', 'newwindow', 'width=700, height=450'); return false">
+      <span class="icon icon-facebook"></span>
+      <span class="fallback-text">Facebook</span>
+    </a>
+    <a class="icon-fallback-text no-borders inline m-h-sm" href="https://twitter.com/home?status=Check out this blog post from 100%25 PURE&reg;: https://www.100percentpure.com/{{ article.url }}" onclick="window.open('https://twitter.com/home?status=Check out this blog post from 100%25 PURE&reg;: https://www.100percentpure.com/{{ article.url }}', 'newwindow', 'width=600, height=500'); return false">
+      <span class="icon icon-twitter"></span>
+      <span class="fallback-text">Twitter</span>
+    </a>
+    <a class="icon-fallback-text no-borders inline m-h-sm pointer" data-pin-custom="true" data-pin-description="{{ article.title }}" data-pin-media="https:{{ article.image.src | img_url: 'medium' }}" data-pin-do="buttonBookmark" data-pin-url="https://www.100percentpure.com/{{ article.url }}" href="https://www.pinterest.com/pin/create/button?url=https://www.100percentpure.com/{{ article.url }}">
+      <span class="icon icon-pinterest"></span>
+      <span class="fallback-text">Pinterest</span>
+    </a>
+    <a class="icon-fallback-text no-borders inline m-h-sm pointer" href="mailto:mailto:customerservice@puritycosmetics.com?subject=I wanted you to see this site&amp;body=Check out this site https://www.100percentpure.com/blogs/feed/{{handle}}.">
+      <span class="icon icon-mail"></span>
+      <span class="fallback-text">E-mail</span>
+    </a>
+  </section>
+</script>
+
+<!-- load product card info -->
+{% comment %}
+<div class="hide">
+  {% assign linkedProductArray = article.metafields.howto.linked-product | split: '|' %}
+  {%- for productURL in linkedProductArray -%}
+    {% assign product = all_products[productURL] %}
+    <form
+      action="/cart/add"
+      method="post"
+      enctype="multipart/form-data"
+      id="AddToCartForm"
+      product-handle="{{productURL}}"
+      class="form-horizontal productGrid flex w-full medium-down--f-d-column">
+      <a href="{{ product.url }}"
+        target="_blank"
+        class="large--two-fifths medium-down--one-whole p-h-md grid__image a-s-center no-borders">
+        <img
+          src="{{ product.featured_image.src | img_url: '100x', format: 'pjpg' }}"
+          data-sizes="auto"
+          data-src="{{ product.featured_image.src | img_url: '1024x' | format: 'pjpg' }}"
+          data-srcset="{{ product.featured_image.src | img_url: '1000x' | format: 'pjpg' }} 1000w,
+                       {{ product.featured_image.src | img_url: '900x' | format: 'pjpg' }} 900w,
+                       {{ product.featured_image.src | img_url: '800x' | format: 'pjpg' }} 800w,
+                       {{ product.featured_image.src | img_url: '700x' | format: 'pjpg' }} 700w,
+                       {{ product.featured_image.src | img_url: '600x' | format: 'pjpg' }} 600w,
+                       {{ product.featured_image.src | img_url: '500x' | format: 'pjpg' }} 500w,
+                       {{ product.featured_image.src | img_url: '400x' | format: 'pjpg' }} 400w"
+          class="lazyload fade-in"
+          alt="Product Grid - {{ product.title | escape }}" />
+      </a>
+      <div class="large--three-fifths medium-down--one-whole flex f-d-column j-c-center">
+        <!-- options -->
+        <select name="id" id="productSelect" class="product-single__variants" aria-describedby="variant selector for {{product.title}}">
+          {%- for variant in product.variants -%}
+            {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+            {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}
+              <option disabled="disabled">
+                {{ variant.title }} - <span>{{productVariantsAvailableState}}</span>
+              </option>
+            {% else %}
+              <option {% if forloop.index == 1 %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+                {{ variant.title }} - {{ variant.price | money }}
+              </option>
+            {% endif %}
+          {%- endfor -%}
+        </select>
+        <p>
+          <a href="{{ product.url }}"target="_blank">{{product.title}}</a>
+        </p>
+        <p class="no-margin"> <span class="money">{{ product.price | money }}</span></p>
+        <!-- Variants Swatch-->
+        {%- unless product.type == "Gift Card" -%}
+          {% if product.variants.size > 1 %}
+            <div class="collection-swatch text-left">
+              {% assign selectedOption = product.options | first %}
+              <p>{{selectedOption}}: <span class="variant-container">{{product.variants.first.title}}</span> </p>
+              {% include 'swatch' with selectedOption %}
+            </div>
+          {% endif %}
+        {%- endunless -%}
+        <div class="submit-btn-container">
+          {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+          {%- case productVariantsAvailableState -%}
+            {%- when 'add' -%}
+              <button type="submit" name="add" id="AddToCart" class="btn btn-secondary add-to-cart-modal no-m-v-gutter ">
+                <span id="AddToCartText">Add To Tote</span>
+              </button>
+            {%- when 'email' -%}
+              <a href="#-{{product.id}}" data-product-handle="{{ product.handle }}"
+                class="btn BIS_trigger in-stock-modal BIS-collection-btn text-xxs"
+                >NOTIFY ME</a>
+            {%- when 'release' -%}
+              <ul class="no-bullets">
+                {%- if product_meta.standard_release_date -%}
+                  <li class="alt-font-regular text-sm l-s-1x m-b-xs">Release Date: estimated {{ product_meta.standard_release_date | date: "%A, %b %d, %Y" }}</li>
+                {%- endif -%}
+              </ul>
+            {%- when 'soon' -%}
+              <ul class="no-bullets">
+                <li class="alt-font-regular text-sm l-s-1x m-b-xs">Coming soon</li>
+              </ul>
+            {%- when 'login' -%}
+              <p class="alt-font-regular text-sm l-s-1x m-v">You must be a PURE ACTIVIST, PURE REVOLUTIONIST, or PURIST PRO for early access to this product.
+                <span class="thick-u-l">{{ 'Log In' | customer_login_link }}</span> or
+                <a href="/pages/purist-perks" target="_blank">Learn More</a>.
+              </p>
+            {%- when 'discontinued' -%}
+              <button type="submit" name="add" class="btn no-borders disabled" disabled="disabled">
+                <span>Discontinued</span>
+              </button>
+            {%- when 'alert' -%}
+              <button type="submit" name="add" id="AddToCart" class="btn add-to-cart-modal no-m-v-gutter">
+                <span id="AddToCartText">Add To Tote</span>
+              </button>
+            {%- when 'alertBuffer' -%}
+              <button type="submit" name="add" id="AddToCart" class="btn add-to-cart-modal no-m-v-gutter">
+                <span id="AddToCartText">Add To Tote</span>
+              </button>
+            {%- when 'out' -%}
+              <button type="submit" name="add" class="btn no-borders disabled" disabled="disabled">
+                <span>Sold Out</span>
+              </button>
+            {%- else -%}
+              <script type="text/javascript">
+                console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+              </script>
+          {%- endcase -%}
+        </div>
+      </div>
+    </form>
+  {%- endfor -%}
+</div>
+{% endcomment %}

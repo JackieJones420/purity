@@ -1,0 +1,155 @@
+{% comment %}
+page template in template/page.samples.liquid
+add motivator at theme.liquid
+edit cart page sample cart-item at cart.liquid
+edit side cart sample cart-item at ajax-cart-template.liquid
+add logic to side cart at ajax-cart.js.liquid
+{% endcomment %}
+{%- include '_date-time' -%}
+<style>
+  .btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus{
+    background-color: #f38189;
+    border-color: #f38189;
+  }
+  .btn-secondary.selected{
+    background-color: #ed3376;
+    border-color: #ed3376;
+  }
+</style>
+<section id="water-foundation-sample">
+  <div class="text-center bg-peach p-v-lg">
+    <span class="alt-font l-s text-u-c pretext m-t inline">TRY ME!</span>
+    {%- if settings.active_free_sample -%}
+      <p class="i-42 main-font">Unlock Free Samples</p>
+      <p class="text-md-lg">GET 2 FREE SAMPLES WITH ANY <span class="money">$25</span> PURCHASE.</p>
+      <p class="text-xs m-t-lg m-b p-t l-h">
+        Must select 2 different samples per transaction. After your first two free samples, each additional sample in your order with be regular price.
+        <br>
+        <strong>Must select 2 different samples per transaction.</strong>
+        <br>
+        <span class="text-xxs font-s-i">No returns, exchanges, or rain-checks. Offer not valid on gift cards. Offer cannot be honored for previous purchases. If not added to cart at the time of check out we are unable to ship samples separately. While supplies last.</span>
+      </p>
+    {%- else condition -%}
+      <p class="i-42 main-font">Samples</p>
+      <p class="text-xs m-t-lg m-b p-t l-h">
+        Regular price per sample is <span class="money">$5.00</span>.
+        <br>
+        <span class="text-xxs font-s-i">No returns, exchanges, or rain-checks. Offer not valid on gift cards. Offer cannot be honored for previous purchases. If not added to cart at the time of check out we are unable to ship samples separately. While supplies last.</span>
+      </p>
+    {%- endif -%}
+
+
+  </div>
+  <div class="wrapper">
+    <div class="grid grid-uniform">
+      {%- for product in collections['samples'].products -%}
+        {% assign sampleSelectedId = 'empty' %}
+        {% for item in cart.items %}
+           {% if item.product.id == product.id  %}
+           {% assign sampleSelectedId = item.id %}
+           {% endif %}
+        {% endfor %}
+        <div class="grid__item large--one-quarter medium-down--one-half left text-center m-t-lg">
+          <div class="pos-rlt">
+            <a href="#product-{{product.id}}" class="purity-pop" pop-width="760px">
+              <img
+              src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+              data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+              class="cld-prepare"
+              alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+            </a>
+          </div>
+          <p class="main-font text-md m-t-v">{{ product.title }}</p>
+          {%- if product.tags contains "hazmat2" -%}
+            <p class="content_text brand-primary">Available in US only. Unavailable for expedited shipping.</p>
+          {%- endif -%}
+          <button
+            class="
+              select-btn btn btn-secondary add-to-cart-modal no-m-v-gutter p-h-lg
+              {% if product.variants.first.inventory_quantity > 50 %} available {% else %} disabled {% endif %}
+              {% unless sampleSelectedId == 'empty' %}selected{% endunless %}
+            "
+            productTitle="{{product.title}}"
+            productHandle="{{product.handle}}"
+            product-id="{{product.selected_or_first_available_variant.id}}"
+            {% unless product.variants.first.inventory_quantity > 50 %}disabled{% endunless %}
+          >
+          {%- if product.variants.first.inventory_quantity > 50 -%}
+            {%- if sampleSelectedId == 'empty' -%}SELECT{%- else -%}REMOVE{%- endif -%}
+          {%- else -%}
+            SOLD OUT
+          {%- endif -%}
+          </button>
+          <div id="product-{{product.id}}" class="hide">
+            <div class="m-h-lg m-v-lg o-f-hid p-t-lg">
+              <img
+                src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+                class="cld-prepare large--one-half left"
+                alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+              <div class="large--one-half left">
+                <p class="main-font text-md-lg m-b">{{ product.title }}</p>
+                <p class="text-md m-b">{{ product.metafields.purity-toolbox.short_description }}</p>
+                <p>
+                  <button
+                    class="
+                      select-btn btn btn-secondary add-to-cart-modal no-m-v-gutter p-h-lg w-full m-v
+                      {% if product.variants.first.inventory_quantity > 50 %} available {% else %} disabled {% endif %}
+                      {% unless sampleSelectedId == 'empty' %}selected{% endunless %}
+                    "
+                    productTitle="{{product.title}}"
+                    productHandle="{{product.handle}}"
+                    product-id="{{product.selected_or_first_available_variant.id}}"
+                    {% unless product.variants.first.inventory_quantity > 50 %}disabled{% endunless %}>
+                    {%- if product.variants.first.inventory_quantity > 50 -%}
+                      {%- if sampleSelectedId == 'empty' -%}SELECT{%- else -%}REMOVE{%- endif -%}
+                    {%- else -%}
+                      SOLD OUT
+                    {%- endif -%}
+                  </button>
+                </p>
+                {%- if product.metafields.purity-toolbox.full_product_handle != nil and product.metafields.purity-toolbox.full_product_handle != "[empty]" -%}
+                  <p class="text-center"><a href="../products/{{product.metafields.purity-toolbox.full_product_handle}}" class="text-u-l" target="_blank" rel="noopener">See full product</a></p>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script type="text/javascript">
+  $(document).on('click','.select-btn',function(){
+    const target = $(`.select-btn[product-id=${$(this).attr('product-id')}]`)
+    if(target.html()=='SELECT'){
+      target.html('PROCESSING');
+      Holly.addItemById(
+        {id: target.attr('product-id'), quantity: 1},
+        (data)=>{
+          target.addClass('selected').html('REMOVE');
+          $('[id=CartCount]').html($('#CartCount').html()/1+1);
+        },
+        (data)=>{
+          console.log(data);
+        }
+      );
+    }
+    if(target.html()=='REMOVE'){
+      target.html('PROCESSING');
+      $.ajax({
+          type: 'POST',
+          url: '/cart/update.js',
+          dataType: 'json',
+          data: `updates[${target.attr('product-id')}]=0`,
+          success: function(res) {
+            target.removeClass('selected').html('SELECT');
+            $('[id=CartCount]').html($('#CartCount').html()/1-1);
+          },
+          error: function(data) {
+            console.log(data,'error')
+          }
+        });
+    }
+  })
+</script>

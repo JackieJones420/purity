@@ -1,0 +1,805 @@
+<style>
+.rg-inner {
+    line-height: 1.4;
+    margin: 0;
+}
+.rg-header {
+    margin-bottom: 1em;
+    text-align: left;
+}
+.rg-header > * {
+    display: block;
+}
+.rg-hed {
+    font-weight: bold;
+    font-size: 1.4em;
+}
+.rg-dek {
+    font-size: 1em;
+}
+.rg-source {
+    margin: 0;
+    font-size: 0.75em;
+    text-align: right;
+}
+.rg-source .pre-colon {
+    text-transform: uppercase;
+}
+.rg-source .post-colon {
+    font-weight: bold;
+}
+/* table */
+
+table.rg-table {
+    width: 100%;
+    margin-bottom: 0.5em;
+    font-size: 1em;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table.rg-table tr {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    text-align: left;
+    color: #333;
+}
+table.rg-table thead {
+    border-bottom: 3px solid #ddd;
+}
+table.rg-table tr {
+    border-bottom: 1px solid #ddd;
+    color: #222;
+}
+table.rg-table tr.highlight {
+    background-color: #dcf1f0 !important;
+}
+table.rg-table.zebra tr:nth-child(even) {
+    background-color: #f6f6f6;
+}
+table.rg-table th {
+    font-weight: bold;
+    padding: 0.35em;
+    font-size: 0.9em;
+}
+table.rg-table td {
+    padding: 0.35em;
+    font-size: 0.9em;
+}
+table.rg-table .highlight td {
+    font-weight: bold;
+}
+table.rg-table th.number,
+td.number {
+    text-align: right;
+}
+/* media queries */
+
+@media screen and (max-width: 600px) {
+    .rg-inner {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    table.rg-table {
+        width: 100%;
+    }
+    table.rg-table tr.hide-mobile,
+    table.rg-table th.hide-mobile,
+    table.rg-table td.hide-mobile {
+        display: none;
+    }
+    table.rg-table thead {
+        display: none;
+    }
+    table.rg-table tbody {
+        width: 100%;
+    }
+    table.rg-table tr,
+    table.rg-table th,
+    table.rg-table td {
+        display: block;
+        padding: 0;
+    }
+    table.rg-table tr {
+        border-bottom: none;
+        margin: 0 0 1em 0;
+    }
+    table.rg-table tr.highlight {
+        background-color: inherit !important;
+    }
+    table.rg-table.zebra tr:nth-child(even) {
+        background-color: none;
+    }
+    table.rg-table.zebra td:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+    table.rg-table tr:nth-child(even) {
+        background-color: none;
+    }
+    table.rg-table td {
+        padding: 0.5em 0.5em 0.25em;
+        border-bottom: 1px dotted #ccc;
+        text-align: right;
+    }
+    table.rg-table td[data-title]:before {
+        content: attr(data-title);
+        font-weight: bold;
+        display: inline-block;
+        content: attr(data-title);
+        float: left;
+        margin-right: 0.5em;
+        font-size: 0.95em;
+    }
+    table.rg-table td:last-child {
+        border-bottom: 2px solid #ccc;
+    }
+    table.rg-table td:empty {
+        display: none;
+    }
+    table.rg-table .highlight td {
+        background-color: inherit;
+        font-weight: normal;
+    }
+}
+</style>
+<div class="wrapper">
+  <div class="m-t-lg">
+    <h1 class="m-t-md text-center">Help & FAQ</h1>
+    <div class="text-center">
+      <div class="text-lg">
+        <p>
+          United States / <a class="thin-u-l" href="#CaShipping">CA & UK</a> Shipping
+        </p>
+      </div>
+    </div>
+    <div class="m-t-lg">
+      <div class="h4">
+        {%- if settings.free_shipping_promo -%}
+          Free Standard Shipping on USA Orders {%- unless settings.free_shipping_end_date == ''  -%}(valid through {{ settings.free_shipping_end_date | date: "%A, %b %d, %Y" }} 11:59pm PST){%- endunless -%}
+        {%- else -%}
+          Free Standard Shipping on U.S. Orders Over $50
+        {%- endif -%}
+      </div>
+      <div class="h4 brand-primary">
+        Orders are currently shipping within {{ settings.shipping_days }} business days.
+      </div>
+      <div class="h4 currTime hide">Current average time to ship: <span id="avg-ship-time"></span></div>
+      <a href="#ShippingMakeOver">
+        <span class="thin-u-l">Click here to learn more about our recent shipping changes</span>
+        <span class="caret-right"></span>
+      </a>
+    </div>
+
+    <div class="m-v">
+      <div class='rg-inner'>
+        <div class='rg-content'>
+          <table class='rg-table' summary='Hed'>
+            <thead>
+              <tr style="background: grey; color: #fff; font-weight: 700;">
+                <th class='text'>Shipping Method</th>
+                <th class='text'>Processing Time</th>
+                <th class='text'>Delivery Time</th>
+                <th class='text'>Total Delivery Time</th>
+                <th class='text'>Shipping Cost for Orders under $50*</th>
+                <th class='text'>Shipping Cost for Orders over $50*</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class=''>
+                <td class='text' data-title='Shipping Method'>Standard Ground</td>
+                <td class='text' data-title='Processing Time'>1-2 Business Days</td>
+                <td class='text' data-title='Delivery Time'>4-8 Business Days</td>
+                <td class='text' data-title='Total Delivery Time'>5-10 Business Days</td>
+                <td class='text' data-title='Cost for Orders under $50*'>$5.99</td>
+                <td class='text' data-title='Cost for Orders over $50*'><strong class="brand-primary">FREE</strong></td>
+              </tr>
+              <tr class=''>
+                <td class='text' data-title='Shipping Method'>Upgraded Ground</td>
+                <td class='text' data-title='Processing Time'>1-2 Business Days</td>
+                <td class='text' data-title='Delivery Time'>3-5 Business Days</td>
+                <td class='text' data-title='Total Delivery Time'>4-7 Business Days</td>
+                <td class='text' data-title='Cost for Orders under $50*'>$9.99</td>
+                <td class='text' data-title='Cost for Orders over $50*'>$4.00</td>
+              </tr>
+              <tr class='hide'>
+                <td class='text' data-title='Shipping Method'>Rush</td>
+                <td class='text' data-title='Processing Time'>1-2 Business Days</td>
+                <td class='text' data-title='Delivery Time'>1-3 Business Days</td>
+                <td class='text' data-title='Total Delivery Time'>2-5 Business Days</td>
+                <td class='text' data-title='Cost for Orders under $50*'>$14.95</td>
+                <td class='text' data-title='Cost for Orders over $50*'>$14.95</td>
+              </tr>
+              <tr class=''>
+                <td class='text' data-title='Shipping Method'>2-Day</td>
+                <td class='text' data-title='Processing Time'>1-2 Business Day</td>
+                <td class='text' data-title='Delivery Time'>2 Business Days</td>
+                <td class='text' data-title='Total Delivery Time'>3 Business Days</td>
+                <td class='text' data-title='Cost for Orders under $50*'>$18.99</td>
+                <td class='text' data-title='Cost for Orders over $50*'>$18.99</td>
+              </tr>
+              <tr class=''>
+                <td class='text' data-title='Shipping Method'>Overnight**</td>
+                <td class='text' data-title='Processing Time'>1-2 Business Day</td>
+                <td class='text' data-title='Delivery Time'>1 Business Day</td>
+                <td class='text' data-title='Total Delivery Time'>1 Business Day</td>
+                <td class='text' data-title='Cost for Orders under $50*'>$29.99</td>
+                <td class='text' data-title='Cost for Orders over $50*'>$29.99</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center m-t-sm">
+            *Order total not including taxes.
+          </div>
+          <div class="text-center m-t-sm">
+            Business Days are Monday through Friday.
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <section class="grid">
+      <div class="grid__item">
+        <h4 class="m-t-lg text-u-l">ORDER FULFILLMENT</h4>
+        <p>
+          Orders are processed through our system every business day at 9 AM PST. All orders placed after 9 AM PST will be processed the next business day.
+        </p>
+        <p>
+          Please allow 1-2 additional business days for your order to be fulfilled and shipped.
+        </p>
+        <p>Due to the overwhelming success of our recent promotions, fulfillment is currently delayed. We are working very hard to get your package out as quickly as possible. Thank you for your patience and understanding.</p>
+        <p>
+          <strong>**All orders placed after 12 PM PST will be processed the next business day. Please note, we are unable to ship next day to PO Boxes, Hawaii, Puerto Rico, Alaska, and APO/FPO/DPO addresses. If selected, shipping will not be refunded.** <span class="brand-primary">Please expect longer than normal shipping times during the holiday season.</span> </strong>
+          {% comment %}
+          <em>Expedited orders</em> are processed through our system every business day at 12 PM PST. All <em>expedited orders</em> placed after 12 PM PST will be processed the next <em>business day</em>.
+          {% endcomment %}
+        </p>
+        <p>
+          <em>Business days</em> are Monday through Friday. <em>Business days</em> do not include weekends or national holidays. Please note that all shipping costs are non-refundable.
+        </p>
+      </div>
+    </section>
+    <section class="grid" id="ShippingMakeOver">
+      <div class="grid__item">
+        <h4 class="m-t-lg text-u-l">SHIPPING MAKEOVER</h4>
+        <p>
+          Due to the recent rise in shipping costs we have given our shipping policies a makeover to allow us to stay committed to making the healthiest and highest quality cosmetics in the world. Our new shipping policies will allow us to provide better services to our customers and continue to create the purest products at an amazing value. We will of course still offer our generous <strong class="text-u-l">100% Satisfaction</strong> 60 day return policy. Click here to <a href="https://100percentpure.com/pages/returns-and-exchanges">
+            <span class="thin-u-l">Learn More</span>
+            <span class="caret-right"></span></a>
+        </p>
+      </div>
+    </section>
+    <section class="grid">
+      <div class="grid__item">
+        <h4 class="m-t-lg text-u-l">SHIPPING</h4>
+        <p class="font-bold">
+          <em>How did my package ship?</em>
+        </p>
+        <p>
+          A tracking number starting with “1Z” means your package shipped via UPS.  A tracking number with 22 digits means it shipped with USPS.Orders with free standard shipping will ship via USPS and UPS.  The carrier we use to ship your order is dependent on the weight and its destination.  Any order shipping to a PO box, APO/DPO, Hawaii, Alaska, and Puerto Rico which will ship with USPS.
+        </p>
+        <p class="font-bold">
+          <em>Why does my USPS tracking number state 1-Day, 2-Day, 3-Day Delivery? Is it expedited?</em>
+        </p>
+        <p>
+          USPS updated their shipping policy to reflect their new estimated transit times across the nation. This estimated time does not necessarily indicate expedited service.
+        </p>
+        <p class="font-bold">
+          <em>Why did one order ship UPS, United Parcel Service, and another order ship USPS, United States Postal Service?</em>
+        </p>
+        <p>
+          The weight and size of the order determines how your order shipped.  Heavier orders, in general, ship via UPS while lighter orders ship with USPS.
+        </p>
+        <p>
+          Expedited orders are shipped UPS or USPS dependent on the weight and its destination.
+        </p>
+        <p>
+          Expedited orders shipped to a PO Box, APO/DPO, Hawaii, Alaska, Puerto Rico, Guam and other US territories will ship with USPS Priority Mail.
+        </p>
+        <p class="font-bold">
+          <em>How long will my package take to arrive?</em>
+        </p>
+        <p>
+          Your order is being packed and shipped from our warehouse in San Jose, California. Orders with standard shipping will take approximately 5 to 10 <em>business days</em> to be delivered.
+        </p>
+        <p class="font-bold">
+          <em>What are business days?</em>
+        </p>
+        <p>
+          Business days are “regular” business operating days, Monday through Friday.  Our warehouse does not ship on Saturday and Sunday.
+        </p>
+        <p class="font-bold">
+          <em>How do I know my package has shipped?</em>
+        </p>
+        <p>
+          When orders are packed in our warehouse in San Jose, California, a tracking number will be emailed to you. The tracking number allows you to see where your package is and when it will land on your doorstep.
+        </p>
+        <p>
+          <em>Please note it may take up to 48 hours for tracking to display on the carrier’s site. There may be several days when it appears your package is not moving to its destination. This occurs when your package is on a long haul truck or on a train. The tracking of your package is only updated when it reaches the next distribution center. It can take several days for a truck or train to arrive at its destination.</em>
+        </p>
+        <p class="font-bold" id="ExcludeShipping">
+          <em>Why are certain products unavailable to ship to Internationally?</em>
+        </p>
+        <p>
+          There are some products that are unavailable for International Delivery. This can be due to logistical limitations that prevent us from sending products outside of the US. This affects products such as our Yerba Mate Mist SPF 30 and our nail polish. If we cannot sell a product using International Delivery we will always show you on the product page.
+        </p>
+        <p class="font-bold">
+          <em>Why is my tracking number not updating?</em>
+        </p>
+        <div>
+          If the tracking has not updated, it might mean the package hasn’t yet been picked up.
+        </div>
+        <ul>
+          <li>
+            Orders are generally processed and shipped within 48 hours.
+          </li>
+          <li>
+            Our daily pickups are generally towards the end of the day.
+          </li>
+          <li>
+            Tracking information will be updated once the packages have been scanned into the system at the carrier’s distribution center.
+          </li>
+          <li>
+            Please note that there is no visibility for USPS First Class packages. Tracking for these packages will generally show when it was picked up by USPS and when it was delivered.
+          </li>
+          <li>
+            There is step by step tracking for USPS Priority packages, but the USPS site does not always update immediately.
+          </li>
+          <li>
+            It may take up to 48 hours for tracking to display on the carrier’s site. There may be several days when it appears your package is not moving to its destination. This occurs when your package is on a long haul truck or on a train. The tracking of your package is only updated when it reaches the next distribution center. It can take several days for a truck or train to arrive its destination.
+          </li>
+          <li>
+            If the tracking has updated and suddenly stopped, it might be caused by a delay (weather, traffic, etc.) and should resume within a day or so.
+          </li>
+          <li>
+            You cannot track your package within a few days after you have received the shipping confirmation, please contact us by emailing <a class="thin-u-l" href="mailto:customerservice@puritycosmetics.com">customerservice@puritycosmetics.com</a> or call us at <a class="thin-u-l" href="tel:+14158149788">415-814-9788</a>.
+          </li>
+        </ul>
+        <div>
+          If the tracking has updated and suddenly stopped but does not continue updating within a day or two, it can mean:
+        </div>
+        <ul>
+          <li>
+            Package is stuck and requires further assistance (incorrect/ missing address).
+          </li>
+          <li>
+            Package is damaged or lost.
+          </li>
+        </ul>
+        <p class="font-bold">
+          <em>What do I do if my package does not arrive in the estimated timeframe?</em>
+        </p>
+        <p>
+          All standard orders take 5 to 10 business days to land on your doorstep. The estimated time of delivery can be delayed due to weather and/or road conditions. The carrier’s web site will often state if packages are being delayed due to weather.
+        </p>
+        <p>
+          If the tracking number shows your package has been delivered and you have not received it, please check around your yard and with your neighbors.  Carriers may leave a package in places where they think it will be safe, for example behind a side gate, under a bush, etc. If you cannot locate your package, please contact us at <a class="thin-u-l" href="mailto:customerservice@puritycosmetics.com">customerservice@puritycosmetics.com</a> or <a class="thin-u-l" href="tel:+14158149788">415-814-9788</a>.
+        </p>
+        <p class="font-bold">
+          <em>Can I cancel or change my order once it has been placed?</em>
+        </p>
+        <p>
+          Unfortunately, once an order has been placed we are unable to change or cancel it.
+        </p>
+      </div>
+
+    </section>
+    <section class="grid">
+      <div class="grid__item">
+        <h4 class="m-t-lg text-u-l">Inclement Weather Conditions</h4>
+        <p>
+          If your part of the country and/or transportation lanes are experiencing severe weather or a natural disaster, the delivery of your package may be delayed.  Our carriers will post any delays due to weather or a natural disaster on their web site.
+        </p>
+        <p>
+          When the weather is warm, your solid items may show signs of separation or melting because our products are all natural. You can stir or shake it contents and let it sit at room temperature until they return to their original consistency.
+        </p>
+      </div>
+    </section>
+
+    <hr>
+
+    <div class="m-v" id="CaShipping">
+      <div class="h1 text-center text-u-c">
+        Canada
+      </div>
+      <div class="h4 m-t-lg">
+        Free UPS WorldWide Expedited Shipping on Canadian Orders Over $99 USD
+      </div>
+      <div class='rg-inner'>
+        <div class='rg-content'>
+          <table class="rg-table" summary="Hed">
+            <thead>
+              <tr style="background: grey; color: #fff; font-weight: 700;">
+                 <th class="text">Shipping Method</th>
+                 <th class="text">Processing Time</th>
+                 <th class="text">Delivery Time</th>
+                 <th class="text">Total Delivery Time</th>
+                 <th class="text">Shipping Cost for Orders under $99 USD</th>
+                 <th class="text">Shipping Cost for Orders over $99 USD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="">
+                 <td class="text" data-title="Shipping Method">Standard Ground</td>
+                 <td class="text" data-title="Processing Time">1-2 Business Days</td>
+                 <td class="text" data-title="Delivery Time">3-5 Business Days</td>
+                 <td class="text" data-title="Total Delivery Time">4-7 Business Days</td>
+                 <td class="text" data-title="Cost for Orders under $99 USD*">$25 USD*</td>
+                 <td class="text" data-title="Cost for Orders over $99 USD*"><strong class="brand-primary">FREE*</strong>
+                 </td>
+              </tr>
+              <tr class="">
+                 <td class="text" data-title="Shipping Method">Standard Ground to Territories</td>
+                 <td class="text" data-title="Processing Time">1-2 Business Days</td>
+                 <td class="text" data-title="Delivery Time">3-5 Business Days</td>
+                 <td class="text" data-title="Total Delivery Time">4-7 Business Days</td>
+                 <td class="text" data-title="Cost for Orders under $99*">$50 USD</td>
+                 <td class="text" data-title="Cost for Orders over $99*">$25 USD</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="font-bold text-center">
+             <div class="m-t-sm">
+                *Please refer to Standard Ground to Territories for orders shipping to Yukon, Northwest Territories, Nunavut, Prince Edward, Newfoundland, and Labrador.
+             </div>
+             <div class="m-t-sm">
+                Duties and tariffs are included in the shipping fees.**
+             </div>
+             <div class="m-t-sm">
+                **Packages shipped to a PO Box via the Canadian Post Office will NOT have duty, tariff, and taxes prepaid. The Canadian Post Office does not allow the sender to prepaid for duty, tariff, and taxes. You will be asked by the Post Office to pay these fees.
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="m-v" id="UkShipping">
+      <div class="h1 text-center text-u-c">
+        EU*
+      </div>
+      <div class="h4 m-t-lg">
+        Due to VAT Reforms, we are temporarily pausing shipments to the EU on 7/1/21. Orders must be placed by 6/30/21 11:59 PM PST to be processed. <br>
+        <!--Free UPS WorldWide Expedited Shipping on UK/EU Orders Over $99 USD!-->
+      </div>
+      <div class='rg-inner'>
+        <div class='rg-content'>
+          <table class="rg-table" summary="Hed">
+            <thead>
+              <tr style="background: grey; color: #fff; font-weight: 700;">
+                 <th class="text">Shipping Method</th>
+                 <th class="text">Processing Time</th>
+                 <th class="text">Delivery Time</th>
+                 <th class="text">Total Delivery Time</th>
+                 <th class="text">Shipping Cost for Orders under $99 USD</th>
+                 <th class="text">Shipping Cost for Orders over $99 USD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="">
+                 <td class="text" data-title="Shipping Method">Standard Ground</td>
+                 <td class="text" data-title="Processing Time">1-2 Business Days</td>
+                 <td class="text" data-title="Delivery Time">3-5 Business Days</td>
+                 <td class="text" data-title="Total Delivery Time">4-7 Business Days</td>
+                 <td class="text" data-title="Cost for Orders under $99 USD*">$25 USD*</td>
+                 <td class="text" data-title="Cost for Orders over $99 USD*"><strong class="brand-primary">FREE*</strong>
+                 </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="font-bold text-center">
+             <div class="m-t-sm">
+                20% duties and tariffs are included in the product pricing on all UK/EU orders.**
+             </div>
+          </div>
+        </div>
+      </div>
+      <div class="h1 m-t-lg text-center text-u-c">
+        UK
+      </div>
+      <div class="h4 m-t-lg">
+        Due to Brexit, we are temporarily pausing shipments to the UK on 12/21/20. Orders must be placed by 12/20/20 11:59 PM PST to be processed.
+      </div>
+    </div>
+
+    <section class="grid">
+      <div class="grid__item">
+        <h4 class="m-t-lg text-u-l">ORDER FULFILLMENT</h4>
+        <p class="font-bold">Business Days are Monday through Friday.</p>
+        <p>Orders are processed through our system every business day at 9 AM PST. All orders placed after 9 AM PST will be processed the next business day.</p>
+        <p>Please allow 1-2 additional business days for your order to be fulfilled and shipped.</p>
+        <p>Due to the overwhelming success of our Black Friday and Cyber Monday deals, fulfillment is currently delayed. We are working very hard to get your package out as quickly as possible. Thank you for your patience and understanding.</p>
+        <p>Expedited orders are processed through our system every business day at 12 PM PST. All expedited orders placed after 12 PM PST will be processed the next business day.</p>
+        <p>**Overnight orders are processed every business day at 12 PM PST. All Overnight orders placed after 12 PM PST will ship the following day.</p>
+        <p class="font-bold">Business days are Monday through Friday. Business days do not include weekends or national holidays. Please note that all shipping costs are non-refundable.</p>
+      </div>
+    </section>
+
+    <section class="grid">
+       <div class="grid__item">
+          <h4 class="m-t-lg text-u-l">CUSTOMS, DUTIES AND VAT</h4>
+          <p class="font-bold">
+             <em>What is custom duty?</em>
+          </p>
+          <p>
+            Customs duty is a tax that is determined by the customs authority of your country based on product type, known as commodity, value, weight and dimensions. Customs duty is established by your customs authority. Duty, tariffs, and taxes are prepaid by 100% Pure Cosmetics. You should never be asked to pay any duty fees when your package is delivered UNLESS your package is shipped to a PO Box. The Post Office does not allow the sender to prepay duties and tariffs.
+          </p>
+          <p class="font-bold">
+             <em>Why would customs delay the delivery of my package?</em>
+          </p>
+          <p>
+            Customs may inspect your package due to a product name, description, commodity type, and/or value. Some of our product names can be questioned by customs, such as Red Wine or Cucumber resulting in customs inspecting a package. Customs may also review the value of an item.
+          </p>
+          <p class="font-bold">
+             <em>Do I pay VAT?</em>
+          </p>
+          <p>
+            Yes. A 20% VAT charge is included in the price of each item to abide by European Union tax law. You are not required to pay any additional taxes at checkout.
+          </p>
+       </div>
+    </section>
+
+    <section class="grid">
+       <div class="grid__item">
+          <h4 class="m-t-lg text-u-l">SHIPPING</h4>
+          <p class="font-bold">
+             <em>How is my package shipped?</em>
+          </p>
+          <p>
+            Orders are shipped UPS WorldWide Expedited. Packages will be delivered within 7 business days. Packages shipped to a PO Box will be delivered by the Canadian Post. UPS is prohibited from delivering to a PO Box.
+          </p>
+          <p class="font-bold">
+             <em>How long will my package take to arrive?</em>
+          </p>
+          <p>
+             Your order is being packed and shipped from our warehouse in San Jose, California. Orders will take approximately 4 - 7 business days to be delivered. Typically, it takes 1 - 2 business days to ship your package to be delivered to a Canadian customs office. If customs clears your package quickly, your order will arrive within 7 business days. If customs inspect your package, delivery may be delayed. 100% Pure does not have the ability to impact the time period customs holds on to your package.
+          </p>
+          <p class="font-bold">
+             <em>How do I know my package has shipped?</em>
+          </p>
+          <p>
+             When orders are packed in our warehouse in San Jose, California, a tracking number will be emailed to you. The tracking number allows you to see where your package is and when it will land on your doorstep.
+          </p>
+          <p class="font-bold">
+             Please note it may take up to 48 hours for tracking to display on the UPS’s website. There may be several days when it appears your package is not moving to its destination. This occurs when your package is on a long haul truck or on a train. The tracking of your package is only updated when it reaches the next distribution center. It can take several days for a truck or train to arrive in Canada from San Jose, California.
+          </p>
+          <p class="font-bold">
+             <em>How did my package ship?</em>
+          </p>
+          <p>
+             All orders are shipped with UPS WorldWide Expedited. The UPS tracking number will be emailed to you.
+          </p>
+          <p class="font-bold">
+             <em>How do I track my packaged?</em>
+          </p>
+          <p>
+             Click <a class="thin-u-l" href="https://www.ups.com/tracking/tracking.html">HERE</a> to track your package. Your ship confirmation email includes your UPS tracking number. Your confirmation email also has a link to track your package.
+          </p>
+          <p class="font-bold">
+             <em>What do I do if my package does not arrive in the estimated timeframe?</em>
+          </p>
+          <p>
+             All UPS WorldWide Expedited packages should land on your doorstep within 4 - 7 <strong>business</strong> days. The estimated time of delivery can be delayed due to weather. road conditions or customs inspecting your package.. The carrier’s web site will often state if packages are being delayed due to weather.
+          </p>
+          <p>
+             If tracking of your package has been updating and then shows no movement, it is possible your package: 1) is pending a customs inspection, 2) has an incorrect address or is missing address information, and 3) it has been damaged or lost by the carrier.
+          </p>
+          <p>
+             If the tracking number shows your package has been delivered and you have not received it, please check around your yard and home, and with your neighbors. UPS may leave a package in places where they think it will be safe, for example behind a side gate, under a bush, etc.
+          </p>
+          <p>
+             If you cannot locate your package, please contact us at <a class="thin-u-l" href="mailto:customerservice@puritycosmetics.com">customerservice@puritycosmetics.com</a> or <a class="thin-u-l" href="tel:+14158149788">415-814-9788</a>.
+          </p>
+          <p class="font-bold">
+            <em>Can I cancel or change my order once it has been placed?</em>
+          </p>
+          <p>
+            Unfortunately, once an order has been placed we are unable to change or cancel it.
+          </p>
+          <p class="font-bold">
+             <em>What if I made a mistake on my address and need it fixed?</em>
+          </p>
+          <p>
+             Once an order has been placed we are unable to change the shipping address. Please contact us at <a class="thin-u-l" href="mailto:customerservice@puritycosmetics.com">customerservice@puritycosmetics.com</a> or <a class="thin-u-l" href="tel:+14158149788">415-814-9788</a> or <a class="thin-u-l" href="tel:+14158149788">415-814-9788</a> for further assistance.
+          </p>
+          <p>
+             If your package is already in transit, we may not be able to correct the address.
+          </p>
+          <strong>We cannot correct addresses on any international packages that has left the United States.</strong>
+       </div>
+    </section>
+
+    <section class="grid">
+       <div class="grid__item">
+          <h4 class="m-t-lg text-u-l">Inclement Weather Conditions</h4>
+          <p>
+             If your part of the country and/or transportation lanes are experiencing severe weather or a natural disaster, the delivery of your package may be delayed. Our carriers will post any delays due to weather or a natural disaster on their web site.
+          </p>
+          <p>
+             When the weather is warm, your solid items may show signs of separation or melting because our products are all natural. You can stir or shake it contents and let it sit at room temperature until they return to their original consistency.
+          </p>
+       </div>
+    </section>
+
+    <hr>
+
+    <section class="grid">
+      <div class="grid__item">
+        <h3 class="m-t-lg">International Shipping:</h3>
+        <p class="m-t-lg">
+          Our products are available in the following countries. All inquiries regarding orders placed on our official international websites (1st table) may be directed to <a class="thin-u-l" href="mailto:customerservice@puritycosmetics.com">customerservice@puritycosmetics.com</a>. **PLEASE NOTE** that inquiries regarding orders placed on third party distributor websites (2nd table) must be discussed with each individual distributor. This includes shipping, returns, refunds, and exchanges.
+        </p>
+        <div class="text-center p-sm text-u-c" style="background: grey; color: #fff; font-weight: 700;">
+          Countries Not Subject to VAT
+        </div>
+        <table class="table" id="Shipping" style="table-layout: fixed;">
+          <tbody>
+            <tr>
+              <td>United States</td>
+              <td>Canada</td>
+              <td><a class="thick-u-l" target="_blank" href="https://www.100purity.cn/">China</a></td>
+              <td></td>
+            </tr>
+          </table>
+          <div class="text-center p-sm text-u-c" style="background: grey; color: #fff; font-weight: 700;">
+            Countries Subject to VAT
+          </div>
+          <table class="table" id="intShipping" style="table-layout: fixed;">
+            <tr>
+              <td>Andorra</td>
+              <td>Austria</td>
+              <td>Belgium</td>
+              <td>Bulgaria</td>
+            </tr>
+            <tr>
+              <td>Denmark</td>
+              <td>Estonia</td>
+              <td>Finland</td>
+              <td>France</td>
+            </tr>
+            <tr>
+              <td>Gibraltar</td>
+              <td>Greenland</td>
+              <td>Hungary</td>
+              <td>Iceland</td>
+            </tr>
+            <tr>
+              <td>Ireland</td>
+              <td>Latvia</td>
+              <td>Luxembourg</td>
+              <td>Malta</td>
+            </tr>
+            <tr>
+              <td>Monaco</td>
+              <td>Netherlands</td>
+              <td>Norway</td>
+              <td>Poland</td>
+            </tr>
+            <tr>
+              <td>Portugal</td>
+              <td>Réunion</td>
+              <td>Slovakia</td>
+              <td>Sweden</td>
+            </tr>
+            <tr>
+              <td>Switzerland</td>
+              <td>United Kingdom</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-center p-sm" style="background: grey; color: #fff; font-weight: 700;">
+          THIRD PARTY DISTRIBUTORS
+        </div>
+        <table class="table" id="intShipping" style="table-layout: fixed;">
+          <tbody>
+            <tr>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.nourishedlife.com.au">Australia</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100percentpure.cz">Czech Republic</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100percentpure.de">Germany</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.gaianaturashop.it/prodotto/100pure">Italy</a>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100pure.lt/">Lithuania</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="https://www.100percentpure.com.my/">Malaysia</a>
+              </td>
+              <!-- <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100procentnatuurlijk.nl/">Netherlands</a>
+              </td> -->
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.nourishedlife.com.au">New Zealand</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100percentpure.com.sg">Singapore</a>
+              </td>
+            </tr>
+            <tr>
+
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.or-ca.si/100_Pure.html">Slovenia</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.100propure.co.kr">South Korea</a>
+              </td>
+              <td colspan="4">
+                <a class="thick-u-l" target="_blank" href="http://www.pcstore.com.tw/juicyskin/">Taiwan</a>
+              </td>
+              <td colspan="4">
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <div class="grid m-t-lg">
+    <div class="grid__item large--one-whole">
+      <h1 class="text-center m-v">Frequently Asked Questions</h1>
+    </div>
+    <div class="grid__item push--large--one-third large--one-third">
+      <img
+        src="{{ 'AP-RGB-lg.png' | file_img_url: '50x', format: 'pjpg' }}"
+        data-src="{{ 'AP-RGB-lg.png' | file_img_url: '1024x' | format: 'pjpg' }}}}"
+        data-srcset="{{ 'AP-RGB-lg.png' | file_img_url: '1000x' | format: 'pjpg' }} 1000w,
+                     {{ 'AP-RGB-lg.png' | file_img_url: '800x' | format: 'pjpg' }} 800w,
+                     {{ 'AP-RGB-lg.png' | file_img_url: '600x' | format: 'pjpg' }} 600w,
+                     {{ 'AP-RGB-lg.png' | file_img_url: '400x' | format: 'pjpg' }} 400w"
+        data-sizes="auto"
+        class="no-border lazyload fade-in"
+        alt="AfterPay Logo" />
+    </div>
+    <div class="grid__item large--one-whole">
+      <h4>What is Afterpay?</h4>
+      <p>Afterpay is a service that allows us to offer our customers the ability to make purchases now and pay for them in four equal payments made every 2 weeks without any interest.</p>
+      <h4>How do I use Afterpay?</h4>
+      <p>Just shop 100PercentPure.com and check out as usual. At checkout, choose Afterpay as your payment method. You will be directed to the Afterpay website to register and provide payment details (Visa or Mastercard). If you’ve used Afterpay before, just log in to your Afterpay account. Then complete your order – it’s that easy!</p>
+      <p>Please note, all items in your shopping bag must be eligible for Afterpay, and the bag value must be between $35 and $1,000.</p>
+      <h4>Where can I use Afterpay?</h4>
+      <p>Afterpay can only be used on purchases made on the 100PercentPure.com website. Afterpay cannot be used as a form of payment for purchases in any of our 100% PURE store locations.</p>
+      <h4>Can I use Afterpay if I’m an international customer?</h4>
+      <p>Afterpay is only available to customers with a US billing address. Customers with international billing addresses will not be able to create an Afterpay account.</p>
+      <h4>How does the Afterpay payment schedule work?</h4>
+      <p>All Afterpay customers are required to make their first payment at the time of purchase. The remaining three payments are deducted automatically every 2 weeks in equal installments from your selected payment method. If you would like to make additional unscheduled payments before they are due, you may log in to Afterpay to make your payments early. Afterpay will then adjust the amount owed accordingly.</p>
+      <p>You can log in to your Afterpay account anytime to view your payment schedule or make a payment before the next due date.</p>
+      <h4>What if I can’t pay an Afterpay installment?</h4>
+      <p>If funds are not available at the time the automatic payment is due, you will be charged an $8 late payment fee by Afterpay. An additional $8 fee will be charged if the missed payment is not made within 7 days. Late fees will not exceed 25% of the total order.</p>
+      Please see Afterpay Payment Purchase Agreement <a class="thick-u-l" target="_blank" href="https://www.afterpay.com/en-US/terms">here</a>.</p>
+      <h4>When will my items be delivered if I use Afterpay?</h4>
+      <p>Afterpay orders are delivered within our standard shipping timeframes like any order from 100PercentPure.com. Free standard shipping is available for orders over $50.</p>
+      <p>Visit our <a class="thick-u-l" href="/pages/help-faq">Shipping page</a> for more information.</p>
+      <h4>Is there a limit to how much I can spend on a single Afterpay transaction?</h4>
+      <p>Yes, your tote value must be between $35 and $1,000 to use Afterpay on 100PercentPure.com.</p>
+      <h4>Can I use another form of payment with Afterpay?</h4>
+      <p>Yes, you may also use a 100% PURE online gift card with Afterpay to pay for your purchase as long as your order total is between $35 and $1,000.</p>
+      <h4>What products are not eligible for Afterpay?</h4>
+      <p>Afterpay is not available on purchases of online gift cards. If your order contains gift cards and other eligible products, you will need to purchase your gift cards separately.</p>
+      <h4>How do I return or exchange an item purchased with Afterpay?</h4>
+      <p>Afterpay returns follow our standard return process. Use our <a class="thick-u-l" href="https://100percentpure.com/pages/returns-and-exchanges">online returns</a> portal to print a return label or return your item to a 100% PURE store location. Please note, refunds for Afterpay will be refunded from 100% PURE to Afterpay. We cannot provide an exchange or cash refund. As soon as the refund is processed it will drop into your Afterpay online account. Have more questions about Afterpay returns? Go to <a class="thick-u-l" class="_blank" href="https://help.afterpay.com/hc/en-us">help.afterpay.com</a>.</p>
+      <h4>Where can I find out more about Afterpay?</h4>
+      <p>Visit the Afterpay website here for a comprehensive list of FAQs and check out Afterpay’s Privacy Policy found <a class="thick-u-l" target="_blank" href="https://www.afterpay.com/privacy-policy">here</a>.</p>
+      If you have a question about your Afterpay account, please contact the Afterpay toll-free customer support line at <a class="thick-u-l" href="tel:855-289-6014">855-289-6014</a> or use the contact form found <a class="thick-u-l" target="_blank" href="https://help.afterpay.com/hc/en-us/requests/new">here</a>.</p>
+      <p>*Your payment schedule will be provided to you. If you fail to make a payment on time, you will be charged a late fee of $8 with an additional $8 fee added after 7 days if payment is still unpaid.</p>
+</div>
+  </div>
+</div>

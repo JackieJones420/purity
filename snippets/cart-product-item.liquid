@@ -1,0 +1,126 @@
+{%- if displayType != 'card' -%}
+  <div class="grid__item large--one-quarter medium-down--one-half left text-center m-t productGrid" id="item-{{product.id}}">
+    <div class="pos-rlt product-img__container grid__image" href="">
+      <img
+        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        class="cld-prepare"
+        alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+    </div>
+    {%- if showPrice -%}
+      {% assign on_sale = false %}
+      {% if product.compare_at_price > product.price %}
+        {% assign on_sale = true %}
+      {% endif %}
+      {% if on_sale %}
+        {% if product.price_varies %}
+          {% assign sale_price = product.price | money %}
+          <span>{{ 'products.product.on_sale_from_html' | t: price: sale_price }}</span>
+        {%- elsif product.tags contains "BundleProduct" -%}
+          {%- if product.tags contains "holiday saving" -%}
+            <div class="font-bold text-sm">On Sale</div>
+          {%- endif -%}
+          <span>{{ product.price | money }}</span>
+          <span class="caption_s_text">({{ product.compare_at_price | money }} value)</span>
+        {% else %}
+          <div class="font-bold text-sm">On Sale</div>
+          <span>{{ product.price | money }}</span>
+          <span class="text-l-t">{{ product.compare_at_price | money }}</span>
+        {% endif %}
+      {% else %}
+        {% if product.price_varies %}
+          {% assign price = product.price | money %}
+          <span>{{ 'products.general.from_text_html' | t: price: price }}</span>
+        {% else %}
+          <span>{{ product.price | money }}</span>
+        {% endif %}
+      {% endif %}
+    {%- endif -%}
+    <p class="main-font text-md m-v same-height" same-height-id="sampleName">{{ product.title }}</p>
+    <div class="form-horizontal {% unless product.variants.size == 1 %} hide {% endunless %}">
+
+      <!-- Variants Swatch -->
+      {% if product.variants.size > 1 %}
+        <div class="collection-swatch p-h-lg m-b">
+          {% assign selectedOption = product.options | first %}
+          <p>{{selectedOption}}: <span class="variant-container"></span> </p>
+          {% include 'swatch' with selectedOption %}
+        </div>
+      {% endif %}
+      <button
+        class="{{addClass}} btn btn-secondary add-to-cart-modal no-m-v-gutter p-h-lg {% if productAvailable %} available {% else %} disabled {% endif %}"
+        productTitle="{{product.title}}"
+        productHandle="{{product.handle}}"
+        product-id="{{product.selected_or_first_available_variant.id}}"
+        {% unless productAvailable %}disabled{% endunless %}
+      >{%- if productAvailable -%}{{addCTA}}{%- else -%}SOLD OUT{%- endif -%}</button>
+    </div>
+
+    {% unless product.variants.size == 1 %}
+      <span class="btn btn-secondary collection-show-form w-full">
+        CHOOSE {{selectedOption}}
+      </span>
+    {% endunless %}
+  </div>
+{%- else -%}
+  <div class="m-t productGrid grid m-h" id="item-{{product.id}}">
+    <div class="grid__item large--four-tenths product-img__container grid__image" href="">
+      <img
+        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto{%- if product.metafields.purity-toolbox.toolbox-assets.featured[0].category contains "primary" -%}{{badgesURL}}{%- endif -%}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        class="cld-prepare"
+        alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+    </div>
+    <div class="grid__item large--one-half push--large--one-tenth m-t-xlg">
+      <p class="main-font section_title_text m-v same-height" same-height-id="sampleName">{{ product.title }}</p>
+      {%- if showPrice -%}
+        {% assign on_sale = false %}
+        {% if product.compare_at_price > product.price %}
+          {% assign on_sale = true %}
+        {% endif %}
+        {% if on_sale %}
+          {% if product.price_varies %}
+            {% assign sale_price = product.price | money %}
+            <span>{{ 'products.product.on_sale_from_html' | t: price: sale_price }}</span>
+          {%- elsif product.tags contains "BundleProduct" -%}
+            {%- if product.tags contains "holiday saving" -%}
+              <div class="font-bold text-sm">On Sale</div>
+            {%- endif -%}
+            <span>{{ product.price | money }}</span>
+            <span class="caption_s_text">({{ product.compare_at_price | money }} value)</span>
+          {% else %}
+            <div class="font-bold text-sm">On Sale</div>
+            <span>{{ product.price | money }}</span>
+            <span class="text-l-t">{{ product.compare_at_price | money }}</span>
+          {% endif %}
+        {% else %}
+          {% if product.price_varies %}
+            {% assign price = product.price | money %}
+            <span>{{ 'products.general.from_text_html' | t: price: price }}</span>
+          {% else %}
+            <span>{{ product.price | money }}</span>
+          {% endif %}
+        {% endif %}
+      {%- endif -%}
+      <div class="form-horizontal">
+
+        <!-- Variants Swatch -->
+        {% if product.variants.size > 1 %}
+          <div class="m-b text-left text-md">
+            {% assign selectedOption = product.options | first %}
+            <p>{{selectedOption}}: <span class="variant-container">{{product.selected_or_first_available_variant.option1}}</span> </p>
+            {% include 'swatch' with selectedOption %}
+          </div>
+        {% endif %}
+        <button
+          class="{{addClass}} btn btn__bg-filled--secondary w-full add-to-cart-modal no-m-v-gutter p-h-lg {% if productAvailable %} available {% else %} disabled {% endif %}"
+          productTitle="{{product.title}}"
+          productHandle="{{product.handle}}"
+          product-id="{{product.selected_or_first_available_variant.id}}"
+          {% unless productAvailable %}disabled{% endunless %}
+        >{%- if productAvailable -%}{{addCTA}}{%- else -%}SOLD OUT{%- endif -%}</button>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{% assign displayType = 'grid' %}

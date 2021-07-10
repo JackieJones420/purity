@@ -1,0 +1,40 @@
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+
+<header class="text-center founders--header">
+  <h1 class="p-t-lg">Ric Kostick</h1>
+  <h2 class="p-b">Founder and CEO of 100% PURE®</h2>
+</header>
+<section class="grid founders--section">
+  <div class="grid__item large--one-whole">
+    <img
+      alt="100% PURE Founder Ric Kostick"
+      class="lazyload fade-in"
+      data-sizes="100vw"
+      data-src="{{ 'about_us_ric.png' | file_img_url: default, format: 'pjpg' }}"
+      data-srcset="
+      {{ 'about_us_ric.png' | file_img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+      {{ 'about_us_ric.png' | file_img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}}"/>
+  </div>
+  <div class="grid__item large--one-whole">
+    <div class="content m-v text-md-lg">
+      <p>As a computer science student at UC Berkeley, Ric Kostick got an early start in personal care after creating a shampoo line for teenagers. Sephora and Nordstrom immediately picked up the products, and its innovative packaging design made its way into the Museum of Modern Art. Since having lost three family members to cancer, Ric developed a fervent interest in healthy living. This led him to question the ingredients in his own products, and he began searching for revolutionary methods to formulate high performing, natural products. Ric found his answer in a Forbes article profiling Susie Wang and an innovative patent she had created. He later met Susie's brother James Wang, and the three of them founded 100% PURE.</p>
+    </div>
+  </div>
+</section>

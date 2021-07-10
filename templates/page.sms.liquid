@@ -1,0 +1,99 @@
+<!-- /templates/page.liquid -->
+<div class="grid">
+
+  <div class="grid__item large--one-whole">
+
+    <h1 class="m-t-md text-center">{{ page.title }}</h1>
+
+
+    {% comment %}
+      Regular page content goes here.
+    {% endcomment %}
+    <div class="rte">
+      {{ page.content }}
+      
+      
+      
+      <form method="POST" id="sms-form">
+        
+        Please enter phone number here<br />
+        <input type="text" size="10" maxlength="10" />
+        
+        <br />
+        
+        <input type="text" maxlength="3" size="3" id="num1">-<input type="text" maxlength="3" size="3" id="num2">-<input type="text" maxlength="4" size="4" id="num3">
+        
+        <input type="button" value="Opt in" id="sms-submit-btn" />
+      </form>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/3.6.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDd5wX0GupCazOri-tmGXEWsBR-bVj1Qbg",
+    authDomain: "purity-sms.firebaseapp.com",
+    databaseURL: "https://purity-sms.firebaseio.com",
+    storageBucket: "",
+    messagingSenderId: "132045429407"
+  };
+  firebase.initializeApp(config);
+</script>
+
+<script>
+  
+$( document ).ready(function(){
+
+  $("#sms-submit-btn").click(function( event ) {
+
+    //writeUserData('jimmychi213@yahoo,com','2132222234');
+  	validatePhoneNumber();    
+    
+    event.preventDefault();
+  });
+  
+  //Writes to Firebase
+  function writeUserData(email, phoneNumber) {
+    firebase.database().ref('users/' + email).set({
+      email: email,
+      phoneNumber: phoneNumber
+    });
+  }  
+  
+                    
+  function getParameterByName(name, url) {
+      if (!url) {
+        url = window.location.href;
+      }
+      name = name.replace(/[\[\]]/g, "\\$&");
+      var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }  
+  
+  //var email = getParameterByName('email');
+  //alert("email is: " + email);
+  
+  
+  function validatePhoneNumber() {
+    var num1 = document.getElementById('num1').value;
+    alert(num1);
+    
+  }  
+ 
+  
+  
+  //Submit phone number with email into firebase
+
+});
+    
+  
+  
+</script>

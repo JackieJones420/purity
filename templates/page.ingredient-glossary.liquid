@@ -1,0 +1,99 @@
+<section class="collection-banner__inner text-center bg-img medium-down--hide" aria-label="page banner" style="background-image: url('https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/ingredient_glossary_banner')">
+  <h1 class="page_title_text wrapper">Ingredient Glossary</h1>
+</section>
+<section class="collection-banner__inner text-center bg-img large--hide" aria-label="page banner" style="background-image: url('https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/ingredient_glossary_banner_mobile')">
+  <h1 class="page_title_text wrapper">Ingredient Glossary</h1>
+</section>
+<div class="wrapper m-t-xlg text-center about-us-content">
+  <div class="grid five-sixths margin-auto">
+    <div class="grid__item large--one-quarter medium-down--one-half large--p-h m-b-lg">
+      {%- include 'icon-about-us-guaranteed-pure.svg', additionalClass: "m-h-xlg m-b w-xs" -%}
+      <span class="block module_title_text m-b-sm">Guaranteed PURE</span>
+      <p class="caption_text m-t">All 100% PURE™ formulations adhere to strict purity standards and will never contain harsh or toxic ingredients</p>
+    </div>
+    <div class="grid__item large--one-quarter medium-down--one-half large--p-h m-b-lg">
+      {%- include 'icon-about-us-naturally-pigmented.svg', additionalClass: "m-h-xlg m-b w-xs" -%}
+      <span class="block module_title_text m-b-sm">Naturally Pigmented</span>
+      <p class="caption_text m-t">We source pigments from fruit, vegetables, tea, cocoa, and minerals to avoid commonly used heavy metal dyes and lakes</p>
+    </div>
+    <div class="grid__item large--one-quarter medium-down--one-half large--p-h m-b-lg">
+      {%- include 'icon-about-us-completely-cruelty-free.svg', additionalClass: "m-h-xlg m-b w-xs" -%}
+      <span class="block module_title_text m-b-sm">Completely Cruelty-Free</span>
+      <p class="caption_text m-t">Our commitment to animal welfare means that we will never, EVER test on animals – and that our products will always be certified cruelty-free</p>
+    </div>
+    <div class="grid__item large--one-quarter medium-down--one-half large--p-h m-b-lg">
+      {%- include 'icon-about-us-ingredient-sourcing.svg', additionalClass: "m-h-xlg m-b w-xs" -%}
+      <span class="block module_title_text m-b-sm">Ingredient Sourcing</span>
+      <p class="caption_text m-t">We go through a painstaking process to avoid animal-sourced ingredients and opt for vegan, cruelty-free alternatives</p>
+    </div>
+  </div>
+  <div class="brand-secondary-border p-xlg m-v-xlg five-sixths margin-auto">
+    <p class="text-center section_title_text m-b-lg">How We Define Natural:</p>
+    <p class="caption_text">An ingredient or formula composed of plant, mineral, and/or marine vegetation that undergoes chemical changes due to biological processes such as fermentation, distillation, and cold processing</p>
+  </div>
+  <div class="ingredient-content">
+    <p class="module_title_text m-b">Ingredient A to Z</p>
+    <div class="o-f-scl m-v-lg large--m-h-xlg no-scorll-bar">
+      <div class="ingredient-filter left w-s-no w-full">
+      </div>
+    </div>
+    <div class="ingredient-list grid grid-uniform text-left">
+    </div>
+  </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+let ingredientData = [];
+let filterData = [];
+let filterIngredientData = [];
+let placeIngredient = (ingredients)=>{
+  $('.ingredient-list').html('');
+  ingredients.forEach((element)=>{
+    $('.ingredient-list').append(`
+      <div class="large--one-half grid__item m-v-sm">
+        <h4 class="caption_text font-bold">${element.Name}</h4>
+        <p class="caption_text">${element.Description}</p>
+      </div>
+    `);
+  });
+}
+
+
+
+$(document).ready(function() {
+  Holly.ajaxBackendData('https://api.allorigins.win/get?url=' + encodeURIComponent(`https://toolbox.puritycosmetics.com/services/ingredients/list.php?order=Name%20ASC&filter=(Description!=null)and(Name!=null)&_=1623668745862`),(rawdata)=>{
+   
+    let data = rawdata.contents;
+
+    data = JSON.parse(data);
+    
+    ingredientData = data.resource;
+    placeIngredient(ingredientData);
+    ingredientData.forEach((element)=>{
+      filterData.find( (letter)=>{return letter == element.Name.charAt(0) && element.Name} ) ? null : element.Name==''?null:filterData.push(element.Name.charAt(0)) ;
+    });
+    filterData.forEach((element)=>{
+      $('.ingredient-filter').append(`<span class="ingredient-filter-itme pointer p-h p-v inline caption_text b-peach b-a">${element}</span>`);
+    });
+    $('.ingredient-filter-itme').click(function(){
+      filterIngredientData = [];
+      if( $(this).hasClass('font-bold') ){
+        $(this).removeClass('font-bold bg-peach');
+        placeIngredient(ingredientData);
+      }else{
+        $('.ingredient-filter-itme').removeClass('font-bold bg-peach');
+        $(this).addClass('font-bold bg-peach');
+        ingredientData.forEach((element)=>{
+          $(this).html() == element.Name.charAt(0) ? filterIngredientData.push(element) : null ;
+        });
+        placeIngredient(filterIngredientData);
+      }
+    })
+    $('.ingredient-filter-itme').eq(0).click();
+  })
+})
+
+</script>

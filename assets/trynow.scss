@@ -1,0 +1,397 @@
+/* PDP */
+
+.trynow-button {
+  background-color: #a81d46;
+  color: #fff;
+  border: 0px;
+
+  &:hover {
+    background-color: #fce4de;
+    color: #333;
+    border: 0px;
+  }
+}
+
+.trynow-button-desktop {
+    margin-top: 10px;
+}
+
+/* TRYNOW LEARN MORE SECTION */
+
+.trynow_try_for_text {
+  width: 100%;
+  display: flex;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  line-height: 1.3;
+  font-family: "Avenir Next Regular","Times New Roman",serif;
+  color: #333;
+  font-weight: 300;
+}
+
+.trynow_powered {
+  font-weight: bold;
+  vertical-align: 1px;
+}
+
+.trynow_href {
+  text-decoration: none;
+  color: black;
+}
+
+.trynow-logo {
+  height: 24px;
+  width: 51px;
+}
+
+.trynow_powered {
+  vertical-align: -7px;
+}
+
+.trynow_learn_more {
+  margin-left: auto;
+  text-decoration: underline;
+  cursor: pointer;
+  padding-top: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+  .trynow_try_for_text {
+    display: flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 7px;
+  }
+
+  .trynow_learn_more {
+      padding-top: 1px;
+  }
+}
+
+/* START LEARN MORE MODAL */
+
+.trynow-pop-up_outer-container {
+  position: fixed;
+  z-index: 10000 !important;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  display: none;
+}
+
+.trynow-pop-up_inner-container {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+  width: 400px;
+  height: 465px;
+  background: white;
+  transform: translateY(25%);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 10px 10px 0 0;
+}
+
+.trynow-pop-up_close-button {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.close-image {
+  height: 15px;
+}
+
+.trynow-pop-up_trynow-logo {
+  display: inline-block;
+  position: absolute;
+  right: 1rem;
+}
+
+.trynow-pop-up_content-container {
+  margin-top: 10px;
+  padding: 0 20px;
+}
+
+.trynow-modal-title {
+  text-align: center;
+  font-size: 22px;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  font-family: 'Times New Roman', Times, Baskerville, Georgia, serif;
+}
+
+.trynow-pop-up_info-card {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.trynow-info-card-icon {
+  display: contents;
+  margin-right: 15px;
+}
+
+.trynow-pop-up_info-card-text {
+  margin-left: 25px;
+  font-size: 10px;
+  width: 100%;
+  & > h4 {
+    font-family: "Avenir Next Regular","Times New Roman",serif;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+}
+
+.trynow-pop-up_info-card-subtitle {
+  color: black;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.trynow-pop-up_info-card-paragraph {
+  color: black;
+  letter-spacing: normal;
+  font-size: 12px;
+}
+
+.trynow-modal-notice {
+  font-size: 10px;
+  text-align: center;
+}
+
+.trynow-pop-up_info-card-paragraph-bold {
+  color: black;
+  text-transform: lowercase !important;
+  font-weight: bold;
+}
+
+.trynow-powered-container {
+  text-align: center;
+}
+
+.trynow-powered-text {
+  font-family: sans-serif;
+  font-size: 10px;
+}
+
+.powered-underline {
+  text-decoration: underline;
+}
+
+.trynow_return_link {
+  text-decoration: underline;
+  color: black;
+
+  &:hover {
+    color: black;
+  }
+}
+
+.trynow-modal-button {
+  background-color: #a81d46;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  margin-top: 20px;
+  border-radius: 0 0 10px 10px;
+}
+
+.trynow-modal-button-title {
+  color: white;
+  text-align: center;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 15px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  cursor: pointer;
+}
+
+.behind-components {
+  position: absolute !important;
+  z-index: -1 !important;
+}
+
+.trynow_link {
+  color: black;
+  font-weight: bold;
+
+  &:hover {
+      text-decoration: underline;
+      color: black;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .trynow-pop-up_inner-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    height: 475px;
+    width: 335px;
+    transform: translate(-50%, -50%);
+  }
+
+  .trynow-pop-up_outer-container {
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 10000000000 !important;
+  }
+
+  .first-text-container {
+    text-align: initial;
+  }
+}
+.trynow-faq {
+  font-size: 12px;
+}
+.trynow-faq-text {
+  text-align: center;
+  color: black;
+  a, a:hover, a:visited {
+    text-decoration: underline;
+    color: black;
+  }
+}
+
+// END LEARN MORE MODAL 
+
+// START HOME BANNER
+.trynow-steps {
+  background-color: white;
+  margin-bottom: 25px;
+}
+
+.trynow-steps-container {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5%;
+  padding-right: 5%;
+  margin-bottom: 20px;
+}
+
+.trynow-steps-slick-container {
+  display: none !important;
+  padding-top: 0;
+  width: 90%;
+  margin: auto;
+}
+
+.trynow-step {
+  width: 30%;
+  padding-right: 15px;
+  padding-left: 15px;
+  img {
+    margin: auto;
+  }
+}
+.trynow-banner-icon {
+  height: 55px;
+  display: block;
+  margin-bottom: 5px;
+}
+.banner-title-container {
+  margin-bottom: 40px;
+}
+
+.banner-subtitle-container {
+  margin-bottom: 20px;
+}
+
+.trynow-banner-button {
+  padding: 10px 50px 10px 50px;
+  cursor: pointer;
+  color: #fff;
+  background: #a81d46;
+  border: 1px solid #a81d46;
+  transition: all .6s;
+  margin-bottom: 2em;
+}
+
+.trynow-banner-button:hover {
+  color: #333;
+  background: #fce4de;
+  border: 1px solid #fce4de
+}
+
+@media only screen and (max-width: 768px) {
+  .trynow-steps-container {
+    display: none;
+  }
+  .trynow-step {
+    width: 100%;
+    margin: auto;
+    padding-bottom: 20px;
+  }
+  .trynow-steps-slick-container {
+    display: block !important;
+    text-align: center;
+  }
+}
+
+// END HOME BANNER
+
+// SIDE CART
+.trynow-sidecart-item-kept {
+  font-weight: normal !important;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+.trynow-sidecart-total-kept {
+  font-weight: normal !important;
+  font-size: 12px;
+  position: relative;
+  top: -5px;
+  letter-spacing: 0.5px;
+}
+.trynow-pdp-cartdrawer {
+  max-height: calc(100% - 44px);
+}
+.trynow-pdp-cartdrawer-small {
+  max-height: calc(100% - 144px);
+}
+// END SIDECART
+
+// CART 
+.trynow-cart-item-title {
+  font-weight: bold;
+}
+.trynow-cart-item-kept {
+  display: block;
+  width: max-content;
+  font-size: 10px;
+}
+.trynow-cart-total-kept {
+  font-weight: normal !important;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+@media only screen and (max-width: 480px) {
+  .trynow-sidecart-total-kept {
+    font-size: 10px;
+  }
+  .trynow-cart-item-kept {
+    float: right;
+  }
+  .trynow-cart-total-kept {
+    font-size: 10px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .trynow-card-hold {
+    width: max-content;
+    float: right;
+  }
+}
+// END CART
+
+/* SPECIAL MOBILE STYLE */
+.mobile-AddToTote-TryNow {
+    height: 158px;
+    background-color: white;
+}

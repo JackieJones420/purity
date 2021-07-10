@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  let filterStore = (filterBy)=>{
+    $('.store-filter-result').html('');
+    filterBy === 'all'?
+      $('.store-filter-resource').find('.grid__item').each(function(element){
+        $('.store-filter-result').append($(this).clone());
+      }):
+      $('.store-filter-resource').find('.grid__item').each(function(element){
+        if($(this).find(`.${filterBy}`).length > 0){
+          $('.store-filter-result').append($(this).clone());
+        }
+      })
+  }
+
+  $('.store-filter-resource').addClass('hide');
+  filterStore('all');
+  $('.store-filter-by').click(()=>{
+    console.log($(window).width())
+    $(window).width()<768
+    ?$('.dorp-down-container').removeClass('hide')
+    :null;
+  })
+  $('.store-filter-option ').click(function(){
+    $('.store-filter-option ').removeClass('brand-primary').find('svg').css('fill','#333');
+    $(this).addClass('brand-primary').find('svg').css('fill','{{ settings.color_purity_guava }}');
+    filterStore($(this).attr('data'));
+    $('.store-filter-by').html($(this).find('.service-label').html());
+    $(window).width()<768
+    ?$('.dorp-down-container').addClass('hide')
+    :null;
+  })
+  $(window).resize(function(){
+    $(window).width()<768
+    ?$('.dorp-down-container').addClass('hide')
+    :$('.dorp-down-container').removeClass('hide');
+  })
+</script>

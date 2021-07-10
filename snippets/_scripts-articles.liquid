@@ -1,0 +1,136 @@
+{% comment %}/*
+**------------------------------------------------------------------------**
+* Articles Page Private Object
+* Able to use liquid
+**------------------------------------------------------------------------**
+*/{% endcomment %}
+{% assign tagLabels = "" %}
+{%- for selected in selectedTags -%}
+  {% assign selectedTag = selected | split: ":" | last %}
+  {%- if article.tags contains selectedTag -%}
+    {% assign tagLabel = selected | split: ":" | first %}
+    {% assign tagLabels = tagLabels | append: tagLabel %}
+  {%- endif -%}
+{%- endfor -%}
+<script type="text/javascript">
+'use strict';
+var ArticlesObj = ArticlesObj || {};
+
+ArticlesObj = {
+  init: function() {
+    this.initTagShare();
+    this.initRelatedPosts();
+    this.initShopTop();
+    this.initAmpShop();
+  },
+  initTagShare: function(){
+    if($(".additions").length > 0){
+      let date = $(".post-date").html().replace("Posted on ","");
+      let written = $(".post-by").html().replace("Written by: ","");
+      let template = "<div class='center-text l-s-1x main-font text-base l-h-2x'>{{tagLabels}}" + date + " <span class='closer-line inline m-r-xs'>//</span> " + written + "</div>" + $("#social-template").html();
+      $(".post-date").css("display","none");
+      $(".post-by").css("display","none");
+      $(".additions").html(template);
+    }else if($("em:contains('Posted on')").eq(0).parent().parent().children().length == 2){
+      let date = $("em:contains('Posted on')").eq(0).parent().parent().children().eq(0).find("em").html().replace("Posted on ","");
+      let written = $("em:contains('Posted on')").eq(0).parent().parent().children().eq(1).find("em").html().replace("Written by: ","");
+      let template = "<div class='center-text l-s-1x main-font text-base l-h-2x'>{{tagLabels}}" + date + " <span class='closer-line inline m-r-xs'>//</span> " + written + "</div>" + $("#social-template").html();
+      $("em:contains('Posted on')").eq(0).parent().parent().html(template);
+    }
+  },
+  initRelatedPosts: function(){
+    let self = this;
+    {%- for selected in selectedTags -%}
+      {% assign selectedTag = selected | split: ":" | last %}
+      {%- if article.tags contains selectedTag -%}
+          $.ajax({
+            url: "/blogs/feed/tagged/{{ selected | split: ':' | last | handle }}",
+            context: document.body
+          }).done(function(data) {
+            var items = data.split("<!-- ajax stone point -->")[1].split("<!-- ajax item spliter -->");
+            for (var i = 0; i < 5; i++) {
+              if(!items[i].match("{{article.title}}")){
+                $(".ajax-content").append(items[i]);
+              }
+            }
+            if ($("#related-article .ajax-content").hasClass('slick-initialized')){
+              $("#related-article .ajax-content").slick('unslick');
+            }
+            self.articleCarousel("#related-article .ajax-content");
+          });
+      {%- endif -%}
+    {%- endfor -%}
+  },
+  articleCarousel: function(target) {
+    $(target).slick({
+      lazyLoad: 'ondemand',
+      slidesToShow: 3,
+      dots: true,
+      arrows: false,
+      responsive: [
+        {
+          breakpoint: 769,
+          settings: {
+            arrows: false,
+            slidesToShow: 2
+          }
+        }
+      ]
+    })
+  },
+  alignShop: function(){
+    if($('.side-panel').width()<$('.blog-pictures').width()){
+      if ($(".shop").hasClass('slick-initialized')){
+        $(".shop").slick('unslick');
+      }
+    }else{
+      if (!$(".shop").hasClass('slick-initialized')){
+        this.articleCarousel(".shop");
+      }
+    }
+  },
+  initShopTop: function(){
+    let maxtop = $('.blog-pictures').height() - $('.side-panel').height();
+    let windowMove = 0
+    let changeTop = (move=0)=>{
+      let initAdjuest= $('.blog-pictures').offset().top;
+      let newTop = $(document).scrollTop() + $(window).height() - $('.side-panel').height() - initAdjuest;
+      newTop<maxtop ? newTop : newTop=maxtop;
+      newTop>0 ? newTop : newTop=0;
+      if( $('.side-panel').width()==$('.blog-pictures').width() ){
+        $('.side-panel').css({'top':`0px`,'height':'initial','overflow':'visible'});
+      }else{
+        $('.side-panel').css({'top':`${ newTop }px`,'height':'100vh','overflow':'scroll'});
+        if(0<newTop && newTop<maxtop){
+          $('.side-panel').scrollTop($('.side-panel').scrollTop() + move);
+        }
+      }
+    }
+    changeTop();
+    $(document).scroll(()=>{
+      maxtop= $('.blog-pictures').height() - $('.side-panel').height();
+      changeTop($(document).scrollTop() - windowMove);
+      windowMove = $(document).scrollTop()
+    })
+  },
+  initAmpShop: ()=>{
+    let url = Number(new URL(window.location.href).searchParams.get("amp-add-product"));
+    if (url) {
+      $('#shop-the-blog li').eq(url-1).click();
+    }
+  }
+}
+{% comment %}/* Init Function hurrr */{% endcomment %}
+$(document).ready(function(){
+  // console.log('Articles Private', ArticlesObj);
+  ArticlesObj.init();
+});
+$(window).resize(function(){
+  ArticlesObj.alignShop();
+})
+{% comment %}/*
+**------------------------------------------------------------------------**
+* END
+**------------------------------------------------------------------------**
+*/{% endcomment %}
+</script>

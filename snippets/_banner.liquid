@@ -1,0 +1,41 @@
+
+
+<section
+  class="collection-banner__inner banner-img__{% if banner_alignment == "center" %}center{% elsif banner_alignment == "right" %}right{% else %}left{% endif %} {% if banner_mobile_image %}small--hide{% endif %}"
+  style=" background-size: contain; background-image: url('https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{banner_image}}')"
+  aria-label="{{ banner_title }}, {{ banner_short_description }}"
+>
+  <div class="one-whole wrapper">
+    <div class="one-half{% if banner_text_position == "center" %} margin-auto{% elsif banner_text_position == "left" %} left{% else %} right{% endif %} p-h-xlg small--hide {% if banner_text_position == "hide" %}hide{% endif %} text-center">
+      <h1 class="page_title_text" {% if banner_desktop_text_color %}style="color:{{banner_desktop_text_color}}" {% endif %}>{{ banner_title }}</h1>
+      {%- if banner_short_description and banner_short_description != ' ' -%}
+        <p class="text-left caption_text">{{ banner_short_description }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- if banner_mobile_image -%}
+  <img
+    src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ settings.cloudinary_image_version }}/{{ banner_mobile_image }}"
+    alt="{{ banner_title }} image, {{ banner_short_description }}"
+    class="w-full hide small--show">
+{%- endif -%}
+<div class="p-h hide small--show m-t">
+  <div class="{% if banner_text_position == "hide" %}hide{% else %}text-center{% endif %}">
+    <h1 class="page_title_text text-center">{{ banner_title }}</h1>
+    {%- if banner_short_description and banner_short_description != ' ' -%}
+      <p class="text-left caption_text">{{ banner_short_description }}</p>
+    {%- endif -%}
+  </div>
+</div>
+{% comment %}
+{% assign banner_image =  %}
+{% assign banner_mobile_image =  %}
+{% assign banner_title =  %}
+{% assign banner_short_description =  %}
+{% assign banner_alignment =  %}
+{% assign banner_text_position =  %}
+{% assign banner_desktop_text_color =  %}
+
+{%- include '_banner' -%}
+{% endcomment %}

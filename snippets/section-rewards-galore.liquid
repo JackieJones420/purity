@@ -1,0 +1,48 @@
+{% assign purist_100 = {{ collections['100-points'] }} %}
+{% assign purist_350 = {{ collections['350-points'] }} %}
+
+<div id="section__rewardsGalore">
+  <div class="grid">
+    <div class="text-center grid__item large--one-whole m-t-lg">
+      <h2 class="text-center">Rewards Galore</h2>
+      <div class="subtitle">
+        How to Claim Your Reward
+      </div>
+      <p class="description p-v-sm">Points add up fast, and you can cash them for benefits and perks that go beyond  the (pointless) sample sizes you find elsewhere.
+      </p>
+
+      <hr />
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="grid__item large--one-whole text-center">
+      <span class="h4 alt-font text-u-c m-v-lg">100 Points</span>
+    </div>
+
+    <div class="grid__item large--one-whole init-carousel">
+      {% for product in collections['100-points'].products %}
+
+        {% assign grid_item_width = 'large--one-quarter' %}
+        {% include '_purist-perks-product-grid-item' %}
+
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="grid__item large--one-whole text-center">
+      <span class="h4 alt-font text-u-c m-v-lg">350 Points</span>
+    </div>
+
+    <div class="grid__item large--one-whole text-center init-carousel">
+      {% for product in collections['350-points'].products %}
+
+        {% assign grid_item_width = 'large--one-quarter' %}
+        {% include '_purist-perks-product-grid-item' %}
+
+      {% endfor %}
+    </div>
+  </div>
+
+</div>

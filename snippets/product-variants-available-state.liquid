@@ -1,0 +1,147 @@
+{% comment %}
+productVariantsAvailableState: {
+  'add To Tote':               'add',
+  'NOTIFY ME':                 'email',
+  'release date':              'release',
+  'Coming soon':               'soon',
+  'user login':                'login',
+  'discontinued':              'discontinued',
+  'discontinued with message': 'alert',
+  'message with buffer':       'alertBuffer',
+  'sold out':                  'out'
+}
+{%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+{%- case productVariantsAvailableState -%}
+  {%- when 'add' -%}
+  {%- when 'email' -%}
+  {%- when 'release' -%}
+  {%- when 'soon' -%}
+  {%- when 'login' -%}
+  {%- when 'discontinued' -%}
+  {%- when 'alert' -%}
+  {%- when 'alertBuffer' -%}
+  {%- when 'out' -%}
+  {%- else -%}
+    <script type="text/javascript">
+      console.log(`the type is {{productVariantsAvailableState}}, something going wrong`);
+    </script>
+{%- endcase -%}
+{% endcomment %}
+{% assign currentInventory = currentVarient.inventory_quantity %}
+{% assign currentAvailable = currentVarient.available %}
+{%- include '_date-time' -%}
+{%- if currentProduct.type == "Special Access" or currentProduct.vendor == "Promotion" -%}
+  {%- if currentProduct.tags contains "No Buffer" and currentAvailable -%}
+    {% assign bufferAvailable = 'apply' %}
+  {%- else -%}
+    {% assign bufferAvailable = 'nobuffer' %}
+  {%- endif -%}
+{%- else -%}
+  {% assign bufferAvailable = 'notset' %}
+{%- endif -%}
+{% capture earlyReleaseDate %}{% assign earlyReleaseDateArray = currentProduct.metafields.purity-toolbox.early_release_date | split: '/' %}{{ earlyReleaseDateArray[2] }}{{ earlyReleaseDateArray[1] }}{{ earlyReleaseDateArray[0] }}{% endcapture %}
+{% capture standardReleaseDate %}{% assign standardReleaseDateArray = currentProduct.metafields.purity-toolbox.standard_release_date | split: '/' %}{{ standardReleaseDateArray[2] }}{{ standardReleaseDateArray[1] }}{{ standardReleaseDateArray[0] }}{% endcapture %}
+{% capture currentReleaseDate %}{{ currentYear }}{{ currentMonth }}{{ currentDay }}{% endcapture %}
+{% assign earlyReleaseDate = earlyReleaseDate | plus: 0 %}
+{% assign standardReleaseDate = standardReleaseDate | plus: 0 %}
+{% assign currentReleaseDate = currentReleaseDate | plus: 0 %}
+{%- if currentProduct.tags contains "Teaser" -%}
+  {%- if earlyReleaseDate > currentReleaseDate -%}
+    {% assign productVariantsAvailableState = 'release' %}
+  {%- elsif standardReleaseDate > currentReleaseDate  -%}
+    {%- if customer -%}
+      {%- if customer.tags contains "tier: Revolutionist" or customer.tags contains "tier: Activist" or customer.tags contains "Activist" or customer.tags contains "Revolutionist" or customer.tags contains "proprogram" -%}
+        {%- if currentAvailable -%}
+          {% assign productVariantsAvailableState = 'add' %}
+        {%- else -%}
+          {% assign productVariantsAvailableState = 'email' %}
+        {%- endif -%}
+      {%- else -%}
+        {%- if currentProduct.metafields.purity-toolbox.early_release_date or currentProduct.metafields.purity-toolbox.standard_release_date -%}
+          {% assign productVariantsAvailableState = 'release' %}
+        {%- endif -%}
+      {%- endif -%}
+    {%- else -%}
+      {% assign productVariantsAvailableState = 'login' %}
+    {%- endif -%}
+  {%- else -%}
+    {%- if currentAvailable -%}
+      {% assign productVariantsAvailableState = 'add' %}
+    {%- else -%}
+      {% assign productVariantsAvailableState = 'soon' %}
+    {%- endif -%}
+  {%- endif -%}
+{%- else -%}
+  {%- if currentProduct.tags contains "Beauty Deal 10" or currentProduct.tags contains "Beauty Deal 5" and settings.beauty_start -%}
+    {% assign beauty_deal_buffer = settings.beauty_deal_buffer | plus: 1 %}
+    {%- if currentInventory < beauty_deal_buffer -%}
+      {% assign productVariantsAvailableState = 'out' %}
+    {%- else-%}
+      {% assign productVariantsAvailableState = 'add' %}
+    {%- endif -%}
+  {%- else -%}
+    {%- if currentProduct.tags contains "Discontinued" or currentVarient.metafields.purity-toolbox.availability == "discontinued" -%}
+      {%- if currentInventory < 51 -%}
+        {%- if bufferAvailable contains "apply" -%}
+          {% assign productVariantsAvailableState = 'alert' %}
+        {%- else -%}
+          {% assign productVariantsAvailableState = 'discontinued' %}
+        {%- endif -%}
+      {%- elsif currentInventory < 301 -%}
+        {%- if bufferAvailable contains "apply" -%}
+          {% assign productVariantsAvailableState = 'alert' %}
+        {%- else -%}
+          {% assign productVariantsAvailableState = 'alertBuffer' %}
+        {%- endif -%}
+      {%- else -%}
+        {% assign productVariantsAvailableState = 'add' %}
+      {%- endif -%}
+    {%- else -%}
+      {%- if currentInventory > 50 or currentVarient.inventory_management == null -%}
+        {% assign productVariantsAvailableState = 'add' %}
+      {%- else -%}
+        {%- if bufferAvailable contains "apply" -%}
+          {% assign productVariantsAvailableState = 'add' %}
+        {%- elsif bufferAvailable contains "nobuffer" -%}
+          {% assign productVariantsAvailableState = 'out' %}
+        {%- else -%}
+          {% assign productVariantsAvailableState = 'email' %}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+{%- if currentProduct.type == "Gift Card" -%}
+  {% assign productVariantsAvailableState = 'add' %}
+{%- endif -%}
+{% comment %} check GWP buffer {% endcomment %}
+{% assign gwp_buffer = settings.gwp_buffer_2 | plus: 1 %}
+{%- if settings.display_gwp == "product" -%}
+  {%- if currentProduct.handle == settings.gwp_product_handle_2 -%}
+    {%- if currentInventory < gwp_buffer -%}
+      {% assign productVariantsAvailableState = 'out' %}
+    {%- else-%}
+      {% assign productVariantsAvailableState = 'add' %}
+    {%- endif -%}
+  {%- endif -%}
+{%- elsif settings.display_gwp == "variant" -%}
+  {% assign gwpVariantArray = ','| append: settings.gwp_variant_id_2 | append: ',' %}
+  {% assign gwpVarian = ',' | append: currentVarient.id | append: ','  %}
+  {%- if gwpVariantArray contains gwpVarian -%}
+    {%- if currentInventory < gwp_buffer -%}
+      {% assign productVariantsAvailableState = 'out' %}
+    {%- else-%}
+      {% assign productVariantsAvailableState = 'add' %}
+    {%- endif -%}
+  {%- endif -%}
+{%- elsif settings.display_gwp == "collection" -%}
+  {% for collection in currentProduct.collections %}
+    {%- if collection.handle == settings.gwp_collection_handle_2 -%}
+      {%- if currentInventory < gwp_buffer -%}
+        {% assign productVariantsAvailableState = 'out' %}
+      {%- else-%}
+        {% assign productVariantsAvailableState = 'add' %}
+      {%- endif -%}
+    {%- endif -%}
+  {% endfor %}
+{%- endif -%}

@@ -1,0 +1,64 @@
+<section id="video-{{section.id}}" class="main-module video-banner m-b-lg" style="margin-top:-100px; padding-top:100px;">
+  <a href="{{section.settings.vidoe_url}}" class="block">
+    <video autoplay loop muted playsinline class="w-full" id="hero-video-{{section.id}}">
+  	   <source src="https://cdn.no-toxic.com/video/upload/f_auto,q_auto:eco/{{settings.cloudinary_image_version}}/{{section.settings.video_handle_m}}" type="video/mp4">
+  	</video>
+  </a>
+</section>
+<script type="text/javascript">
+  var video = document.getElementById('hero-video-{{section.id}}');
+  var video{{section.id}} = 'm';
+  $(window).resize(()=>{
+    var changeto = '';
+    if($(window).width() < 768) {
+      $('#hero-video-{{section.id}}').html(`<source src="https://cdn.no-toxic.com/video/upload/f_auto,q_auto:eco/{{settings.cloudinary_image_version}}/{{section.settings.video_handle_m}}" type="video/mp4">`)
+      changeto = 'm';
+    }else{
+      $('#hero-video-{{section.id}}').html(`<source src="https://cdn.no-toxic.com/video/upload/f_auto,q_auto:eco/{{settings.cloudinary_image_version}}/{{section.settings.video_handle_d}}" type="video/mp4">`)
+      changeto = 'd'
+    }
+    if (changeto != video{{section.id}}) {
+      video{{section.id}} = changeto;
+      console.log('change video',changeto,video{{section.id}});
+      video.load();
+      video.play();
+    }
+  })
+
+</script>
+
+{% schema %}
+
+{
+  "name": "Hero Video",
+  "class": "index-video",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "For best results, upload images that are around 1280px in width and under 600px in height. Try to keep your slideshow images the same size."
+    },
+    {
+      "type": "text",
+      "id": "video_handle_d",
+      "label": "cloudinary video handle desktop (mp4)"
+    },
+    {
+      "type": "text",
+      "id": "video_handle_m",
+      "label": "cloudinary video handle mobile (mp4)"
+    },
+    {
+      "type": "url",
+      "id": "vidoe_url",
+      "label": "Link to"
+    }
+  ],
+  "presets": [{
+    "name": "Hero Video",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+
+{% endschema %}

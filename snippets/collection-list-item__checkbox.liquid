@@ -1,0 +1,285 @@
+{% include 'product-metafields' %}
+{% include '_product-variables' %}
+{% include 'image_sizes' %}
+
+{% if collection_bundle.collection_1 != null %}
+  {% assign collection1 = collection_bundle.collection_1 | split: '|' %}
+{% endif %}
+{% if collection_bundle.collection_2 != null %}
+  {% assign collection2 = collection_bundle.collection_2 | split: '|' %}
+{% endif %}
+{% if collection_bundle.collection_3 != null %}
+  {% assign collection3 = collection_bundle.collection_3 | split: '|' %}
+{% endif %}
+{% if collection_bundle.collection_4 != null %}
+  {% assign collection4 = collection_bundle.collection_4 | split: '|' %}
+{% endif %}
+{% if collection_bundle.collection_5 != null %}
+  {% assign collection5 = collection_bundle.collection_5 | split: '|' %}
+{% endif %}
+{% if collection_bundle.collection_6 != null %}
+  {% assign collection6 = collection_bundle.collection_6 | split: '|' %}
+{% endif %}
+
+{% comment %}
+  Trigger for different function
+    add_all_items = display Add All to Cart
+    link_to_original = link to the first product in collection array in primary image
+{% endcomment %}
+{% assign collection_bundle_types = collection_type.style | split: "|" %}
+
+{% comment %}
+
+#### User ####
+Description:
+Template for metafields to create up to 5 nested collections in a master collection.
+
+|-- Master Collection
+    |-- Collection 1
+        |-- primary_handle
+        |-- primary_row_title
+        |-- secondary_handle
+        |-- secondary_row_title
+    |-- Collection 2
+        |-- primary_handle
+        |-- primary_row_title
+        |-- secondary_handle
+        |-- secondary_row_title
+    |-- Collection 3
+        |-- primary_handle
+        |-- primary_row_title
+        |-- secondary_handle
+        |-- secondary_row_title
+    |-- Collection 4
+        |-- primary_handle
+        |-- primary_row_title
+        |-- secondary_handle
+        |-- secondary_row_title
+    |-- Collection 5
+        |-- primary_handle
+        |-- primary_row_title
+        |-- secondary_handle
+        |-- secondary_row_title
+
+Examples:
+/collections/natural-summer-looks
+/collections/fathers-day
+
+Instructions:
+
+Use ShopifyFD extension to fill in metafields:
+  type: checkbox_bundle
+  style: collection_# (e.g. 1, 2, 3)
+  value: primary_handle|primary_row_title|secondary_handle|secondary_row_title
+
+  Note: Must be in this exact order separated by a vertical bar ("|") with no spaces between.
+
+#### Developer ####
+collection[0] primary_handle
+collection[1] primary_row_title
+collection[2] secondary_handle
+collection[3] secondary_row_title
+
+To include "Add all items" button, in type.style, append "|add_all_items" in value section of metafield.
+
+Max 5 collections
+
+#### test snippets ####
+<ul>
+{% for i in (1..5) %}
+  {% assign current_collection = 'collection' | append: i %}
+  <li>[current_collection][0] // {{ [current_collection][0] }}</li>
+  <li>[current_collection][1] // {{ [current_collection][1] }}</li>
+  <li>[current_collection][2] // {{ [current_collection][2] }}</li>
+  <li>[current_collection][3] // {{ [current_collection][3] }}</li>
+{% endfor %}
+</ul>
+
+{% endcomment %}
+
+{% comment %}
+  Check if the product is on sale and set a variable to be used below.
+{% endcomment %}
+{% assign on_sale = false %}
+{% if product.compare_at_price > product.price %}
+  {% assign on_sale = true %}
+{% endif %}
+
+{% comment %}
+  Check if the product is sold out and set a variable to be used below.
+{% endcomment %}
+{% assign sold_out = true %}
+{% if product.available %}
+  {% assign sold_out = false %}
+{% endif %}
+
+{% if collection1 %}
+<section class="wrapper">
+  <div class="grid">
+    <div class="grid__item large--one-third text-center m-v-sm">
+      <a href="#checkbox-collection__{{ collections[collection1[0]].handle }}">
+        <span class="text-xs text-u-c text-u-l l-s alt-font">{{ collections[collection1[0]].title }}</span>
+        <span class="icon icon-arrow-down2"></span>
+      </a>
+    </div>
+    {% for i in (2..6) %}
+      {% assign current_collection = 'collection' | append: i %}
+      {% if [current_collection] %}
+        <div class="grid__item
+        {% if current_collection == 'collection4' and current_collection == 'collection2' %}
+          large--one-whole
+        {% elsif current_collection == 'collection4' and current_collection == 'collection5' %}
+          large--one-half
+        {% elsif current_collection == 'collection6' %}
+          large--one-third
+        {% else %}
+          large--one-third
+        {% endif %} text-center m-v-sm">
+          <a href="#checkbox-collection__{{ collections[[current_collection][0]].handle }}">
+            <span class="text-xs text-u-c text-u-l l-s alt-font">{{ collections[[current_collection][0]].title }}</span>
+            <span class="icon icon-arrow-down2"></span>
+          </a>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+<div class="grid__item" id="CollectionListCheckbox">
+  <hr class="p-b m-b-lg">
+  {% comment %}
+    Link to your product with the 'within: collection' filter for the link to be aware of the collection.
+    This allows you to create collection-based navigation on the product page.
+
+    Results of using 'within: collection':
+    - Instead of a URL with /products/product-handle
+      you would get /collections/collection-handle/products/product-handle
+
+    For more info on navigation within a collection
+      - http://docs.shopify.com/support/your-store/collections/how-to-navigate-within-a-collection
+  {% endcomment %}
+
+  <!-- LIST COLLECTION 1 -->
+  {% for i in (1..7) %}
+    {% assign current_collection = 'collection' | append: i %}
+    {% if [current_collection] %}
+      <section class="checkbox-collection">
+        <div class="grid__item large--one-half">
+          <div class="large--display-table large--height-{% if [current_collection][2] %}1000px{% else %}700px{% endif %}">
+            <div class="large--display-table-cell">
+              <a class="box-shadow-md m-b-md"{% if collection_bundle_types contains "link_to_original" %} href="{{ collections[[current_collection][0]].products[0].url }}" target="_blank"{% endif %}>
+                <div class="b-r b-l b-t b p-md">
+                  {% if collections[current_collection[0].image %}
+                    <img
+                        class="lazyload fade-in"
+                        data-sizes="100vw"
+                        alt="{{ collections[[current_collection][0]].title }}"
+                        data-src="{{ collections[[current_collection][0]].image | img_url: default, format: 'pjpg' }}"
+                        data-srcset="
+                        {{ collections[[current_collection][0]].image | img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}},
+                        {{ collections[[current_collection][0]].image | img_url: size10, format: 'pjpg' }} {{size10 | replace: 'x', 'w'}}" />
+                  {% else %}
+                  <!-- placeholder image if != collection.image -->
+                    <img
+                      data-src="{{ '1024x1024.png' | file_img_url: '1024x' | format: 'pjpg'}}"
+                      data-sizes="auto"
+                      class="lazyload grid__image no-margin"
+                      alt="Checkbox Collection Image: Placeholder 1024x1024"
+                      data-srcset="{{ '1024x1024.png' | file_img_url: '540x' | format: 'pjpg' }} 540w,
+                      {{ '1024x1024.png' | file_img_url: '400x' | format: 'pjpg' }} 400w,
+                      {{ '1024x1024.png' | file_img_url: '330x' | format: 'pjpg' }} 330w"/>
+                  {% endif %}
+                </div>
+                <div class="b-b b-r b-l b p-b-md p-r-md p-l-md">
+                  <p class="text-lg text-center">{{ collections[[current_collection][0]].title }}</p>
+
+                  {% if collections[[current_collection][0]].metafields.collection_checkbox.marketing_description %}
+                    <p class="m-t-sm text-xs text-center text-u-c alt-font l-s">
+                      {{ collections[[current_collection][0]].metafields.collection_checkbox.marketing_description }}
+                    </p>
+                  {% endif %}
+                  <p>{{ collections[[current_collection][0]].description }}</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="grid__item large--one-half" id="checkbox-collection__{{ collections[[current_collection][0]].handle }}">
+          <form class="checkbox-form">
+            <div class="grid">
+              {% if [current_collection][1] %}
+                <div class="grid__item">
+                  <div class="alt-font m-b-md l-s text-u-c text-base text-center">
+                    {{ [current_collection][1] }}
+                  </div>
+                </div>
+                {% if collections[[current_collection][0]].metafields.collection_checkbox.marketing_short_dek %}
+                  <p class="text-center m-b-md">{{ collections[[current_collection][0]].metafields.collection_checkbox.marketing_short_dek }}</p>
+                {% endif %}
+              {% endif %}
+              <div class="grid__item bundle-carousel">
+                {% for c_product in collections[[current_collection][0]].products %}
+                  {% comment %}
+                    Only display in-stock products to reconmmend
+                  {% endcomment %}
+                  {% if c_product.variants.first.inventory_quantity > 49 %}
+                    {% include 'recommended_products' %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
+            {% if [current_collection][2] %}
+              <div class="grid">
+                {% if [current_collection][3] %}
+                  <div class="grid__item">
+                    <div class="m-b-md text-2x text-center">
+                      {{ [current_collection][3] }}
+                    </div>
+                  </div>
+                {% endif %}
+                <div class="grid__item init-carousel">
+                  {% for c_product in collections[[current_collection][2]].products %}
+                    {% comment %}
+                      Only display in-stock products to reconmmend
+                    {% endcomment %}
+                    {% if c_product.variants.first.inventory_quantity > 49 %}
+                      {% include 'recommended_products' %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </form>
+          <div class="m-t m-b-lg text-center">
+            <a class="btn btn-quaternary m-v-sm w-full margin-auto block h-auto multiple-add-to-cart" onclick="Holly.addAllItems(currentProduct)">
+              <span>Add Selected Items</span>
+            </a>
+            {% if collection_bundle_types contains "add_all_items" %}
+              {% comment %}
+              <a
+                class="btn m-v-sm max-width-lg margin-auto block h-auto multiple-add-to-cart"
+                onclick="addAllItems('{% for product in collections[[current_collection][0]].products %}{% unless product.tags contains 'gwp' %}{{ product.selected_or_first_available_variant.id }}{% endunless %}{% unless forloop.last or forloop.first %},{% endunless %}{% endfor %}'); return false;">
+                <span>Add All Items</span>
+              </a>
+              {% endcomment %}
+              <a
+                class="btn m-v-sm w-full margin-auto block h-auto multiple-add-to-cart"
+                onclick="Holly.addAllItems('{% for product in collections[[current_collection][0]].products %}{{ product.selected_or_first_available_variant.id }}{% unless forloop.last %},{% endunless %}{% endfor %}'); return false;">
+                <span>Add All Items</span>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </section>
+      <hr class="p-v m-v-lg">
+    {% endif %}
+  {% endfor %}
+</div>
+{% endif %}

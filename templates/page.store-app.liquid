@@ -1,0 +1,939 @@
+{%- include '_find-skin-care' -%}
+{%- include '_find-foundation' -%}
+<style media="screen">
+/*
+  css comment structer -->
+    clean page element
+    text
+    container
+    header
+    stable element ( dots btn )
+    finder-step
+    product
+*/
+  /* clean page element */
+  body{overscroll-behavior: none;-webkit-overflow-scrolling: touch;position: fixed;top:0;left:0;height:100%;width:100%}
+  header, #Footer, nav, .mobile-nav--container, #launcher{display: none}
+  /* text */
+  .app-head-text{
+    font-size: 64px;
+    font-family:  "Times New Roman","Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  .app-title-text{
+    font-size: 48px;
+    font-family:  "Times New Roman","Helvetica Neue",Helvetica,Arial,sans-serif;
+  }
+  .app-content-text{
+    font-size: 26px;
+    font-family: "Avenir Next Regular","Times New Roman",serif;
+  }
+  .app-label-text{
+    font-size: 20px;
+    font-family: "Avenir Next Regular","Times New Roman",serif;
+  }
+  /* container */
+  .trans{transition: all .6s;}
+  .w-xlg5{width: 500px;}
+  .w-app-wrapper{padding-left: 151px; padding-right: 151px;}
+  .main-content{height: calc(100vh - 40px)}
+  .app-container{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    top:0;
+    left:0;
+  }
+  /* header */
+  .app-header img{
+    width: 140px;
+    margin-top: 30px;
+    margin-left: 100px;
+  }
+  .app-nav{
+    opacity: 1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    height: 120px;
+  }
+  .app-nav-item{
+    margin-top: 56px;
+    margin-right:80px;
+    position: relative;
+  }
+  .app-selected:after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    bottom: -2px;
+    left: 0;
+    height: 12px;
+    z-index: -1;
+    background-color: #FCE4DE;
+  }
+  .app-header.cover img{
+    margin-left: calc(50vw - 100px);
+    width: 200px;
+    margin-top: 190px;
+  }
+  .app-header.cover .app-nav{
+    opacity: 0;
+  }
+  /* stable element */
+  .satble-element{z-index: 10}
+  .app-finder{bottom:0px}
+  .active-btn-sc{
+    width: 400px;
+    height: 80px;
+    padding: 24px 0;
+    border-radius: 40px;
+    bottom: 270px;
+    right: calc(50vw - 200px);
+  }
+  .active-btn-fd{
+    width: 400px;
+    height: 80px;
+    padding: 24px 0;
+    border-radius: 40px;
+    bottom: 150px;
+    right: calc(50vw - 200px);
+  }
+
+  .dots-h{
+    bottom: 80px;
+    opacity: 0;
+  }
+  .dots-v{
+    opacity: 0;
+    height: 100vh;
+    right: 64px;
+  }
+  .dot{
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    border: 12px solid lightgray;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+  .dot.active{
+    height: 36px;
+    width: 36px;
+    border-width: 4px;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  .dots-h .dot{
+    margin-right: 50px;
+  }
+  .dots-h .dot:last-child{
+    margin-right: 0;
+  }
+  .dots-v .dot{
+    margin-bottom: 50px;
+  }
+  .dots-v .dot:last-child{
+    margin-bottom: 0;
+  }
+  /* finder-step */
+  .answer{
+    flex-wrap: wrap;
+    width: 1000px;
+    margin: 0 auto;
+  }
+  .step{
+    padding:40px 48px;
+  }
+  .step .placeholder{
+    border: 8px solid lightgray;
+    border-radius: 50%;
+    height: 154px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .result-container{
+    overflow-x: scroll;
+  }
+  ::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+    background: transparent;
+  }
+  .result{
+    margin: 0 111px;
+    height: 560px;
+  }
+  .result-product{
+    width: 280px;
+    margin: 40px;
+    vertical-align: top;
+  }
+  /* product */
+  .icon-list{
+    line-height: 32px;
+  }
+  .icon-list>*{
+    vertical-align: middle;
+  }
+  .selected-swatch{
+    border: 4px solid #ffffff;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.4);
+  }
+  .hero-image, .how-to-video{
+    height: 500px;
+    position: relative;
+  }
+  .hero-image .play-btn, .how-to-video .play-btn{
+    height: 100px;
+    left: 200px;
+    top: 200px;
+  }
+  .hero-image .video-cover, .how-to-video .video-cover{
+    margin-top: 110px;
+  }
+  .image-list{
+    margin-left: -8px;
+    margin-right: -8px;
+  }
+  .video-container{
+    height: 156px;
+    background-color: lightgray;
+    padding-top: 34px;
+  }
+  .image-list .play-btn {
+    height: 40px;
+    left: 58px;
+    top: 58px;
+  }
+  .key-ingredient{
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+  .key-ingredient>div{
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 64px
+  }
+
+  .back-to-list{
+    bottom: 72px;
+    width: 180px;
+    left: calc(50vw - 90px);
+  }
+</style>
+
+{% comment %}
+html section and template
+  app container ( html )
+  cover page (id: app-cover)
+  step page (id: app-finder-step)
+  result page (id: app-finder-result)
+  product pages
+    general page(id: app-product-general)
+    ingredient page(id: app-product-ingredient)
+    detail page(id: app-product-detail)
+{% endcomment %}
+<div class="app-container pos-rlt">
+  <div class="app-header pos-rlt cover satble-element">
+    <img
+      src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+      data-src="https://cdn.no-toxic.com/image/fetch/q_auto,f_auto,fl_lossy,w_108,f_auto,dpr_auto/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+      class="cld-prepare trans pos-abt start-over"
+      alt="{{ shop.name }}">
+    <div class="app-nav o-f-hid trans">
+      <span class="app-label-text sc-start right app-nav-item app-selected">Skin Care Finder</span>
+      <span class="app-label-text fd-start right app-nav-item app-selected">Foundation Finder</span>
+    </div>
+  </div>
+  <div class="app-finder satble-element text-center pos-abt w-full left-0 trans">
+    <span class="active-btn-fd trans app-content-text text-white text-center bg-gauva inline l-s-2x font-bold fd-start pos-abt">FOUNDATION</span>
+    <span class="active-btn-sc trans app-content-text text-white text-center bg-gauva inline l-s-2x font-bold sc-start pos-abt">SKIN CARE ROUTINE</span>
+    <span class="dots-h trans pos-abt w-full left-0"></span>
+    <span class="dots-v trans pos-abt bottom-0 flex f-d-column j-c-center a-i-center"></span>
+  </div>
+  <div class="page pos-abt bg-white top-0 left-0 flex w-full h-full trans cover f-d-column text-center j-c-center"></div>
+</div>
+<div class="hide collection-storage"></div>
+<div class="hide product-storage"></div>
+
+<script type="text/template" id="app-cover">
+  <p class="app-head-text m-b-xlg p-b-lg">Making the switch to <span class="font-s-i">clean beauty</span>?<br>Start here!</p>
+  <p class="app-content-text l-h m-b-xlg p-b l-s-2x">FIND MY PERFECT</p>
+</script>
+<script type="text/template" id="app-finder-step">
+  <p class="app-content-text l-h">What ((question)) are you looking for?</p>
+  <div class="answer app-label-text flex j-c-center"></div>
+</script>
+<script type="text/template" id="app-finder-result">
+  <p class="app-title-text m-b">((title))</p>
+  <p class="app-content-text l-h">((result-text))</p>
+  <div class="result-container">
+    <div class="result">
+      <p class="app-content-text m-t-xlg">Loading Result ....</p>
+    </div>
+  </div>
+</script>
+<script type="text/template" id="app-product-general">
+  <div class="w-xlg5 m-r-xlg">
+    <p class="app-title-text m-b">((product-name))</p>
+    <div class="icon-list m-b-lg"></div>
+    <div class="description app-label-text l-h m-b-lg"></div>
+    <div class="app-content-text app-price"></div>
+    <div class="app-special-info"></div>
+  </div>
+  <div class="w-xlg5">
+    <div class="hero-image"></div>
+    <div class="image-list o-f-hid"></div>
+  </div>
+  <div class="pos-abt back-to-list app-label-text app-selected satble-element text-center">Back to Result List</div>
+</script>
+<script type="text/template" id="app-product-ingredient">
+  <p class="app-content-text m-b-lg">Key Ingredients</p>
+  <div class="key-ingredient text-center"></div>
+  <p class="app-content-text m-b-lg">Ingredients</p>
+  <div class="all-ingredients app-label-text"></div>
+  <div class="pos-abt back-to-list app-label-text app-selected satble-element text-center">Back to Result List</div>
+</script>
+<script type="text/template" id="app-product-detail">
+  <div class="w-xlg5 m-r-xlg">
+    <p class="app-content-text m-b-lg">Directions</p>
+    <p class="app-label-text m-b-lg p-b-lg app-directions"></p>
+    <p class="app-content-text m-b-lg">Size</p>
+    <p class="app-label-text m-b-lg p-b-lg app-size"></p>
+    <p class="app-content-text m-b-lg">Source</p>
+    <p class="app-label-text m-b-lg p-b-lg app-source"></p>
+  </div>
+  <div class="w-xlg5 how-to-video"></div>
+  <div class="pos-abt back-to-list app-label-text app-selected satble-element text-center">Back to Result List</div>
+</script>
+<div id="animation-warning"><p class="text-md-lg l-h text-center m-v-lg"></p></div>
+
+
+{% comment %}
+javascript structer
+  general
+    change page function
+  pages
+    cover page
+    skin care finder pages
+      step 1
+      step 2
+      step 3
+      dots
+    foundation finder pages
+      step 1
+      step 2
+      step 3
+      step 4
+      dots
+    back to result list funciton (product detail page -> product list page)
+    product list to product page function
+    product pages switch functions
+    swip function
+{% endcomment %}
+
+<script type="text/javascript">
+let currentPage = $('.page');
+let steps = [];
+  $(document).ready(function() {
+    // clean web element
+    $('head').append('<meta name="apple-mobile-web-app-capable" content="yes" />');
+    // set default page
+    currentPage.html($('#app-cover').html());
+
+    // change page function
+    const ChangePage = (config = {
+        nextPage: $('#app-cover').html(),
+        overlay: false,
+        containerClasses: 'f-d-column text-center j-c-center',
+        containerStyle: '',
+        beforeLoad: ()=>{}
+      })=>{
+        currentPage.siblings('.page').remove();
+        config.overlay ? $('.app-container').prepend(`<div class="page pos-abt bg-white top-0 left-0 flex w-full h-full trans ${config.containerClasses? config.containerClasses : null}" style="${config.containerStyle? config.containerStyle : null}">${config.nextPage}</div>`) : $('.app-container').append(`<div class="page pos-abt bg-white top-0 left-0 flex w-full h-full trans ${config.containerClasses? config.containerClasses : null}" style="${config.containerStyle? config.containerStyle : null}">${config.nextPage}</div>`);
+        currentPage = config.overlay ? $('.app-container .page').eq(0) : $('.app-container .page').eq(-1);
+        currentPage.offset();
+        config.beforeLoad ? config.beforeLoad() : null;
+      }
+
+    // cover page
+    $(document).on('click', '.start-over', function(){
+      if(!currentPage.hasClass('cover')){
+        ChangePage({
+          nextPage: $('#app-cover').html(),
+          containerClasses: 'cover f-d-column text-center j-c-center',
+          containerStyle: 'opacity: 0',
+          beforeLoad: ()=>{
+            currentPage.siblings('.page').css('opacity','0');
+            $('.app-header').addClass('cover')
+            $('.active-btn-sc').html('SKIN CARE ROUTINE').attr('style','');
+            $('.active-btn-fd').html('FOUNDATION').attr('style','');
+            currentPage.css('opacity','1');
+            $('.app-finder .dots-h, .app-finder .dots-v').css('opacity','0').html('');
+          }
+        })
+      }
+    })
+    // sc finder step 1 page
+    let scStep1 = ()=>{
+      $('.active-btn-sc').html('').css({'height': '16px', 'width': '16px', 'padding': '0', 'margin': '10px', 'opacity': '1', 'bottom' : '84px', 'right': 'calc(50vw + 56px)'});
+      $('.active-btn-fd').css({'opacity': '0', 'bottom':'-80px'});
+      $('.app-finder .dots-h').css('opacity','1').html(`<span class='active dot sc-step-1-dot trans'></span><span class='dot sc-step-2-dot trans'></span><span class='dot sc-step-3-dot trans'></span>`);
+      $('.app-finder .dots-v').css('opacity','0').html('');
+      skincareData.forEach((element, index)=>{
+        currentPage.find('.answer').append(`
+          <div class="step one-quarter sc-step-1-result" line-item=${index}>
+            <img src="https://cdn.no-toxic.com/image/upload/q_auto:best,f_auto,fl_lossy,w_300,c_limit/{{settings.cloudinary_image_version}}/prouduct-finder-app/skincare-finder/skin-type-${element.name.replace(/\//g,'-').replace(/ /g,'-')}">
+            <div class="m-t-sm">${element.name}</div>
+          </div>
+        `);
+      })
+    }
+    $(document).on('click', '.sc-start', ()=>{
+      $('.app-nav-item.sc-start').addClass('app-selected').siblings().removeClass('app-selected');
+      if(!currentPage.hasClass('sc-step-1')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','skin type'),
+          containerClasses: 'sc-step-1 f-d-column text-center j-c-center',
+          containerStyle: 'opacity: 0',
+          beforeLoad: ()=>{
+            currentPage.siblings('.page').css('opacity','0');
+            $('.app-header').removeClass('cover')
+            currentPage.css('opacity','1');
+            scStep1();
+          }
+        })
+      }
+    })
+    // sc finder step 2 page
+    let scStep2 = ()=>{
+      $('.dot').removeClass('active').eq(1).addClass('active');
+      $('.active-btn-sc').html('').css({'right': 'calc(50vw - 18px)'});
+      skincareData[steps[0]].value.forEach((element, index)=>{
+        currentPage.find('.answer').append(`
+          <div class="step one-quarter sc-step-2-result" line-item=${index}>
+          <img src="https://cdn.no-toxic.com/image/upload/q_auto:best,f_auto,fl_lossy,w_300,c_limit/{{settings.cloudinary_image_version}}/prouduct-finder-app/skincare-finder/skin-concern-${element.name.replace(/\//g,'-').replace(/ /g,'-')}">
+          <div class="m-t-sm">${element.name}</div>
+          </div>
+        `);
+      })
+    }
+    $(document).on('click', '.sc-step-1-result', function(){
+      steps[0] = +$(this).attr('line-item');
+      ChangePage({
+        nextPage: $('#app-finder-step').html().replace('((question))','skin concern'),
+        overlay: true,
+        containerClasses: 'sc-step-2 f-d-column text-center j-c-center',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css({'transform': 'translateX(-100%)'});
+          scStep2();
+        }
+      })
+    })
+    // sc finder step 3 page
+    let scResultList = ()=>{
+      $('.app-finder .dots-h').css('opacity','1').html(`<span class='dot sc-step-1-dot trans'></span><span class='dot sc-step-2-dot trans'></span><span class='dot sc-step-3-dot trans active'></span>`);
+      $('.result').css('width',`${360*$('.collection-storage #jumpToShow .grid').length}px`)
+      $('.page .result').html('');
+      $('.collection-storage #jumpToShow .grid').each((index, element)=>{
+        $('.page .result').append(`<div class="result-product app-product inline" product-url='${$(element).find('.grid__image').attr('href')}'>
+            <img src="${$(element).find('.hero-image').attr('data-src')}">
+            <div class="text-center text-md m-t text-u-c">${$(element).closest('[id*=step-]').find('.main-font').html()}</div>
+            <p class="text-center app-label-text same-height" same-height-id="app-product">${$(element).find('h2[itemprop=name]').html()}</p>
+            <span class="inline app-label-text p-v-sm p-h b-a m-t b-dark">See More</span>
+          </div>`)
+      })
+      Purity.sameHeight.set();
+    }
+    $(document).on('click', '.sc-step-2-result', function(){
+      steps[1] = +$(this).attr('line-item');
+      ChangePage({
+        nextPage: $('#app-finder-result').html().replace('((result-text))',`Here is the result for <span class="brand-primary sc-step-1-dot">${skincareData[steps[0]].name}</span> skin type and <span class="brand-primary sc-step-2-dot">${skincareData[steps[0]].value[steps[1]].name}</span> skin concern.`).replace('((title))','Your Routine Result'),
+        overlay: true,
+        containerClasses: 'sc-step-3 f-d-column text-center j-c-center',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css({'transform': 'translateX(-100%)'});
+          $('.dot').removeClass('active').eq(2).addClass('active');
+          $('.active-btn-sc').html('').css({'right': 'calc(50vw - 92px)'});
+          $.ajax({
+            url: `/collections/sc-finder/${skincareData[steps[0]].value[steps[1]].value}`,
+            context: document.body
+          }).done(function(data) {
+            $('.collection-storage').html(data.split('<main')[1].split('</main')[0]);
+            scResultList();
+          });
+        }
+      })
+    })
+    // sc finder dots
+    $(document).on('click', '.sc-step-1-dot', ()=>{
+      if(currentPage.hasClass('sc-step-2') || currentPage.hasClass('sc-step-3')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','skin type'),
+          containerClasses: 'sc-step-1 f-d-column text-center j-c-center',
+          containerStyle: 'transform: translateX(-100%)',
+          beforeLoad: ()=>{
+            currentPage.css({'transform': 'translateX(0)'});
+            scStep1();
+          }
+        })
+      }
+    })
+    $(document).on('click', '.sc-step-2-dot', ()=>{
+      if(currentPage.hasClass('sc-step-3')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','skin concern'),
+          containerClasses: 'sc-step-2 f-d-column text-center j-c-center',
+          containerStyle: 'transform: translateX(-100%)',
+          beforeLoad: ()=>{
+            currentPage.css({'transform': 'translateX(0)'});
+            scStep2();
+          }
+        })
+      }else if(currentPage.hasClass('sc-step-1')){
+        $('#animation-warning p').html('Please select your skin type');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }
+    })
+    $(document).on('click', '.sc-step-3-dot', ()=>{
+      if(currentPage.hasClass('sc-step-2')){
+        $('#animation-warning p').html('Please select your skin concern');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('sc-step-1')){
+        $('#animation-warning p').html('Please select your skin type');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }
+    })
+    // fd finder step 1 page
+    let fdStep1 = ()=>{
+      $('.app-finder .dots-h').css('opacity','1').html(`<span class='dot fd-step-1-dot trans active'></span><span class='dot fd-step-2-dot trans'></span><span class='dot fd-step-3-dot trans'></span><span class='dot fd-step-4-dot trans'></span>`);
+      $('.app-finder .dots-v').css('opacity','0').html('');
+      $('.active-btn-fd').html('').css({'height': '16px', 'width': '16px', 'padding': '0', 'margin': '10px','bottom' : '84px', 'right': 'calc(50vw + 93px)', 'opacity': '1'});
+      $('.active-btn-sc').css({'opacity': '0', 'bottom':'-80px'});
+      foundationData.forEach((element, index)=>{
+        currentPage.find('.answer').append(`
+          <div class="step one-quarter fd-step-1-result" line-item=${index}>
+            <img src="https://cdn.no-toxic.com/image/upload/q_auto:best,f_auto,fl_lossy,w_300,c_limit/{{settings.cloudinary_image_version}}/prouduct-finder-app/foundation-finder/formula-${element.name.replace(/\//g,'-').replace(/ /g,'-')}">
+            <div class="m-t-sm">${element.name}</div>
+          </div>
+        `);
+      })
+    }
+    $(document).on('click', '.fd-start', ()=>{
+      $('.app-nav-item.fd-start').addClass('app-selected').siblings().removeClass('app-selected');
+      if(!currentPage.hasClass('fd-step-1')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','formula'),
+          containerClasses: 'fd-step-1 f-d-column text-center j-c-center',
+          containerStyle: 'opacity: 0',
+          beforeLoad: ()=>{
+            currentPage.siblings('.page').css('opacity','0');
+            $('.app-header').removeClass('cover')
+            currentPage.css('opacity','1');
+            fdStep1();
+          }
+        })
+      }
+    })
+    // fd finder step 2 page
+    let fdStep2 = ()=>{
+      $('.dot').removeClass('active').eq(1).addClass('active');
+      $('.active-btn-fd').html('').css({'right': 'calc(50vw + 19px)'});
+      foundationData[steps[0]].value.forEach((element, index)=>{
+        currentPage.find('.answer').append(`
+          <div class="step one-quarter fd-step-2-result" line-item=${index}>
+            <img src="https://cdn.no-toxic.com/image/upload/q_auto:best,f_auto,fl_lossy,w_300,c_limit/{{settings.cloudinary_image_version}}/prouduct-finder-app/foundation-finder/coverage-${element.name.replace(/\//g,'-').replace(/ /g,'-')}">
+            <div class="m-t-sm">${element.name}</div>
+          </div>
+        `);
+      })
+    }
+    $(document).on('click', '.fd-step-1-result', function(){
+      steps[0] = +$(this).attr('line-item');
+      ChangePage({
+        nextPage: $('#app-finder-step').html().replace('((question))','coverage'),
+        overlay: true,
+        containerClasses: 'fd-step-2 f-d-column text-center j-c-center',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css({'transform': 'translateX(-100%)'});
+          fdStep2();
+        }
+      })
+    })
+    // fd finder step 3 page
+    let fdStep3 = ()=>{
+      $('.dot').removeClass('active').eq(2).addClass('active');
+      $('.active-btn-fd').html('').css({'right': 'calc(50vw - 55px)'});
+      foundationData[steps[0]].value[steps[1]].value.forEach((element, index)=>{
+        currentPage.find('.answer').append(`
+          <div class="step one-quarter fd-step-3-result" line-item=${index}>
+            <img src="https://cdn.no-toxic.com/image/upload/q_auto:best,f_auto,fl_lossy,w_300,c_limit/{{settings.cloudinary_image_version}}/prouduct-finder-app/foundation-finder/finish-${element.name.replace(/\//g,'-').replace(/ /g,'-')}">
+            <div class="m-t-sm">${element.name}</div>
+          </div>
+        `);
+      })
+    }
+    $(document).on('click', '.fd-step-2-result', function(){
+      steps[1] = +$(this).attr('line-item');
+      ChangePage({
+        nextPage: $('#app-finder-step').html().replace('((question))','finish'),
+        overlay: true,
+        containerClasses: 'fd-step-3 f-d-column text-center j-c-center',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css({'transform': 'translateX(-100%)'});
+          fdStep3();
+        }
+      })
+    })
+    // fd finder step 4 page
+    let fdResultList = ()=>{
+      $('.result').css('width',`${360*$('.collection-storage #jumpToShow .grid').length}px`)
+      $('.app-finder .dots-h').css('opacity','1').html(`<span class='dot fd-step-1-dot trans'></span><span class='dot fd-step-2-dot trans'></span><span class='dot fd-step-3-dot trans'></span><span class='dot fd-step-4-dot trans active'></span>`);
+      $('.page .result').html('');
+      $('.collection-storage #jumpToShow .grid').each((index, element)=>{
+        $('.page .result').append(`<div class="result-product app-product inline" product-url='${$(element).find('.grid__image').attr('href')}'>
+            <img src="${$(element).find('.hero-image').attr('data-src')}">
+            <p class="text-center app-label-text m-t same-height" same-height-id="app-product">${$(element).find('h2[itemprop=name]').html()}</p>
+            <span class="inline app-label-text p-v-sm p-h b-a m-t b-dark">See More</span>
+          </div>`)
+      })
+      Purity.sameHeight.set();
+    }
+    $(document).on('click', '.fd-step-3-result', function(){
+      steps[2] = +$(this).attr('line-item');
+      ChangePage({
+        nextPage: $('#app-finder-result').html().replace('((result-text))',`Here is the result for <span class="brand-primary fd-step-1-dot">${foundationData[steps[0]].name}</span> formula , <span class="brand-primary fd-step-2-dot">${foundationData[steps[0]].value[steps[1]].name}</span> coverage and <span class="brand-primary fd-step-3-dot">${foundationData[steps[0]].value[steps[1]].value[steps[2]].name}</span> finish.`).replace('((title))','Your Foundation Result'),
+        overlay: true,
+        containerClasses: 'fd-step-4 f-d-column text-center j-c-center',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css({'transform': 'translateX(-100%)'});
+          $('.dot').removeClass('active').eq(3).addClass('active');
+          $('.active-btn-fd').html('').css({'right': 'calc(50vw - 129px)'});
+          $.ajax({
+            url: `/collections/foundation-makeup/${foundationData[steps[0]].value[steps[1]].value[steps[2]].value}`,
+            context: document.body
+          }).done(function(data) {
+            $('.collection-storage').html(data.split('<main')[1].split('</main')[0]);
+            fdResultList();
+          });
+        }
+      })
+    })
+    // fd finder dots
+    $(document).on('click', '.fd-step-1-dot', ()=>{
+      if(currentPage.hasClass('fd-step-2') || currentPage.hasClass('fd-step-3') || currentPage.hasClass('fd-step-4')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','formula'),
+          containerClasses: 'fd-step-1 f-d-column text-center j-c-center',
+          containerStyle: 'transform: translateX(-100%)',
+          beforeLoad: ()=>{
+            currentPage.css({'transform': 'translateX(0)'});
+            fdStep1();
+          }
+        })
+      }
+    })
+    $(document).on('click', '.fd-step-2-dot', ()=>{
+      if(currentPage.hasClass('fd-step-1')){
+        $('#animation-warning p').html('Please select your formula');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('fd-step-3') || currentPage.hasClass('fd-step-4')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','coverage').replace('((title))','Step 2'),
+          containerClasses: 'fd-step-2 f-d-column text-center j-c-center',
+          containerStyle: 'transform: translateX(-100%)',
+          beforeLoad: ()=>{
+            currentPage.css({'transform': 'translateX(0)'});
+            fdStep2();
+          }
+        })
+      }
+    })
+    $(document).on('click', '.fd-step-3-dot', ()=>{
+      if(currentPage.hasClass('fd-step-1')){
+        $('#animation-warning p').html('Please select your formula');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('fd-step-2')){
+        $('#animation-warning p').html('Please select your coverage');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('fd-step-4')){
+        ChangePage({
+          nextPage: $('#app-finder-step').html().replace('((question))','finish'),
+          containerClasses: 'fd-step-3 f-d-column text-center j-c-center',
+          containerStyle: 'transform: translateX(-100%)',
+          beforeLoad: ()=>{
+            currentPage.css({'transform': 'translateX(0)'});
+            fdStep3();
+          }
+        })
+      }
+    })
+    $(document).on('click', '.fd-step-4-dot', ()=>{
+      if(currentPage.hasClass('fd-step-1')){
+        $('#animation-warning p').html('Please select your formula');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('fd-step-2')){
+        $('#animation-warning p').html('Please select your coverage');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }else if(currentPage.hasClass('fd-step-3')){
+        $('#animation-warning p').html('Please select your finish');
+        Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+      }
+    })
+    // back to result list page
+    $(document).on('click', '.back-to-list', function(){
+      if($('.app-selected').hasClass('sc-start')){
+        ChangePage({
+          nextPage: $('#app-finder-result').html().replace('((result-text))',`Here is the result for <span class="brand-primary sc-step-1-dot">${skincareData[steps[0]].name}</span> skin type and <span class="brand-primary sc-step-2-dot">${skincareData[steps[0]].value[steps[1]].name}</span> skin concern.`).replace('((title))','Your Routine Result'),
+          containerClasses: 'sc-step-3 f-d-column text-center j-c-center',
+          containerStyle: 'opacity: 0',
+          beforeLoad: ()=>{
+            currentPage.siblings('.page').css({'opacity': '0'});
+            currentPage.css('opacity','1')
+            $('.app-finder .dots-v').css('opacity','0').html('');
+            $('.active-btn-sc').html('').css({'right': 'calc(50vw - 92px)', 'bottom': '84px'});
+            scResultList();
+          }
+        })
+      }else if($('.app-selected').hasClass('fd-start')){
+        ChangePage({
+          nextPage: $('#app-finder-result').html().replace('((result-text))',`Here is the result for <span class="brand-primary fd-step-1-dot">${foundationData[steps[0]].name}</span> formula, <span class="brand-primary fd-step-2-dot">${foundationData[steps[0]].value[steps[1]].name}</span> coverage and <span class="brand-primary fd-step-3-dot">${foundationData[steps[0]].value[steps[1]].value[steps[2]].name}</span> finish.`).replace('((title))','Your Foundation Result'),
+          containerClasses: 'fd-step-4 f-d-column text-center j-c-center',
+          containerStyle: 'opacity: 0',
+          beforeLoad: ()=>{
+            currentPage.siblings('.page').css({'opacity': '0'});
+            currentPage.css('opacity','1')
+            $('.app-finder .dots-v').css('opacity','0').html('');
+            $('.active-btn-fd').html('').css({'right': 'calc(50vw - 129px)', 'bottom': '84px'});
+            fdResultList();
+          }
+        })
+      }
+    })
+    //  product detail page
+    let productDetailImages = (sku = '')=>{
+      $('.page .image-list').html('');
+
+      $(`.all-image .image-url-storage[filter*=${sku}_primary]`).length ? $('.page .image-list').append(`<img src="${$(`.all-image .image-url-storage[filter*=${sku}_primary]`).eq(0).html()}" class="m-t m-h-sm left image-items" width="156" alt="primary">`) : null;
+      $(`.all-image .image-url-storage[filter*=${sku}_secondary]`).length ? $('.page .image-list').append(`<img src="${$(`.all-image .image-url-storage[filter*=${sku}_secondary]`).eq(0).html()}" class="m-t m-h-sm left image-items" width="156" alt="secondary">`) : null;
+      $(`.all-image .image-url-storage[filter*=${sku}_swatch]`).length ? $('.page .image-list').append(`<img src="${$(`.all-image .image-url-storage[filter*=${sku}_swatch]`).eq(0).html()}" class="m-t m-h-sm left image-items" width="156" alt="swatch">`) : null;
+      $('.page .image-list img').length>0 ? $('.page .hero-image').html(`<img src="${$('.page .image-list img').eq(0).attr('src')}">`) : $('.page .hero-image').html(`<img src="${$('#ProductPhotoImg').attr('data-src')}">`);
+      $('.product-storage .purity-pop[pop-type=youtube]').each((index, element)=>{
+        $('.page .image-list').append(`
+          <div class="m-t m-h-sm left video-container pos-rlt" video-link="${$(element).attr('href')}" app-video-id="${$(element).attr('pop-ytid')}">
+            <img class="play-btn pos-abt" alt="play-sign" src="//cdn.shopify.com/s/files/1/0648/1955/files/play-sign_1024x.png?263911">
+            <img class="video-cover" src="${$(element).find('.bg-img').css('background-image').replace('url(\"','').replace('\")','')}" width="156">
+          </div>
+        `)
+      })
+      $('.page .image-list>*').length<2 ? $('.page .image-list').addClass('hide') : null;
+    }
+    $(document).on('click', '.image-items',function(){
+      $('.page .hero-image').html(`<img src="${$(this).attr('src')}">`);
+    })
+    $(document).on('click', '.video-container', function(){
+      $('.page .hero-image').html(`
+        <a href="${$(this).attr('video-link')}" class="purity-pop" pop-type="youtube" pop-ytid="${ $(this).attr('app-video-id') }" pop-ratio="0.5618" pop-autoplay="1" pop-rel="0">
+          <img class="play-btn pos-abt" alt="play-sign" src="//cdn.shopify.com/s/files/1/0648/1955/files/play-sign_1024x.png?263911">
+          <img class="video-cover" src="${$(this).find('.video-cover').attr('src')}">
+        </a>
+      `);
+    })
+    let productDetail = ()=>{
+      $('.product-storage .icon-block li').each((index, element)=>{
+        $('.page .icon-list').append(`
+          <img src='${$(element).find('img').attr('src')}' height='22'> <span class="text-sm m-l-sm m-r">${$(element).find('span').html()}</span>
+        `);
+        if($('.product-storage .icon-block li').length > 4 && index == 2){$('.page .icon-list').append('<br>')}
+      })
+      $('.page .description').html($('.short-description').html());
+      $('.page .app-price').html($('#ProductPrice span').html());
+      if($('.product-storage .product-form--wrapper .swatch-element.color').length > 0){
+        $('.page .app-special-info').append(`<div class="app-label-text l-h m-t-lg m-b">Color: <span class="app-select-color">${$('.product-storage .product-form--wrapper .swatch-element .tooltip').eq(0).html()}</span></div>`);
+        $('.product-storage .product-form--wrapper .swatch-element').each((index, element)=>{
+          $('.page .app-special-info').append(`<span class="inline w-48 circle m-r m-b app-swatch ${ index == 0 ? 'selected-swatch' : '' }" style="${ $(element).find('label').attr('style') }" app-sku="${ $(element).attr('variant-sku').toLowerCase().replace('.','-') }" app-swatch-name="${ $(element).find('.tooltip').html() }"></span>`);
+        })
+      }
+      $('.app-swatch').click(function(){
+        $('.app-swatch').removeClass('selected-swatch');
+        $(this).addClass('selected-swatch');
+        $('.page .image-list img[alt="primary"], .page .image-list img[alt="secondary"], .page .image-list img[alt="swatch"]').remove();
+        $('.app-select-color').html($(this).attr('app-swatch-name'));
+        productDetailImages($(this).attr('app-sku'));
+      })
+      productDetailImages();
+    }
+    let selectProduct = '';
+    $(document).on('click', '.app-product', function(){
+      let productUrl = $(this).attr('product-url');
+      selectProduct = $(this).find('p').html();
+      ChangePage({
+        nextPage: $('#app-product-general').html().replace('((product-name))', selectProduct),
+        containerClasses: 'sc-product-g j-c-center a-i-center',
+        containerStyle: 'opacity: 0',
+        beforeLoad: ()=>{
+          currentPage.siblings('.page').css('opacity','0');
+          $('.active-btn-sc,.active-btn-fd').css({'bottom' : 'calc(50vh + 80px)', 'right': '64px', 'height': '16px', 'width': '16px'});
+          $('.app-finder .dots-h').css('opacity','0').html('');
+          $('.app-finder .dots-v').css('opacity','1').html(`<span class='product-g dot trans active'></span><br><span class='product-i dot trans'></span><br><span class='product-d dot trans'></span>`);
+          currentPage.css('opacity','1');
+          $.ajax({
+            url: productUrl,
+            context: document.body
+          }).done(function(data) {
+            $('.product-storage').html(data.split('<main')[1].split('</main')[0]);
+            productDetail();
+          });
+        }
+      })
+    })
+    $(document).on('click', '.product-g', function(){
+      if(!currentPage.hasClass('sc-product-g')){
+        let elementStyle = 'transform: translateY(-100vh)' ;
+        ChangePage({
+          nextPage: $('#app-product-general').html().replace('((product-name))', selectProduct),
+          containerClasses: 'sc-product-g j-c-center a-i-center',
+          containerStyle: elementStyle,
+          beforeLoad: ()=>{
+            $('.dot').removeClass('active').eq(0).addClass('active');
+            $('.active-btn-sc,.active-btn-fd').html('').css({'bottom': 'calc(50vh + 80px)'});
+            currentPage.css({'transform': 'translateY(0)'});
+            productDetail();
+          }
+        })
+      }
+    })
+    // product ingredient page
+    $(document).on('click', '.product-i', function(){
+      if(!currentPage.hasClass('sc-product-i')){
+        let elementStyle = currentPage.hasClass('sc-product-g') ? '' : 'transform: translateY(-100vh)' ;
+        ChangePage({
+          nextPage: $('#app-product-ingredient').html(),
+          containerClasses: 'sc-product-i f-d-column j-c-center w-app-wrapper',
+          overlay: currentPage.siblings('.page').hasClass('sc-product-g'),
+          containerStyle: elementStyle,
+          beforeLoad: ()=>{
+            $('.dot').removeClass('active').eq(1).addClass('active');
+            $('.active-btn-sc,.active-btn-fd').html('').css({'bottom': 'calc(50vh - 18px)'});
+            currentPage.siblings('.page').hasClass('sc-product-g') ? currentPage.siblings('.page').css({'z-index': 5, 'transform': 'translateY(-100vh)'}) : currentPage.css({'transform': 'translateY(0)'});
+            $('.key-ingredients').each((index, element)=>{
+              $('.page .key-ingredient').append(`
+                <div class="one-fifth left">
+                  <img class="rounded" src="${$(element).find('img').attr('data-src')}">
+                  <p class="app-label-text font-bold m-t-md m-b-sm">${$(element).find('.text-sm').html()}</p>
+                  <p class="text-sm">${$(element).find('.text-xs').html()}</p>
+                </div>
+              `);
+            })
+            $('.page .all-ingredients').append($('.ingredient-container').text());
+          }
+        })
+      }
+    })
+    // product detail page
+    $(document).on('click', '.product-d', function(){
+      if(!currentPage.hasClass('sc-product-d')){
+        ChangePage({
+          nextPage: $('#app-product-detail').html(),
+          overlay: true,
+          containerClasses: 'sc-product-d j-c-center a-i-center',
+          beforeLoad: ()=>{
+            $('.dot').removeClass('active').eq(2).addClass('active');
+            $('.active-btn-sc,.active-btn-fd').html('').css({'bottom': 'calc(50vh - 116px)'});
+            currentPage.siblings('.page').css({'transform': 'translateY(-100vh)'});
+            $('.app-directions').html($('.product-direction>div:last-child').text());
+            $('.app-size').html($('.product-size>div:last-child').text());
+            $('.app-source').html($('.product-country>div:last-child').text());
+
+            if($('.product-storage .purity-pop[pop-type=youtube]').length > 0){
+              let videoElement;
+              if($('.product-storage .purity-pop[pop-type=youtube] p:contains(How-To)').length>0){
+                videoElement = $('.product-storage .purity-pop[pop-type=youtube] p:contains(How-To)').eq(0).parent();
+              }else if($('.product-storage .purity-pop[pop-type=youtube] p:contains(Product)').length>0){
+                videoElement = $('.product-storage .purity-pop[pop-type=youtube] p:contains(Product)').eq(0).parent();
+              }else{
+                videoElement = $('.product-storage .purity-pop[pop-type=youtube]').eq(0);
+              }
+              $('.page .how-to-video').append(`
+                <a href="${videoElement.attr('href')}" class="purity-pop" pop-type="youtube" pop-ytid="${ videoElement.attr('pop-ytid') }" pop-ratio="0.5618" pop-autoplay="1" pop-rel="0">
+                  <img class="play-btn pos-abt" alt="play-sign" src="//cdn.shopify.com/s/files/1/0648/1955/files/play-sign_1024x.png?263911">
+                  <img class="video-cover" src="${videoElement.find('.bg-img').css('background-image').replace('url(\"','').replace('\")','')}">
+                </a>
+              `)
+            }else{
+              $('.page .how-to-video').html(`<img src="${$('#ProductPhotoImg').attr('data-src')}">`);
+            }
+          }
+        })
+      }
+    })
+
+    // swipe events
+    Purity.swipe({
+      'element': '.app-container',
+      'method': [
+        {
+          'direction': 'left',
+          'distance': 50,
+          'success': ()=>{
+            if(currentPage.hasClass('sc-step-1')){
+              $('.start-over').trigger('click');
+            }else if(currentPage.hasClass('sc-step-2')){
+              $('.sc-step-1-dot').trigger('click');
+            }else if(currentPage.hasClass('fd-step-1')){
+              $('.start-over').trigger('click');
+            }else if(currentPage.hasClass('fd-step-2')){
+              $('.fd-step-1-dot').trigger('click');
+            }else if(currentPage.hasClass('fd-step-3')){
+              $('.fd-step-2-dot').trigger('click');
+            }
+          },
+        },
+        {
+          'direction': 'right',
+          'distance': 50,
+          'success': ()=>{
+            if(currentPage.hasClass('sc-step-1')){
+              $('#animation-warning p').html('Please select your skin type');
+              Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+            }else if(currentPage.hasClass('sc-step-2')){
+              $('#animation-warning p').html('Please select your skin concern');
+              Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+            }else if(currentPage.hasClass('fd-step-1')){
+              $('#animation-warning p').html('Please select your formula');
+              Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+            }else if(currentPage.hasClass('fd-step-2')){
+              $('#animation-warning p').html('Please select your coverage');
+              Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+            }else if(currentPage.hasClass('fd-step-3')){
+              $('#animation-warning p').html('Please select your finish');
+              Purity.popwindow.open('#animation-warning', 'content', {width:'750px'});
+            }
+          },
+        },
+        {
+          'direction': 'top',
+          'distance': 50,
+          'success': ()=>{
+            if(currentPage.hasClass('sc-product-d')){
+              $('.product-i').trigger('click');
+            }else if(currentPage.hasClass('sc-product-i')){
+              $('.product-g').trigger('click');
+            }
+          },
+        },
+        {
+          'direction': 'bottom',
+          'distance': 50,
+          'success': ()=>{
+            if(currentPage.hasClass('sc-product-g')){
+              $('.product-i').trigger('click');
+            }else if(currentPage.hasClass('sc-product-i')){
+              $('.product-d').trigger('click');
+            }
+          },
+        }
+      ]
+    })
+  })
+</script>

@@ -1,0 +1,236 @@
+{% include 'subscription-cart-footer' %}
+ <!-- /templates/cart.liquid -->
+{% comment %}
+  For info on test orders:
+    - General http://docs.shopify.com/manual/your-store/orders/test-orders
+    - Shopify Payments - http://docs.shopify.com/manual/more/shopify-payments/testing-shopify-payments
+{% endcomment %}
+<div class="cart-item-rander"></div>
+<!-- Conversion Pixel for [lead]- DO NOT MODIFY -->
+<img src="https://data.adxcel-ec2.com/pixel/?ad_log=referer&action=lead&pixid=97619b83-8ae4-4272-b9fd-16c7edc1062a" width="1" height="1" border="0" alt="Conversion Pixel" aria-hidden="true">
+<!-- End of Conversion Pixel -->
+<script type="text/javascript">
+  var cartInitData = {%- include 'cart-ajax-data' -%}
+</script>
+
+<script type="text/template" id="cart-item-template">
+  <form action="/cart" method="post" novalidate class="cart p-t-xs" id="cart-form">
+    <div class="grid m-t-xlg small--m-t">
+      <h1 class="section_title_text medium-down--text-center grid__item one-half medium-down--one-whole">Your Tote</h1>
+      <div class="grid__item large--text-right text-center one-quarter medium-down--one-whole small--hide">
+        <a class="retail-store-pop btn btn-secondary w-full hide">PICK UP IN-STORE</a>
+      </div>
+      <div class="grid__item large--text-right text-center one-quarter medium-down--one-whole small--hide">
+      {% raw %}
+        <button type="submit" name="checkout" class="btn btn-secondary w-full">Checkout</button>
+      {% endraw %}
+      </div>
+      <p class="caption_text no-margin p-b p-t-xs grid__item small--text-center medium-down--p-b-xs">
+        Check out now and earn
+        {% raw %}
+          <span class="lion-points">{{points}}</span>
+        {% endraw %}
+        points for this order.
+        {% unless customer %}
+          Must be
+          <a class="thin-u-l" href="/account/login">logged in</a>
+          to receive points. Don't have an account?
+          <a class="thin-u-l" href="/account/register">Register</a>
+          here!
+        {% endunless %}
+      </p>
+      <div class="clear-both"></div>
+      {%- if settings.active_free_sample -%}
+        <div class="cart-sample p-h one-half left medium-down--no-margin-h medium-down--m-v-sm medium-down--one-whole m-b"></div>
+      {%- endif -%}
+      {%- if settings.display_gwp != "none" -%}
+        <div class="cart-gwp p-h one-half left medium-down--one-whole medium-down--no-margin-h medium-down--m-v-sm text-center m-b"></div>
+      {%- endif -%}
+    </div>
+
+    <div class="grid callout_s_text text-u-c p-v-sm small--hide">
+      <div class="grid__item"><hr class="m-v-sm"></div>
+      <div class="grid__item push--two-twelfths seven-twelfths">{{ 'cart.label.product' | t }}</div>
+      <div class="grid__item one-twelfth text-left">{{ 'cart.label.price' | t }}</div>
+      <div class="grid__item two-twelfths text-center">{{ 'cart.label.quantity' | t }}</div>
+      <div class="grid__item one-twelfth text-left">{{ 'cart.label.total' | t }}</div>
+      <div class="grid__item"><hr class="m-v-sm"></div>
+    </div>
+
+    {% raw %}{{#items}}
+    <div class="grid p-v-sm cart-item" data-line={{line}} sku={{sku}}>
+      <a {{#if ifSample}}href="/pages/sample"{{else}}href="{{url}}"{{/if}} class="grid__item one-sixth small--one-third">
+        <img
+          src="{{img}}"
+          data-src="{{img}}"
+          alt="{{name}}" class="cld-prepare">
+      </a>
+      <div class="grid__item five-sixths small--two-thirds no-padding">
+        <div class="grid__item one-half caption_s_text p-t-lg m-t-lg small--one-whole small--m-t-xs small--p-t-xs">
+          <a {{#if ifSample}}href="/pages/sample"{{else}}href="{{url}}"{{/if}} class="caption_text m-b-sm block one-whole small--five-sixths left">{{name}}</a>
+          <p>{{ variation }}</p>
+          {{#if ifSample}}<p><i>Sample</i></p>{{/if}}
+          {% endraw %}{% if settings.cart_vendor_enable %}{% raw %}
+            <p>{{ vendor }}</p>
+          {% endraw %}{% endif %}{% raw %}
+          {{#if hasAutoRenew}}
+            <span class="ajaxcart__product-meta">Auto Renew</span>
+          {{/if}}
+          {{#if ifGWP}}<p><i>FREE when you spend {{{GWPThreshold}}}{%endraw%} {%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}{%raw%}– enter {{{GWPCode}}} at checkout{%endraw%}{%- endif -%}{%raw%}.</i></p>{{/if}}
+        </div>
+        <div class="grid__item one-tenth caption_text p-t-lg m-t-lg small--hide">
+          {{{itemPrice}}}
+        </div>
+        <div class="grid__item two-tenths p-t-lg m-t-lg small--one-half small--m-t-xs small--p-t-xs">
+          {{#if ifSample}}
+            <div class="ajaxcart__qty text-center margin-auto">1</div>
+          {{else}}
+            <div class="ajaxcart__qty margin-auto">
+              <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--minus icon-fallback-text" data-id="{{id}}" data-qty="{{itemMinus}}" data-line={{line}}  aria-label="quantity minus 1">
+                <span class="icon icon-minus" aria-hidden="true"></span>
+                <span class="fallback-text">&minus;</span>
+              </button>
+              <input type="text" name="updates[]" class="ajaxcart__qty-num" value="{{itemQty}}" min="0" data-id="{{id}}" aria-label="quantity" pattern="[0-9]*" data-line={{line}}>
+              <button type="button" class="ajaxcart__qty-adjust ajaxcart__qty--plus icon-fallback-text" data-id="{{id}}" data-qty="{{itemAdd}}" data-line={{line}}  aria-label="quantity add 1">
+                <span class="icon icon-plus" aria-hidden="true"></span>
+                <span class="fallback-text">+</span>
+              </button>
+            </div>
+          {{/if}}
+        </div>
+        <div class="grid__item one-tenth caption_text p-t-lg m-t-lg small--one-half small--m-t-xs small--p-t-xs small--text-right">
+          <span>{{{totalPrice}}}</span>
+          <br><span class="cart-item__original-price"><s>{{{originalPrice}}}</s></span>
+        </div>
+        <div class="grid__item one-tenth caption_s_text p-t-lg m-t-lg small--hide">
+          <a href="javascript:void(0)" class="block remove_item_form_cart" target-product-id="{{id}}" target-product-id="{{line}}">{% endraw %}{{ 'cart.general.remove' | t }}{% raw %}</a>
+        </div>
+      </div>
+    </div>
+    {{/items}}{% endraw %}
+
+    <hr>
+    <div class="grid">
+      <div class="grid__item large--five-twelfths medium-down--one-whole text-center caption_text">
+        <div class="brand-secondary-border brand-primary-hover-border b-2x p o-f-hid">
+          <p class="callout_text m-b">HELP US DO GOOD</p>
+          <p>For every order, 100%PURE donates to an important cause. Choose what you’d like us to donate.</p>
+          <label class="left one-half">
+            <span class="one-quarter left p-sm small--p-xs">
+              <img
+                src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ 'treelogo.png' | file_img_url: 'master' | format: 'pjpg' }}"
+                data-src="https://cdn.no-toxic.com/image/fetch/q_auto:eco,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ 'treelogo.png' | file_img_url: 'master' | format: 'pjpg' }}"
+                alt="tree icon" class="cld-prepare">
+            </span>
+            <span class="three-quarters left m-t-md text-left small--m-t-sm p-l-sm">Plant a tree<input type="radio" name="attributes[donate]" checked value="tree" class="checkbox m-l-sm m-r-xs"></span>
+          </label>
+          <label class="left one-half">
+            <span class="one-quarter left p-sm small--p-xs">
+              <img
+                src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https:{{ 'doglogo.png' | file_img_url: 'master' | format: 'pjpg' }}"
+                data-src="https://cdn.no-toxic.com/image/fetch/q_auto:eco,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ 'doglogo.png' | file_img_url: 'master' | format: 'pjpg' }}"
+                alt="tree icon" class="cld-prepare">
+            </span>
+            <span class="three-quarters left m-t-md text-left small--m-t-sm p-l-sm">Feed a shelter dog<input type="radio" name="attributes[donate]" value="dog" class="checkbox m-l-sm m-r-xs"></span>
+          </label>
+          <p class="callout_s_text m-v-xs left w-full"><a href="/pages/philanthropy" target="_blank" rel="noopener" class="text-u-l">Learn More</a></p>
+        </div>
+      </div>
+      <div class="grid__item large--text-right text-center three-twelfths right medium-down--one-whole">
+        {% raw %}
+        <div class="o-f-hid l-h caption_text">
+          <div class="left two-thirds text-left">Subtotal:</div>
+          <div class="left one-third text-right">{{{originalPrice}}}</div>
+          <div class="left two-thirds text-left">Savings:</div>
+          <div class="left one-third text-right">{{{totalDiscount}}}</div>
+          <hr class="left w-full m-v-sm">
+          <div class="left two-thirds text-left callout_text l-s-1x">Total:</div>
+          <div class="left one-third callout_text l-s-1x text-right">{{{totalPrice}}}</div>
+        </div>
+        {% endraw %}
+        {% raw %}
+          <p id="after-pay-cart-container"></p>
+        {% endraw %}
+        <p class="caption_s_text m-t">{{ 'cart.general.shipping_at_checkout' | t }}</p>
+        {% raw %}
+        <button id="cart-trigger-btn" type="submit" name="checkout" class="btn btn-secondary w-full small--hide">Checkout</button>
+        {% endraw %}
+      </div>
+    </div>
+  </form>
+  <style media="screen">
+    .btn-secondary.selected{
+      background-color: #ed3376;
+      border-color: #ed3376;
+    }
+  </style>
+  <div id="sample-container" class="hide">
+    <p class="text-center m-b module_title_text m-t-xlg">Choose up to 2 FREE Samples</p>
+    <div class="p grid m-b-lg grid-uniform">
+      {%- for product in collections['samples'].products -%}
+        {% assign productAvailable = true %}
+        {%- unless product.variants.first.inventory_quantity > 50 -%}
+          {% assign productAvailable = false %}
+        {%- endunless -%}
+        {%- include 'cart-product-item', showPrice:false, addCTA:'SELECT', addClass:'select-btn' -%}
+      {%- endfor -%}
+    </div>
+    <div class="text-center">
+      <span class="purity-pop-window-close btn-secondary btn w-md m-b-xlg">Finish</span>
+    </div>
+  </div>
+
+  {% comment %} gwp pop container {% endcomment %}
+  {%- if settings.display_gwp == "collection" -%}
+    <div id="GWP-container" class="hide">
+      <p class="text-center m-b module_title_text m-t-xlg">Choose your FREE gift</p>
+      <p class="text-center m-b caption_s_text m-t">FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money }}{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}– enter {{ settings.gwp_coupon_name_2 | trim }} at checkout{%- endif -%}.</p>
+      <div class="p grid m-b-lg grid-uniform">
+        {%- for product in collections[settings.gwp_collection_handle_2].products -%}
+          {% assign productAvailable = true %}
+          {%- include 'product-variants-available-state', currentProduct: product, currentVarient: product.variants.first -%}
+          {%- if product.variants.size == 1 and productVariantsAvailableState != 'add' -%}
+            {% assign productAvailable = false %}
+          {%- endif -%}
+          {%- include 'cart-product-item', showPrice:false, addCTA:'ADD TO TOTE', addClass:'gwp-add-btn' -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- elsif settings.display_gwp == "product" and all_products[settings.gwp_product_handle_2].variants.size > 1 -%}
+    <div id="GWP-container" class="hide">
+      <p class="text-center m-b module_title_text m-t-xlg">Choose your FREE gift shade</p>
+      <p class="text-center m-b caption_s_text m-t">FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money }}{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}– enter {{ settings.gwp_coupon_name_2 | trim }} at checkout{%- endif -%}.</p>
+      <div class="p grid m-b-lg grid-uniform">
+        {% assign product = all_products[{{settings.gwp_product_handle_2}}] %}
+        {%- include 'cart-product-item', showPrice:false, addCTA:'ADD TO TOTE', addClass:'gwp-add-btn', productAvailable:true, displayType:'card' -%}
+      </div>
+    </div>
+  {%- elsif settings.display_gwp == "variant" and settings.gwp_variant_id_2 contains ',' -%}
+    <div id="GWP-container" class="hide">
+      <p class="text-center m-b module_title_text m-t-xlg">Choose your FREE gift shade</p>
+      <p class="text-center m-b caption_s_text m-t">FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money }}{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}– enter {{ settings.gwp_coupon_name_2 | trim }} at checkout{%- endif -%}</p>
+      <div class="p grid m-b-lg grid-uniform">
+        {% assign product = all_products[{{settings.gwp_product_handle_2}}] %}
+        {%- include 'cart-product-item', showPrice:false, addCTA:'ADD TO TOTE', addClass:'gwp-add-btn', productAvailable:true, displayType:'card' -%}
+      </div>
+    </div>
+  {%- endif -%}
+  <div id="cart-suggestion" class="grid m-t-xlg p-t-xlg medium-down--p-t-xs">
+    <div class="suggest-item-container">
+      {% for product in collections['frontpage-trending-now'].products | limit: 4 %}
+        {% include 'product-grid-item' %}
+      {% endfor %}
+    </div>
+  </div>
+</script>
+
+<script type="text/template" id="cart-page-fix-container">
+  <div class="pos-fix medium--hide large--hide bg-white w-full bottom-0 b-t p-sm">
+    <div class="left two-thirds callout_text l-s-1x">Total:</div>
+    <div class="left one-third callout_text l-s-1x text-right">{{ cart.total_price | money }}</div>
+    {% comment %}integration with retail store start{% endcomment %}
+    <button id="cart-fix-hook" type="submit" name="checkout" class="btn btn-secondary w-full hide small--show left m-t">Checkout</button>
+    {% comment %}integration with retail store end{% endcomment %}
+    <a class="retail-store-pop btn btn-secondary w-full hide small--show left m-t">PICK UP IN-STORE</a>
+  </div>
+</script>

@@ -1,0 +1,56 @@
+{% assign storeEvent = '|' %}
+{% for block in section.blocks %}
+  {%- if block.type == 'event' -%}
+    {%- if block.settings.storeList == 'ALL' -%}
+      {% assign allStoreEvent = true %}
+    {%- else -%}
+      {% assign storeEvent = storeEvent | append: block.settings.storeList %}
+    {%- endif -%}
+    {% assign storeEvent = storeEvent | append: '|' %}
+  {%- endif -%}
+  {%- if block.type == 'location' -%}
+    <div class="grid__item location m-b-xlg large--one-quarter medium-down--one-half">
+      <a class="callout_text text-u-c block" href="{{ pages[block.settings.locationPage].url }}">{{ block.settings.title }}</a>
+      <div class="address caption_text m-t-sm" itemscope itemtype="http://schema.org/PostalAddress">
+        <div itemprop="streetAddress">{{ block.settings.locationAddress  }}</div>
+        <div itemprop="addressLocality">{{ block.settings.locationCity  }}, {{ block.settings.locationState }}</div>
+        <span itemprop="telephone">
+          <a href="tel:{{ block.settings.locationPhone }}">
+            {{ block.settings.locationPhone  }}
+          </a>
+        </span>
+      </div>
+      <div class="store-service-list  p-t-xs m-b-sm o-f-hid">
+        {% assign storeNameAbs = '|' | append: block.settings.title | append: '|' %}
+        {%- if allStoreEvent or storeEvent contains storeNameAbs -%}
+          {%- include 'icon-store-event.svg', additionalClass: "store-service-icon-s event" -%}
+        {%- endif -%}
+        {%- if block.settings.serviceSpa -%}
+          {%- include 'icon-store-spa.svg', additionalClass: "store-service-icon-s spa" -%}
+        {%- endif -%}
+        {%- if block.settings.serviceMakeover -%}
+          {%- include 'icon-store-makeover.svg', additionalClass: "store-service-icon-s makeover" -%}
+        {%- endif -%}
+        {%- if block.settings.serviceFacial -%}
+          {%- include 'icon-store-facial.svg', additionalClass: "store-service-icon-s facial" -%}
+        {%- endif -%}
+        {%- if block.settings.serviceVideo -%}
+          {%- include 'icon-store-video.svg', additionalClass: "store-service-icon-s video" -%}
+        {%- endif -%}
+        {%- if block.settings.qtyAPIname != '' -%}
+          {%- include 'icon-store-pickup.svg', additionalClass: "store-service-icon-s pickup" -%}
+        {%- endif -%}
+      </div>
+      {%- if block.settings.serviceSpa -%}
+        <div class="m-v store-service-list">
+          <a class="btn btn-secondary snapAppointments-link" data-snap-color="black"
+          data-snap-label="BOOK APPOINTMENT" data-snap-position="inline" data-snap-type="widget"
+          data-snap-locations="{{ block.settings.snapLocation }}"
+          href="https://snapappointments.com">SnapAppointments Online
+          Scheduling</a>
+        </div>
+      {%- endif -%}
+      <a class="callout_text text-u-l" href="{{ pages[block.settings.locationPage].url }}">VIEW DETAILS</a>
+    </div>
+  {%- endif -%}
+{% endfor %}

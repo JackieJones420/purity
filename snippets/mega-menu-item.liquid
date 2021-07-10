@@ -1,0 +1,20 @@
+<div class="one-sixth {{ MmClass }}">
+  <a class="center m-t" {% if MmHref %}
+    href="{{ MmHref | replace: '%3F', '?' }}"
+  {% endif %}>
+    <img
+      src="https://cdn.no-toxic.com/{{settings.cloudinary_image_version}}/pure_temporary/placeholder2020"
+      data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/Mega-Menu/MM-{{ MmLabel | handleize | downcase }}-v2"
+      class="cld-prepare m-b-sm"
+      alt="Mega Menu Spotlight: {{ MmLabel }}" />
+    {%- if MmHref != nil -%}
+      <p>
+        <span class="{{MmLinkText}}">{{ MmLabel }}</span>
+      </p>
+    {%- endif -%}
+  </a>
+</div>
+{% assign MmLabel = nil %}
+{% assign MmHref = nil %}
+{% assign MmClass = nil %}
+{% assign MmLinkText = nil %}

@@ -1,0 +1,129 @@
+
+{% comment %} CNT Custom Header Banner {% endcomment %}
+<header class="site-header medium-down--hide m-t-md" role="banner">
+  <div class="grid--table p-h">
+    <div class="grid__item site-header__search">
+      {% include '_search-bar' %}
+    </div>
+    <div class="grid__item text-center no-padding">
+      <a href="/" itemprop="url" class="site-header__logo-link inline">
+        <img
+          src="https://cdn.no-toxic.com/image/fetch/e_vectorize:5:20,f_svg/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+          data-src="https://cdn.no-toxic.com/image/fetch/q_auto,f_auto,fl_lossy,w_108,f_auto,dpr_auto/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg"
+          class="cld-prepare"
+          alt="{{ shop.name }}" itemprop="logo" height="50">
+      </a>
+    </div>
+    <div class="grid__item text-right p-h">
+      <ul id="header-right-menu">
+        <li>
+
+          <div class="megamenu_container inline width-auto">
+            <!-- Begin Menu Container -->
+            <ul class="megamenu text-center">
+              <li>
+                <div class="header__dropdown-menu--outer">
+                  <a href="/account" class="megamenu_drop callout_text l-s-0x">Hey,
+                  {% if customer %}
+                    {{ customer.first_name | trim }}
+                  {% else %}
+                    Gorgeous
+                  {% endif %}</a>
+                  <span class="icon icon-arrow-down2 right"></span>
+                  {% if customer %}
+                    {%- if shop.name == '100% PURE' -%}
+                    <div class="header__dropdown_points text-left alt-font-regular text-base">
+                      {% for tag in customer.tags %}
+                        {% case tag %}
+                        {% when 'tier: Activist' %}
+                          <span>Activist,</span>
+                          {% break %}
+                        {% when 'tier: Revolutionist' %}
+                          <span>Revolutionist,</span>
+                          {% break %}
+                        {% when 'tier: Enthusiast' %}
+                          <span>Enthusiast,</span>
+                        {% when 'tier: Pure Activist' %}
+                          <span>Activist,</span>
+                          {% break %}
+                        {% when 'tier: Pure Revolutionist' %}
+                          <span>Revolutionist,</span>
+                          {% break %}
+                        {% when 'tier: Pure Enthusiast' %}
+                          <span>Enthusiast,</span>
+                        {% endcase %}
+                      {% endfor %}
+                      <span data-lion-points="approved"></span>
+                      <span>pts</span>
+                    </div>
+                    {%- endif -%}
+                  {% else %}
+                    <p class="caption_s_text text-u-c">
+                      <span>
+                        <a class="thin-u-l" href="/account/login">Log in</a>
+                      </span>
+                      <span>or</span>
+                      <span>
+                        <a class="thin-u-l" href="/account/register">Register</a>
+                      </span>
+                    </p>
+                  {% endif %}
+                  <div class="dropdown_fullwidth p-b">
+                    <ul class="header--dropdown-menu alt-font-regular text-base no-margin">
+                      {%- if customer.tags contains "tier: Revolutionist" or customer.tags contains "tier: Activist" or customer.tags contains "Activist" or customer.tags contains "Revolutionist" or customer.tags contains "proprogram" -%}
+                        {% assign early_release_c = collections['early-release'] %}
+                        {%- if early_release_c.products_count > 0 -%}
+                          <li>
+                            <a href="{{ early_release_c.url }}">New Product VIP Early Access</a>
+                          </li>
+                        {%- endif -%}
+                      {%- endif -%}
+                      {%- if customer -%}
+                        <li>
+                          <a href="/account">Account</a>
+                        </li>
+                        <li>
+                          <a href="/pages/customer-profile">Edit Profile</a>
+                        </li>
+                      {%- endif -%}
+                      {% if customer.metafields.subscriptions.customer_string %}
+                        <!--BeginRechargeCode-->
+                        <li>
+                          <a href="/tools/recurring/customer/{{customer.metafields.subscriptions.customer_string}}/subscriptions/">Manage Subscriptions</a>
+                        </li>
+                        <!--EndRechargeCode-->
+                      {% endif %}
+                      {%- if shop.name == '100% PURE' -%}
+                        <li>
+                          <a href="/pages/purist-perks">Purist Perks</a>
+                        </li>
+                        <li>
+                          <a href="https://support.100percentpure.com">Help</a>
+                        </li>
+                      {%- endif -%}
+                      {%- if customer -%}
+                        <li>
+                          {{ 'layout.customer.log_out' | t | customer_logout_link }}
+                        </li>
+                      {%- endif -%}
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li>
+          <a href="/cart" class="site-header__cart-toggle js-drawer-open-right" aria-controls="CartDrawer" aria-expanded="false">
+            <span class="icon-fallback-text">
+              <span class="icon icon-bag" aria-hidden="true"></span>
+              <span class="fallback-text">{{ 'layout.cart.title' | t }}</span>
+              <span class="main-font" id="CartCount">{{ cart.item_count }}</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

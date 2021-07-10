@@ -1,0 +1,75 @@
+<!-- /snippets/breadcrumb.liquid -->
+{% comment %}
+  Documentation - http://docs.shopify.com/support/your-website/navigation/creating-a-breadcrumb-navigation
+{% endcomment %}
+{% unless template == 'index' or template == 'cart' %}
+<nav class="breadcrumb breadcrumb-nav m-v {{additionClasses}} {% if template contains 'collection.list' or template contains 'collection.list-collection' %} text-center{% endif %} text-muted caption_text" role="navigation" aria-label="breadcrumbs">
+  <a href="/" title="{{ 'general.breadcrumbs.home_link_title' | t }}">{{ 'general.breadcrumbs.home' | t }}</a>
+
+  {% if template contains 'product' %}
+
+    {% if collection %}
+      <span aria-hidden="true">&rsaquo;</span>
+      {% if collection.handle %}
+        {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+        {{ collection.title | strip_html | link_to: url }}
+      {% endif %}
+    {% endif %}
+    <span aria-hidden="true">&rsaquo;</span>
+    <span class="medium-down--hide">{{ product.title }}</span>
+
+  {% elsif template contains 'collection' and collection.handle %}
+    <!--  Build Breadcrumb  -->
+    {% assign breadcrumbs = collection.metafields.breadcrumb %}
+    {% assign crumb_handle = breadcrumbs.handle %}
+    {% assign crumb_name = breadcrumbs.name %}
+    {% assign crumb_title = breadcrumbs.title %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {% if crumb_handle %}
+      <a href="/collections/{{ crumb_handle }}" title="">{{ crumb_name }}</a>
+      <span aria-hidden="true">&rsaquo;</span>
+    {% endif %}
+    {% if crumb_title %}
+      <span>{{ crumb_title }}</span>
+    {% else %}
+      <span>{{ collection.title | strip_html }}</span>
+    {% endif %}
+
+  {% elsif template == 'blog' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {% if current_tags %}
+      {{ blog.title | link_to: blog.url }}
+      <span aria-hidden="true">&rsaquo;</span>
+      <span>{{ current_tags | join: " + " }}</span>
+    {% else %}
+    <span>{{ blog.title }}</span>
+    {% endif %}
+
+  {% elsif template == 'article' %}
+
+    <span aria-hidden="true">&rsaquo;</span>
+    {{ blog.title | link_to: blog.url }}
+    <span aria-hidden="true">&rsaquo;</span>
+    <span>{{ article.title }}</span>
+
+  {% elsif template contains 'page' %}
+
+    {% if template contains 'location-single' %}
+    <span aria-hidden="true">&rsaquo;</span>
+    <a href="{{ pages['store-locations'].url }}" title="">Locations</a>
+    <span aria-hidden="true">&rsaquo;</span>
+    {% endif %}
+
+  <span>{{ page.title }}</span>
+
+  {% else %}
+
+   <span aria-hidden="true">&rsaquo;</span>
+   <span>{{ page_title }}</span>
+
+  {% endif %}
+</nav>
+{% endunless %}
+{% assign additionClasses = '' %}

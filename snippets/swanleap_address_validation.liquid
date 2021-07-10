@@ -1,0 +1,516 @@
+<div class="address-modal">
+	<span class="close-x" onclick="closeAddressValidationModal()">&#10005;</span>
+	<h2 class="heading-1">Verify your address</h2>
+	<div class="address-content">
+		<div class="address-block original">
+			<div class="old-address"><p class="oldAddress"></p></div>
+			<button class="addressButton btn" id="acceptOriginal" onclick="useOriginal()">
+				Use Original Address
+			</button>
+		</div>
+		<div class="address-block updated">
+			<div class="fetched-address"><p class="ourAddress"></p></div>
+			<button class="addressButton btn" id="grabCorrected" onclick="acceptAddressSuggestion()">
+				Use Suggested Address
+			</button>
+		</div>
+	</div>
+	<div class="btn-wrap">
+		<button class="addressButton hide" id="updateAddress" onclick="updateAddress()">
+			Go back to update address
+		</button>
+	</div>
+	<h2 class="error"></h2>
+</div>
+
+<style>
+	.address-modal {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		z-index: 5000;
+		background: #fff;
+		box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+		color: #545454;
+		width: 50%;
+		margin: 0 auto;
+		display: none;
+	}
+	.address-content {
+		display: flex;
+		flex-direction: row;
+	}
+	.address-block {
+		flex: 1 1 auto;
+		margin: 22px 0;
+		padding: 0 22px;
+		box-sizing: border-box;
+	}
+	.address-block:first-child {
+		border-right: 1px solid lightgray;
+	}
+	.close-x {
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		cursor: pointer;
+		font-size: 20px;
+	}
+	.error {
+		color: crimson;
+		text-align: center;
+		padding: 20px;
+	}
+	.address-label {
+		font-weight: 700;
+		margin-bottom: 16px;
+		display: inline-block;
+	}
+	.ourAddress {
+		border: 2px solid #fce4de;
+		padding: 12px;
+		min-height: 60px;
+	}
+	.oldAddress {
+		border: 2px solid #fce4de;
+		padding: 12px;
+		min-height: 60px;
+	}
+	.address-modal .heading-1 {
+		padding: 22px;
+		font-size: 18px;
+		border-bottom: 1px solid lightgray;
+		font-weight: 400;
+	}
+	.addressButton {
+		border-radius: 2px;
+		display: block;
+		padding: 8px 20px;
+		margin-top: 16px;
+		font-size: 12px;
+		margin-bottom: 8px;
+	}
+	.btn-wrap {
+		position: absolute;
+		display: flex;
+		margin: 10px;
+		bottom: 0px;
+		width: 100%;
+	}
+	@media (max-width: 1000px) {
+		.address-content {
+			flex-direction: column;
+		}
+		.address-block {
+			width: 100%;
+		}
+		.address-block:first-child {
+			border-right: none;
+		}
+		.addressButton {
+			width: 100%;
+		}
+	}
+</style>
+
+<script type="text/javascript">
+	let whitelist = {%- include 'swanleap_address_whitelist' -%}
+
+	let shouldContinue = false
+	const modal = document.querySelector('.address-modal')
+	let address = getAddressObjectFromFormData()
+	let fetchedAddress = address
+	closeAddressValidationModal()
+
+	function canIgnoreWhitelistedCorrections(original, corrected) {
+		let left = original.toLowerCase()
+		let right = corrected.toLowerCase()
+		if (left === right) {
+			return
+		}
+
+		let lsplit = left.split(' ')
+		let rsplit = right.split(' ')
+
+		let isCool = rsplit.every((rtoken, i) => {
+			let ltoken = lsplit[i]
+			if (ltoken === rtoken) {
+				return true
+			}
+			return whitelist[rtoken]?.includes(ltoken) || false
+		})
+
+		if (isCool) {
+			console.log('corrected address1 is not substantially different.')
+		}
+		return isCool
+	}
+
+	function hideOriginal() {
+		$('.heading-1').hide()
+		$('.address-block.original').hide()
+	}
+
+	function showOriginal() {
+		$('.heading-1').show()
+		$('.address-block.original').show()
+	}
+
+	function hideUpdated() {
+		$('.address-block.updated').hide()
+	}
+
+	function showUpdated() {
+		$('.address-block.updated').show()
+	}
+
+	function tagOrder(stringTag = 'sl-invalid-address') {
+		$('[class="edit_checkout animate-floating-labels"]').append(
+			'<input type="hidden" id="address_validation_tag" name="checkout[note]" value=' + stringTag + '>',
+		)
+	}
+
+	function removeTag() {
+		$('[id="address_validation_tag"]').remove()
+		$('[class="edit_checkout animate-floating-labels"]').append(
+			'<input type="hidden" id="address_validation_tag" name="checkout[note]" value="">',
+		)
+	}
+
+	function openAddressValidationModal() {
+		removeTag()
+		showOriginal()
+		showUpdated()
+		modal.style.display = 'block'
+	}
+
+	function closeAddressValidationModal() {
+		modal.style.display = 'none'
+	}
+
+	function updateAddress() {
+		closeAddressValidationModal()
+		removeTag()
+		shouldContinue = false
+	}
+
+	function checkAndShowDifference(address, validated) {
+		console.log('checkAndShowDifference', address, validated)
+		if (!address.province_code) {
+			address.province_code = ''
+		}
+		if (!address.zip) {
+			address.zip = ''
+		}
+		if (!validated.address1) {
+			validated.address1 = ''
+		}
+		if (!validated.address2) {
+			validated.address2 = ''
+		}
+		if (!validated.city) {
+			validated.city = ''
+		}
+		if (!validated.province_code) {
+			validated.province_code = ''
+		}
+		if (!validated.country_code) {
+			validated.country_code = ''
+		}
+		if (!validated.zip) {
+			validated.zip = ''
+		}
+		showUpdated()
+		showOriginal()
+		let oldAddressTag = document.querySelector('.old-address')
+		oldAddressTag.innerHTML = `<span class="address-label">You Entered</span><p class="oldAddress">${address.address1}
+	               ${address.address2}
+	               ${address.city}, ${address.province_code}
+	               ${address.zip} ${address.country_code}</p>`
+		let updatedAddressElement = document.querySelector('.fetched-address')
+		updatedAddressElement.innerHTML = `<span class="address-label">Suggested</span><p class="ourAddress"><span class="addressStreet1">${validated.address1}</span>
+	                   <span class="addressStreet2">${validated.address2}</span>
+	                   <span class="addressCity">${validated.city}</span>, <span class="addressState">${validated.province_code}</span>
+	                   <span class="addressZip">${validated.zip}</span>
+	                   <span class="addressCountry">${validated.country_code}</span></p>`
+		let street1 = document.querySelector('.ourAddress .addressStreet1')
+		let street2 = document.querySelector('.ourAddress .addressStreet2')
+		let city = document.querySelector('.ourAddress .addressCity')
+		let state = document.querySelector('.ourAddress .addressState')
+		let zip = document.querySelector('.ourAddress .addressZip')
+		let diffFound = false
+		if (address.address1.toLowerCase() !== validated.address1.toLowerCase()) {
+			if (!canIgnoreWhitelistedCorrections(address.address1, validated.address1)) {
+				street1.style.fontWeight = 'bold'
+				diffFound = true
+			}
+		}
+		if (address.address2.toLowerCase() !== validated.address2.toLowerCase()) {
+			street2.style.fontWeight = 'bold'
+			diffFound = true
+		}
+		if (address.city.toLowerCase() !== validated.city.toLowerCase()) {
+			city.style.fontWeight = 'bold'
+			diffFound = true
+		}
+		if (address.province_code.toLowerCase() !== validated.province_code.toLowerCase()) {
+			state.style.fontWeight = 'bold'
+			diffFound = true
+		}
+		if (address.zip.toLowerCase() !== validated.zip.toLowerCase()) {
+			zip.style.fontWeight = 'bold'
+			diffFound = true
+		}
+		if (!diffFound) {
+			shouldContinue = true
+			removeTag()
+			console.log('address validation passed, continuing')
+			//Prevents "too many attempts error"
+			let timeout = 0
+			if (location.hostname === '100-pure-2.myshopify.com') {
+				timeout = 2000
+			}
+			setTimeout(function() {
+				document.querySelector('button[data-trekkie-id="continue_to_shipping_method_button"]').click()
+			}, timeout)
+		} else {
+			shouldContinue = false
+			openAddressValidationModal()
+		}
+	}
+
+	function repopulateForm() {
+		shouldContinue = true
+		let serializedAddress = $('.field__input[name^="checkout[shipping_address]"]').serializeArray()
+		let serializedAddress1 = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('address1') && serializedAddress.value !== '',
+		)[0]
+		let serializedAddress2 = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('address2') && serializedAddress.value !== '',
+		)[0]
+		let serializedCity = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('city') && serializedAddress.value !== '',
+		)[0]
+		let serializedProvince = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('province') && serializedAddress.value !== '',
+		)[0]
+		let serializedCountry = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('country') && serializedAddress.value !== '',
+		)[0]
+		let serializedZip = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('zip') && serializedAddress.value !== '',
+		)[0]
+		let correctedAddress = getAddressObjectFromFormData()
+		if (fetchedAddress) {
+			if (correctedAddress.address1 !== '') {
+				serializedAddress1.value = fetchedAddress.address1
+			}
+			if (correctedAddress.address2 !== '') {
+				serializedAddress2.value = fetchedAddress.address2
+			}
+			if (correctedAddress.city !== '') {
+				serializedCity.value = fetchedAddress.city
+			}
+			if (correctedAddress.province_code !== '') {
+				serializedProvince.value = fetchedAddress.province_code
+			}
+			if (correctedAddress.country_code !== '') {
+				//This is because the country code we send back doesnt get recognized properly by the form, this will make the form filler ignore it
+				serializedCountry.value = null
+			}
+			if (correctedAddress.zip !== '') {
+				serializedZip.value = fetchedAddress.zip
+			}
+		}
+
+		$.each(serializedAddress, function(k, v) {
+			if ($('[name^="' + serializedAddress[k].name + '"]')[1].value !== '') {
+				if (v.value) {
+					$('[name^="' + serializedAddress[k].name + '"]')[1].value = v.value
+				}
+			} else if ($('[name^="' + serializedAddress[k].name + '"]')[0].value !== '') {
+				if (v.value) {
+					$('[name^="' + serializedAddress[k].name + '"]')[0].value = v.value
+				}
+			}
+		})
+	}
+
+	function getAddressObjectFromFormData() {
+		let serializedAddress = $('.field__input[name^="checkout[shipping_address]"]').serializeArray()
+		let serializedLastName = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('last_name') && serializedAddress.value !== '',
+		)[0]
+		let serializedFirstName = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('first_name') && serializedAddress.value !== '',
+		)[0]
+		let serializedAddress1 = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('address1') && serializedAddress.value !== '',
+		)[0]
+		let serializedAddress2 = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('address2') && serializedAddress.value !== '',
+		)[0]
+		let serializedCity = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('city') && serializedAddress.value !== '',
+		)[0]
+		let serializedProvince = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('province') && serializedAddress.value !== '',
+		)[0]
+		let serializedCountry = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('country') && serializedAddress.value !== '',
+		)[0]
+		let serializedZip = serializedAddress.filter(
+			(serializedAddress) => serializedAddress.name.includes('zip') && serializedAddress.value !== '',
+		)[0]
+		let serializedEmail = $('[name^="checkout[email]"]').serializeArray()
+		let serializedEmailValue = serializedEmail.filter(
+			(serializedEmail) => serializedEmail.name.includes('email') && serializedEmail.value !== '',
+		)[0]
+		let address = {
+			first_name: serializedFirstName ? serializedFirstName.value : '',
+			last_name: serializedLastName ? serializedLastName.value : '',
+			address1: serializedAddress1 ? serializedAddress1.value : '',
+			address2: serializedAddress2 ? serializedAddress2.value : '',
+			city: serializedCity ? serializedCity.value : '',
+			province_code: serializedProvince ? serializedProvince.value : '',
+			country_code: serializedCountry ? serializedCountry.value : '',
+			zip: serializedZip ? serializedZip.value : '',
+			email: serializedEmailValue ? serializedEmailValue.value : '',
+		}
+		return address
+	}
+
+	function isMissingRequiredFields(address) {
+		if (address.last_name === '') {
+			showError('Last Name is required', false)
+			return true
+		} else if (address.email === '') {
+			showError('Email is required')
+			return true
+		} else if (
+			/\d/.test(address.address1) === false &&
+			(address.country_code === 'US' || address.country_code === 'United States')
+		) {
+			showError('Street Number is required', false)
+			return true
+		}
+		return false
+	}
+
+	function acceptAddressSuggestion() {
+		removeTag()
+		closeAddressValidationModal()
+
+		let address = getAddressObjectFromFormData()
+		if (isMissingRequiredFields(address)) {
+			return
+		}
+
+		shouldContinue = true
+		repopulateForm()
+
+		const errorTag = document.querySelector('.error')
+		if (errorTag.innerHTML !== '<p></p>') {
+		} else {
+			closeAddressValidationModal()
+			removeTag()
+			document.querySelector('button[data-trekkie-id="continue_to_shipping_method_button"]').click()
+		}
+	}
+
+	function useOriginal() {
+		tagOrder()
+		address = getAddressObjectFromFormData()
+		shouldContinue = true
+		document.querySelector('button[data-trekkie-id="continue_to_shipping_method_button"]').click()
+		closeAddressValidationModal()
+	}
+
+	/************************* MAIN *************************/
+	$('button[data-trekkie-id="continue_to_shipping_method_button"]').on('click', async (e) => {
+		console.log('Continue to shipping clicked')
+		if (!shouldContinue) {
+			document.querySelector('#updateAddress').style.display = 'block'
+			document.querySelector('#grabCorrected').style.display = 'block'
+			e.preventDefault()
+		} else {
+			closeAddressValidationModal()
+		}
+
+		address = getAddressObjectFromFormData()
+		if (isMissingRequiredFields(address)) {
+			return
+		}
+		try {
+			$('.step__footer__continue-btn').addClass('btn--loading')
+			const response = await fetch('https://app.swanleap.com/api/v6/shopify/validate-address', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					address: {
+						street1: address.address1,
+						street2: address.address2,
+						street3: '',
+						city: address.city,
+						state: address.province_code,
+						country: address.country_code,
+						zip: address.zip,
+					},
+					firstName: address.first_name,
+					lastName: address.last_name,
+					checkoutToken: Shopify.Checkout.token,
+					provider: address.country_code === 'US' || address.country_code === 'United States' ? 'UPS' : 'Fedex',
+				}),
+			})
+			if (!shouldContinue) {
+				$('.step__footer__continue-btn').removeClass('btn--loading')
+			}
+			if (response.status >= 400) {
+				throw new Error(response.json())
+			}
+			const errorTag = document.querySelector('.error')
+			errorTag.innerHTML = '<p></p>'
+			let addressRes = await response.json()
+			fetchedAddress = {
+				address1: addressRes.street1 || '',
+				address2: addressRes.street2 || '',
+				city: addressRes.city || '',
+				province_code: addressRes.state || '',
+				country_code: addressRes.country || '',
+				zip: addressRes.zip || '',
+			}
+			if (!shouldContinue) {
+				checkAndShowDifference(address, fetchedAddress)
+			}
+		} catch (e) {
+			if (!shouldContinue) {
+				console.error('Error when validating address: ' + e.message, e)
+				showError('We are unable to verify your address. Please review it to continue with your purchase.', true)
+			}
+		}
+	})
+
+	function showError(errorMessage, shouldShowOriginal = false) {
+		openAddressValidationModal()
+		hideUpdated()
+		tagOrder()
+		let errorTag = document.querySelector('.error')
+		errorTag.innerHTML = errorMessage
+
+		if (shouldShowOriginal) {
+			showOriginal()
+
+			let realAddress = getAddressObjectFromFormData()
+			let oldAddressTag = document.querySelector('.address-modal .old-address')
+			oldAddressTag.innerHTML = `<span class="address-label">Original</span><p class="oldAddress">${realAddress.address1}
+									${realAddress.address2}
+									${realAddress.city}, ${realAddress.province_code}
+									${realAddress.zip} ${realAddress.country_code}</p>`
+		} else {
+			hideOriginal()
+		}
+	}
+</script>

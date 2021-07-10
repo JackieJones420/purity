@@ -1,0 +1,311 @@
+
+
+<div class="product-form--wrapper">
+  {%- unless hideReview -%}
+    <div class="m-b-sm">
+      <span class="stamped-product-reviews-badge" data-id="{{ product.id }}">{{ product.metafields.stamped.badge }}</span>
+    </div>
+  {%- endunless -%}
+  <h1 class="section_title_text mt-0">{{ product.title }}</h1>
+
+  <!-- Product form short description -->
+  {%- if product.metafields.purity-toolbox.short_description ！= nil and product.metafields.purity-toolbox.short_description != "[empty]" -%}
+    <div class="short-description caption_text m-b-sm">{{ product.metafields.purity-toolbox.short_description | trim }}</div>
+  {%- endif -%}
+  {% assign hideReview = false %}
+  {%- if product.tags contains "hide_review" -%}
+    {% assign hideReview = true %}
+  {%- endif -%}
+
+  <!-- Product form icon -->
+  {%- include 'product-form-icon', targetproduct: product -%}
+
+  <hr class="dividing-line">
+
+  <!-- Product form -->
+  <form action="/cart/add" data-productid="{{product.id}}" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form-horizontal">
+    <!-- Product form swatch start -->
+    {%- if product.variants.size > 1 -%}
+      <div class="m-b-sm swatch-list">
+        <p>
+          <span class="caption_text">Select a {{ product.options | first | downcase }}: </span>
+          <span class="variant-title callout_text text-u-c"></span>
+          <span class="caption_text shade-description-container text-muted-dk m-l-sm"></span>
+        </p>
+        <!-- Variants Swatch-->
+        {%- if product.type == "Gift Card" -%}
+          {% if product.variants.size > 1  %}
+            {% assign selectedOption = product.options | first %}
+            {% include 'swatch' with selectedOption %}
+          {% endif %}
+        {%- else -%}
+          {% if product.variants.size > 1 %}
+            {% assign selectedOption = product.options | first %}
+            {% include 'swatch' with selectedOption %}
+          {% endif %}
+        {%- endif -%}
+
+        <select name="id" id="productSelect" class="product-single__variants" style="position: absolute; left: 99999px;">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+              {% comment %}
+                Note: if you use option_selection.js, your <select> tag will be overwritten, meaning what you have inside <option> will not reflect what you coded below.
+              {% endcomment %}
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+            {% else %}
+              <option disabled="disabled">
+                {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        <label for="productSelect" class="hide">variant selector for {{product.title}}</label>
+      </div>
+    {% else %}
+      <select name="id" id="productSelect" class="product-single__variants" style="position: absolute; left: 99999px;">
+        {% if product.variants.first.available %}
+          <option selected="selected" data-sku="{{ product.variants.first.sku }}" value="{{ product.variants.first.id }}">
+            {{ product.variants.first.title }} - {{ product.variants.first.price | money_with_currency }}
+          </option>
+        {% else %}
+          <option disabled="disabled">
+            {{ product.variants.first.title }} - {{ 'products.product.sold_out' | t }}
+          </option>
+       {% endif %}
+      </select>
+      <label for="productSelect" class="hide">variant selector for {{product.title}}</label>
+    {%- endif -%}
+    <!-- Product form swatch end -->
+<div class="product__quantity-container--mobile"> 
+    <span class="section_title_text inline original_price" itemprop="price" style="font-size:20px;">
+        {{ current_variant.price | money_without_trailing_zeros }}
+        </span>
+           {% if product.compare_at_price_max > product.price %}
+          {%- if product.tags contains "BundleProduct" -%}
+          <span class="module_title_text" style="font-size:20px;">
+            (<span id="ComparePrice">{{ current_variant.compare_at_price | money }}</span> value)
+          </span>
+          {%- else -%}
+            <span class="text-l-t module_title_text" id="ComparePrice" style="font-size:20px;">
+              {{ current_variant.compare_at_price | money }}
+            </span>
+          {%- endif -%}
+        {% endif %}
+        </div>
+
+    <center><div class="product__quantity-container--mobile" style="max-width:450px;">
+  
+      <span class="product__qty-input-text" style="text-align:right;">Quantity</span> 
+      <label class="product__qty-input product__qty-input--mobile">
+        <button class="product__qty-input-incrementor decrease" type="button">
+          -
+        </button>
+        <input min="1" type="number" id="quantity-mobile" name="quantity" value="1" />
+        <button class="product__qty-input-incrementor increase" type="button">
+          +
+        </button>
+      </label>
+      <span class="product__weight-text {% if product.variants.size > 1 %}vis-hide{%endif%}">
+        {% if product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != "[empty]" and product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != null %}
+          {{ product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight | trim }}
+        {% endif %}
+      </span>
+    </div></center>
+    
+
+    <!-- Product price -->
+    <div class="product--price-block">
+      <div class="flex">
+        <span id="" class="section_title_text inline original_price" itemprop="price"> 
+        {{ current_variant.price | money_without_trailing_zeros }} 
+        </span>
+        {% if product.compare_at_price_max > product.price_max %}
+          {%- if product.tags contains "BundleProduct" -%}
+          <span class="module_title_text cpr_price">
+            (<span id="ComparePrice">{{ current_variant.compare_at_price | money }}</span> value)
+          </span>
+          {%- else -%}
+            <span class="text-l-t module_title_text cpr_price" id="ComparePrice" style="margin-right:12px;">
+              {{ current_variant.compare_at_price | money }} 
+            </span>
+          {%- endif -%}
+        {% endif %}
+        <div class="vertical-divider"></div>
+        {%- if settings.beauty_start -%}
+          {%- for tag in product.tags -%}
+            {%- if tag == 'Beauty Deal 5' -%}
+              <span class="section_title_text beauty_deal_price hide">{{ settings.beauty_deal_price5 | money }} <span class="text-l-t">{{ product.price | money }}..</span> </span>
+            {%- elsif tag == 'Beauty Deal 10' -%}
+              <span class="section_title_text beauty_deal_price hide">{{ settings.beauty_deal_price10 | money }} <span class="text-l-t">{{ product.price | money }}..</span> </span>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        <label class="product__qty-input product__qty-input--desktop" >
+          <span class="product__qty-input-text " style="margin-right:8px;">Quantity</span>
+          <div class="product__qty-input-field custom_class01">
+            <button class="product__qty-input-incrementor decrease" type="button">
+              -
+            </button>
+            <input min="1" data-quantity-desktop="" type="number" id="quantity-desktop" name="quantity" value="1" style="width:70%;max-width:60px;" />
+            <button class="product__qty-input-incrementor increase" type="button">
+              +
+            </button>
+          </div>
+         <style> .custom_class01{height:30px;min-width:50px;margin-right:15px;} </style>
+          {%- unless product.tags contains "hide-size" -%}
+            <span class="product__qty-weight-text {% if product.variants.size > 1 %}vis-hide{%endif%}" style="width:40%;">
+              {% if product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != "[empty]" and product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight != null %}
+                {{ product.selected_or_first_available_variant.metafields.purity-toolbox.net_weight | trim }}
+              {% endif %}
+            </span>
+          {%- endunless -%}
+        </label>
+      </div>
+
+      <span class="icon-fallback-text right">
+        <span class="fallback-text">Wishlist</span>
+        {%- include 'wish-list-btn' -%}
+      </span>
+      <p id="after-pay-cart-container"></p>
+     
+       {%if product.metafields.duo.mini != blank %} 
+       <style>
+       .afterpay-paragraph{
+         display:none;
+       }
+
+       </style>
+         <h2 class="" style="font-size: 1.2em;"> FREE with code "FREEMINIDUO" </h2>
+       {% endif %}
+
+
+
+
+    </div>
+
+    {%- if product.tags contains "exclude_international_shipping" -%}
+      <div class="m-v">
+        <a class="thin-u-l" href="/pages/shipping-faq#ExcludeShipping" target="_blank">
+          *Only available to ship GROUND within the 48 contiguous United States*
+        </a>
+      </div>
+    {%- endif -%}
+
+    {%- if product.tags contains "exclude_international_shipping_no_link" -%}
+      <div class="m-v">
+        *Only available to ship GROUND within the 48 contiguous United States*
+      </div>
+    {%- endif -%}
+
+    <!-- Auto delivery -->
+    {%- if settings.display_auto_delivery -%}
+      {% if current_variant.inventory_quantity > 49 %}{% include 'subscription-product' %}{% endif %}
+    {%- endif -%}
+
+    <!-- Product add to cart -->
+    {% assign donate_id = settings.donate_variant_id | plus: 0 %}
+    {% assign donate_product_id = settings.show_donate_product_id | plus: 0 %}
+    {%- if settings.donate_product -%}
+      {%- if product.selected_or_first_available_variant.id == donate_id -%}
+        <button class="btn btn__bg-filled--secondary w-full add-donate" type="button" name="button">donate item</button>
+      {%- elsif product.id == donate_product_id -%}
+        {%- include 'product-add-to-cart' -%}
+        <button class="btn w-full add-donate-pop m-t-md" type="button" name="button">donate item</button>
+        <div id="donate-container" class="hide">
+          <p class="text-center m-b module_title_text m-t-xlg">Your Donation</p>
+          <p class="m-h text-center">We'll take care of the shipping – all Hand Sanitizer donations will be sent directly to people in need.</p>
+          <p class="text-center">
+            <a href="{{settings.donation_product_handle}}" class="brand-primary text-u-l">Read More</a>
+          </p>
+          <div class="text-center">
+            <span class="purity-pop-window-close add-donate btn-secondary btn w-md m-b-xlg open-cart m">Donate Now</span>
+            <span class="purity-pop-window-close btn-primary btn w-md m-b-xlg open-cart m">Maybe Later</span>
+          </div>
+        </div>
+      {%- else -%}
+        {%- include 'product-add-to-cart' -%}
+      {%- endif -%}
+    {%- else -%}
+      {%- include 'product-add-to-cart' -%}
+    {%- endif -%}
+    {%- include 'product-details-promo-message' -%}
+    {% comment %} powerbuy integration start {% endcomment %}
+    <div id="mg-powerbuy-component" site-type="1" data-id="{{product.id}}" shop-domain="{{shop.domain}}" client-id="2sk2gt23bj72obs1pivhoks4m3" default-variant="{{product.selected_or_first_available_variant.id}}" cus-id="{{customer.id}}" cus-accounts-enabled="{{shop.customer_accounts_enabled}}" product-available="{{product.available}}" cus-accounts-optional="{{shop.customer_accounts_optional}}" >
+    <script type="text/javascript"> var __mgPowerBuyComponent = { pageUrl:window.location.href }  </script></div>
+    {% comment %} powerbuy integration start {% endcomment %}
+    {% if product.tags contains "BundleProduct" %}
+      {%- if product_meta.bundle_handles -%}
+        <div class="callout_text m-t m-b-sm">THIS KIT INCLUDES:</div>
+
+        <div class="product-bundle-list">
+          {%- for variant in product.variants -%}
+            <div class="bundle-list-{{variant.id}} {% if forloop.index0 > 0 %}hide{% endif %}">
+              <!-- {{variant.metafields.purity-toolbox.bundle_handles}} -->
+              {% assign bundle_product_handles = variant.metafields.purity-toolbox.bundle_handles | trim %}
+              {% assign bundle_product_handles = bundle_product_handles | split: '|' %}
+              {% for handle in bundle_product_handles %}
+                {% assign x_product = handle | split: '?' %}
+                {% assign listNumber = forloop.index0 %}
+                {%- if x_product.size >1 -%}
+                <!-- handle has ? mark -->
+                  {%- if all_products[x_product[0]].variants.size > 1 -%}
+                  <!-- product with many variants -->
+                    {%- for variant in all_products[x_product[0]].variants -%}
+                      {% capture current_id %}variant={{ variant.id }}{% endcapture %}
+                      {%- if current_id == x_product[1] -%}
+                        {% assign b_variant = variant %}
+                        {% include 'pp-bundle' %}
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- else -%}
+                    <!-- product with one variant -->
+                    {% assign b_variant = all_products[x_product[0]].variants.first %}
+                    {% include 'pp-bundle' %}
+                  {%- endif -%}
+                {%- else -%}
+                  <!-- handle doesn't have ? mark -->
+                  {% assign b_variant = all_products[handle].variants.first %}
+                  {% include 'pp-bundle' %}
+                {%- endif -%}
+              {% endfor %}
+            </div>
+          {%- endfor -%}
+
+        </div>
+      {%- endif -%}
+    {% endif %}
+    <div id="fb-messenger"></div>
+  </form>
+
+</div>
+<script>
+
+
+  document.addEventListener("DOMContentLoaded", function(){
+    var quantityIncrementors = document.querySelectorAll('.product__qty-input-incrementor');
+    if (quantityIncrementors instanceof NodeList) {
+      quantityIncrementors.forEach(function (element) {
+        element.addEventListener('click', function () {
+          var quantity = parseInt(this.parentElement.querySelector('input').value);
+
+          if (isNaN(quantity)) {
+            quantity = 1;
+          }
+
+          if (this.classList.contains('decrease') && quantity > 1) {
+            quantity = quantity - 1;
+          } else if (this.classList.contains('increase')) {
+            quantity = quantity + 1;
+          }
+
+          document.querySelector('#quantity-mobile').value = quantity;
+          document.querySelector('#quantity-desktop').value = quantity;
+        });
+      });
+    }
+  });
+  
+
+</script>
+

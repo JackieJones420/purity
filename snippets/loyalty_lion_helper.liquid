@@ -1,0 +1,104 @@
+{% comment %}
+<!-- >>>> Loyalty Lion Helper -->
+<!-- Set variables that store customer metafield for loyalty points.  -->
+ Author: M.H.
+ Date: 2015/10/09
+ Description:
+   Helper file snippet that assigns customer metafields data that contain loyalty points to liquid variables.
+    Set liquid variables for coresponding customer loyalty level.
+ Logs:
+   1.2015-12-22 => Added 'points_lifetime' customer metafield to show a lifetime value of loyalty points.
+   1.2016-01-06 => Customer metafield 'points_total' is deprecated.
+{% endcomment %}
+
+{% comment %}
+<!-- Set the customer metafields if it exists, if it does not customer has 0 loyalty points and the purists_points_total needs to be set to zero. -->
+{% endcomment %}
+
+
+
+
+ {% if customer.metafields.loyaltylion['points_total']  %}
+     {% assign purist_points_total = customer.metafields.loyaltylion['points_total'] %}
+ {% else %}
+     {% assign purist_points_total = 0 %}
+ {% endif %}
+
+
+ {% if customer.metafields.loyaltylion['points_approved']  %}
+     {% assign purist_points_approved = customer.metafields.loyaltylion['points_approved'] %}
+ {% else %}
+     {% assign purist_points_approved = 0 %}
+ {% endif %}
+
+
+ {% if customer.metafields.loyaltylion['points_pending']  %}
+     {% assign purist_points_pending = customer.metafields.loyaltylion['points_pending'] %}
+ {% else %}
+     {% assign purist_points_pending = 0 %}
+ {% endif %}
+
+
+ {% if customer.metafields.loyaltylion['points_lifetime']  %}
+     {% assign purist_points_lifetime = customer.metafields.loyaltylion['points_lifetime'] %}
+ {% else %}
+     {% assign purist_points_lifetime = 0 %}
+ {% endif %}
+
+
+{% comment %}
+<!--  Declare variables for loyalty tier levels. -->
+{% endcomment %}
+ {% assign pure_glow_level = false %}
+ {% assign pure_glimmer_level = false %}
+ {% assign pure_glam_level = false %}
+ {% assign pure_current_level = "" %}
+
+
+{% comment %}
+<!--  Set Tier levels based on loyalty points total. -->
+{% endcomment %}
+ {% if purist_points_lifetime >= 0 and purist_points_lifetime < 350 %}
+     {% assign pure_glow_level = true %}
+     {% assign pure_current_level = "Glow" %}
+ {% elsif purist_points_lifetime >= 350 and purist_points_lifetime < 700 %}
+     {% assign pure_glimmer_level = true %}
+     {% assign pure_current_level = "Glimmer" %}
+ {% elsif purist_points_lifetime >= 700 %}
+     {% assign pure_glam_level = true %}
+     {% assign pure_glam_shipping = true %}
+     {% assign pure_current_level = "Glam" %}
+     {% comment %} //Set variable for free 2 day shipping {% endcomment %}
+ {% endif %}
+
+{% comment %}!----Debug----!
+<p>Total Pts Metafield: {{ customer.metafields.loyaltylion['points_total'] }}</p>
+
+<p>Glow: {{ pure_glow_level }}</p>
+
+<p>Glimmer: {{ pure_glimmer_level }}</p>
+
+<p>Glam: {{ pure_glam_level  }}</p>
+
+<p>POINTS TOTAL: {{ purist_points_total }}</p>
+
+<p>POINTS PENDING: {{ purist_points_pending }}</p>
+
+<p>POINTS APPROVED: {{ purist_points_approved  }}</p>
+
+<p>POINTS LIFETIME: {{ purist_points_lifetime  }}</p>
+
+<p>GLAM SHIPPING: {{ pure_glam_shipping }}</p>
+
+<script>
+console.log("Current Purist Level: {{ pure_current_level }}");
+console.log("Glow: {{ pure_glow_level }}");
+console.log("Glimmer: {{ pure_glimmer_level }}");
+console.log("Glam: {{ pure_glam_level  }}");
+console.log("POINTS TOTAL: {{ purist_points_total }}");
+console.log("POINTS APPROVED: {{ purist_points_approved  }}");
+console.log("POINTS LIFETIME: {{ purist_points_lifetime  }}");
+console.log("POINTS APPROVED: {{ purist_points_approved  }}");
+console.log("GLAM SHIPPING: {{ pure_glam_shipping }}");
+</script>
+{% endcomment %}

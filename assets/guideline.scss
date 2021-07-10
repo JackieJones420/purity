@@ -1,0 +1,90 @@
+// color
+$colorPurityPeach: #fce4de;
+$colorPurityGuava: #f38189;
+$colorPurityRespberry: #ed3376;
+$colorPurityDark: #333333;
+$colorPurityLight: #6d6e70;
+$colorPurityWhite: #ffffff;
+$colorDarkADAPurple: #a81d46;
+// font
+.hed_title_text{
+  font: normal 44px/48px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 28px/30px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+    letter-spacing: 0px;
+  }
+}
+.dek_title_text{
+  font: normal 20px/24px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 14px/16px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    letter-spacing: 0px;
+  }
+}
+.page_title_text{
+  font: normal 34px/38px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 24px/26px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+    letter-spacing: 0px;
+  }
+}
+.section_title_text{
+  font: normal 30px/34px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 20px/22px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+    letter-spacing: 0px;
+    font-size: 28px;
+  }
+}
+.module_title_text{
+  font: normal 22px/26px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 16px/18px TimesNewRoman, 'Times New Roman', Times, Baskerville, Georgia, serif;
+    letter-spacing: 0px;
+  }
+}
+.content_text{
+  font: normal 16px/22px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 14px/20px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    letter-spacing: 0px;
+  }
+}
+.caption_text{
+  font-family: "Avenir Next Regular","Times New Roman",serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    letter-spacing: 0px;
+    font-size: 16px;
+  }
+}
+.caption_s_text{
+  font: normal 12px/16px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: 0px;
+  @include respond-to('medium'){
+    font: normal 10px/14px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    letter-spacing: 0px;
+  }
+}
+.callout_text{
+  font: bold 14px/16px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: 2px;
+  @include respond-to('medium'){
+    font: bold 12px/14px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    letter-spacing: 2px;
+  }
+}
+.callout_s_text{
+  font: bold 12px/14px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+  letter-spacing: 2px;
+  @include respond-to('medium'){
+    font: bold 12px/14px 'Arial', 'Helvetica Neue', Helvetica, sans-serif;
+    letter-spacing: 2px;
+  }
+}

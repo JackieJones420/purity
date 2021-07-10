@@ -1,0 +1,174 @@
+<div class="perk-container large--p-b-xlg">
+	<section id="perk-header" class="pos-rlt">
+		<div class="img-section{% if customer %} login{% endif %}">
+			<div class="wrapper text-center p-t-xlg p-b-xlg">
+				{%- if customer -%}
+					<p class="section_title_text l-s-1x m-b-lg">Hi, {{ customer.first_name | trim }}</p>
+					<p class="dek_title_text">
+						{% for tag in customer.tags %}
+              {% case tag %}
+							{% when 'tier: Activist' %}
+                Activist |
+                {% break %}
+              {% when 'tier: Revolutionist' %}
+                Revolutionist |
+                {% break %}
+              {% when 'tier: Enthusiast' %}
+                Enthusiast |
+							{% when 'tier: Pure Activist' %}
+                Activist |
+                {% break %}
+              {% when 'tier: Pure Revolutionist' %}
+                Revolutionist |
+                {% break %}
+              {% when 'tier: Pure Enthusiast' %}
+                Enthusiast |
+              {% endcase %}
+            {% endfor %}
+						<span data-lion-points="approved"></span> points
+					</p>
+					<p class="dek_title_text m-b-xlg">Enjoy endless benefits from our 100% PURE™ rewards program!</p>
+					<p class="section_title_text l-s-1x m-b-lg">MY PURIST PERKS</p>
+					<div data-lion-account></div>
+				{%- else -%}
+					<p class="hed_title_text m-t-xlg m-v-md">Purist Perks</p>
+					<p class="dek_title_text m-b-xlg max-width-lgx7 margin-auto medium-down--p-h-xlg">We've dreamed up some wonderful ways to reward you for shopping at 100% PURE®, and signing up is easy! Discover the amazing benefits that come with each step of our 3 tiers rewards system!</p>
+					<a href="/account/register" class="btn btn-primary p-h-xlg no-borders m-b-md">JOIN NOW</a>
+					<p class="caption_text m-b-xlg">Already a Purist Perks Member? <a href="/account/login" class="brand-primary text-u-l">SIGN IN</a></p>
+				{%- endif -%}
+			</div>
+		</div>
+	</section>
+	<section class="perk-section wrapper m-b-xlg p-b-xlg">
+		<p class="section_title_text l-s-1x text-center m-b-lg">PURIST PERK BENEFITS</p>
+		<table class="max-width-lgx8 margin-auto content_text">
+			<tr>
+				<th class="no-border"><span class="hide">Services</span></th>
+				<th class="no-border text-center text-gauva main-font font-normal no-padding-v">Enthusiast</th>
+				<th class="no-border text-center brand-primary main-font font-normal no-padding-v">Activist</th>
+				<th class="no-border text-center perk-special main-font font-normal no-padding-v">Revolutionist</th>
+			</tr>
+			<tr>
+				<td class="no-border text-black-lt">Spend per calendar year</td>
+				<td class="no-border text-center text-black-lt">$0</td>
+				<td class="no-border text-center text-black-lt">$250</td>
+				<td class="no-border text-center text-black-lt">$750</td>
+			</tr>
+			<tr>
+				<td class="no-border">Points per $1</td>
+				<td class="no-border text-center b-r">1x</td>
+				<td class="no-border text-center b-r">1x</td>
+				<td class="no-border text-center">1x</td>
+			</tr>
+			<tr>
+				<td class="no-border">Redeemable voucher</td>
+				<td class="no-border text-center b-r">$</td>
+				<td class="no-border text-center b-r">$$</td>
+				<td class="no-border text-center">$$$</td>
+			</tr>
+			<tr>
+				<td class="no-border">Seasonal savings</td>
+				<td class="no-border text-center b-r">$</td>
+				<td class="no-border text-center b-r">$$</td>
+				<td class="no-border text-center">$$$</td>
+			</tr>
+			<tr>
+				<td class="no-border">Birthday gift</td>
+				<td class="no-border text-center b-r">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#F38188' -%}</td>
+				<td class="no-border text-center b-r">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#ED3376' -%}</td>
+				<td class="no-border text-center">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#C1365F' -%}</td>
+			</tr>
+			<tr>
+				<td class="no-border">Free standard shipping $50+ (US only)</td>
+				<td class="no-border text-center b-r">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#F38188' -%}</td>
+				<td class="no-border text-center b-r">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#ED3376' -%}</td>
+				<td class="no-border"></td>
+			</tr>
+			<tr>
+				<td class="no-border">Free expedited shipping (US only)</td>
+				<td class="no-border b-r"></td>
+				<td class="no-border b-r"></td>
+				<td class="no-border text-center">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#C1365F' -%}</td>
+			</tr>
+			<tr>
+				<td class="no-border">Early access to new products</td>
+				<td class="no-border b-r"></td>
+				<td class="no-border b-r"></td>
+				<td class="no-border text-center">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#C1365F' -%}</td>
+			</tr>
+			<tr>
+				<td class="no-border">Toll free priority customer service</td>
+				<td class="no-border b-r"></td>
+				<td class="no-border b-r"></td>
+				<td class="no-border text-center">{%- include 'icon-leaf.svg', additionalClass: 'leaf', iconColor: '#C1365F' -%}</td>
+			</tr>
+		</table>
+	</section>
+	<section class="perk-section wrapper m-b-xlg large--p-b-xlg medium-down--p-h-xlg">
+		<p class="section_title_text l-s-1x text-center m-b-lg">REDEEM VOUCHERS</p>
+		<div class="grid m-b-md">
+			<div class="grid__item large--one-third medium-down--p-b-lg text-center">
+				<span class="dek_title_text brand-secondary-border b-2x block p-v font-bold l-s-2x text-gauva">ENTHUSIAST</span>
+				<span class="caption_text text-3x text-white bg-gauva block p-t-lg l-s-1x font-bold p-b">$15 OFF</span>
+				<span class="content_text text-white bg-gauva block p-b-md">200 points</span>
+			</div>
+			<div class="grid__item large--one-third medium-down--p-b-lg text-center">
+				<span class="dek_title_text brand-primary-border b-2x block p-v font-bold l-s-2x brand-primary">ACTIVIST</span>
+				<span class="caption_text text-3x text-white bg-respberry block p-t-lg l-s-1x font-bold p-b">$20 OFF</span>
+				<span class="content_text text-white bg-respberry block p-b-md">200 points</span>
+			</div>
+			<div class="grid__item large--one-third medium-down--p-b-lg text-center">
+				<span class="dek_title_text perk-special-bd b-2x block p-v font-bold l-s-2x perk-special">REVOLUTIONIST</span>
+				<span class="caption_text text-3x text-white perk-special-bg block p-t-lg l-s-1x font-bold p-b">$25 OFF</span>
+				<span class="content_text text-white perk-special-bg block p-b-md">200 points</span>
+			</div>
+		</div>
+		<p class="caption_text text-center">Redeem your points in the form of discount vouchers* at your tier’s respective threshold. You can redeem and apply your unique discount code towards any purchase in both the Purist Perks section of our website and in our retail stores.</p>
+	</section>
+	<section class="perk-section wrapper m-b-lg">
+		<p class="section_title_text l-s-1x text-center m-b-lg">WAYS TO EARN POINTS</p>
+		<div class="grid m-b-md text-center f-wrap flex j-c-center medium-down--block">
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-account.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">50 points</span>
+				<span class="block caption_text">Account sign up</span>
+			</div>
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-review.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">10 points</span>
+				<span class="block caption_text">Write a review</span>
+			</div>
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-facebook.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">20 points</span>
+				<span class="block caption_text">Like on Facebook</span>
+			</div>
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-twitter.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">20 points</span>
+				<span class="block caption_text">Follow on Twitter</span>
+			</div>
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-instagram.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">20 points</span>
+				<span class="block caption_text">Follow on Instagram</span>
+			</div>
+			<div class="grid__item medium-down--one-half one-quarter text-center m-b-xlg">
+				{%- include 'icon-perk-gift.svg', additionalClass: 'w-xs m-b-sm', iconColor: '#C1365F' -%}
+				<span class="block content_text font-bold">200 points</span>
+				<span class="block caption_text">Birthday Gift</span>
+			</div>
+		</div>
+	</section>
+	<section class="text-center m-b-md">
+		<a href="/." class="thin-u-l text-lg main-font">Shop Now</a>
+	</section>
+	{%- unless customer -%}
+		<section class="pp-section wrapper text-center m-b">
+			{%- include 'perksFAQ' -%}
+		</section>
+	{%- endunless -%}
+	<section class="pp-section wrapper text-center m-b-xlg large--p-b-xlg">
+		{%- include 'perksTOC' -%}
+	</section>
+</div>

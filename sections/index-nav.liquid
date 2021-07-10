@@ -1,0 +1,54 @@
+{% if section.blocks.size > 0 %}
+  <section id="homepage_navigation-{{section.id}}" class="m-b-xlg wrapper">
+    <div class="grid">
+      {% for block in section.blocks %}
+        {% assign groupNumber = forloop.index | modulo: 2 %}
+        <div class="large--one-quarter medium-down--one-half text-center grid__item m-t m-b-sm medium-down--m-v-xs {% if groupNumber == 0 %}medium-down--p-l-xs{% else %}medium-down--p-r-xs{% endif %}">
+          <a
+            href="{{ block.settings.url }}"
+            class="inline w-full p-v-lg callout_text bg-img text-u-c l-h"
+            style="background-image: url('https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ block.settings.image | img_url: 'master' }}')">
+            {{ block.settings.title }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Index Nav",
+  "class": "index-nav-section",
+  "settings":[],
+  "blocks": [
+    {
+      "type": "block",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Nav Background image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Link to page"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Index Nav",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

@@ -1,0 +1,129 @@
+<div id="pop01" class="hover_bkgr_fricc" >
+    <span class="helper"></span>
+    <div >
+        <div class="popupCloseButton" Onclick="document.getElementById('pop01').style.display='none';">&times;</div>
+       <br>
+    <img style="margin-bottom:20px;" src="https://cdn.no-toxic.com/image/fetch/q_auto,f_auto,fl_lossy,w_108,f_auto,dpr_1.25/https://cdn.shopify.com/s/files/1/0648/1955/files/puritylogo_darkgrey-06.svg" />
+      <h4>To redeem your Purist Perks in the mobile app, simply log into your 
+      account and redeem your reward voucher and then copy and paste your discount code in the mobile app! 
+      Contact customerservice@ puritycosmetics.com for any assistance</h4>
+  
+      </div>
+</div>
+
+<style>
+  
+/* Popup box BEGIN */
+  #pop01{display:none;}
+.hover_bkgr_fricc{
+    background:rgba(0,0,0,.4);
+      cursor:pointer;
+    display:block;
+    height:100%;
+    position:fixed;
+    text-align:center;
+    top:0;
+    width:100%;
+    z-index:10000;
+}
+.hover_bkgr_fricc .helper{
+    display:inline-block;
+    height:100%;
+    vertical-align:middle;
+}
+.hover_bkgr_fricc > div {
+    background-color: #fff;
+    box-shadow: 10px 10px 60px #555;
+    display: inline-block;
+    height: auto;
+    max-width: 551px;
+    min-height: 100px;
+    vertical-align: middle;
+    width: 60%;
+    position: relative;
+    border-radius: 8px;
+    padding: 15px 5%;
+}
+.popupCloseButton {
+    background-color: #fff;
+    border: 3px solid #999;
+    border-radius: 50px;
+    cursor: pointer;
+    display: inline-block;
+    font-family: arial;
+    font-weight: bold;
+    position: absolute;
+    top: -15px;
+     right: -20px;
+    font-size: 25px;
+    line-height: 30px;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+}
+.popupCloseButton:hover {
+    background-color: #ccc;
+}
+.trigger_popup_fricc {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 20px;
+    display: inline-block;
+    font-weight: bold;
+	z-index:2000;
+}
+
+/* Popup box BEGIN */
+</style> 
+
+
+
+
+
+<script>
+    function submited()
+{
+set_kok();
+document.getElementByID('contact_form').submit();
+
+}
+  function set_kok()
+{
+
+ var d=new Date();
+ d.setTime(d.getTime() + 1 * 3600 * 1000*24);
+  d=d.toUTCString()
+document.cookie = 'is_sub=yes; expires='+ d + ' ; path=/';	
+
+}
+    function unset_kok()
+{
+
+ var d=new Date();
+ d.setTime(d.getTime() - 1 * 3600 * 1000*24);
+  d=d.toUTCString()
+document.cookie = 'is_sub=yes; expires='+ d + ' ; path=/';	
+
+}
+//unset_kok();
+  if (getCookie("is_sub")!= null)
+    document.getElementById('pop01').style.display='none';
+  
+  function getCookie(name){
+     if(document.cookie.length == 0)
+       return null;
+
+     var regSepCookie = new RegExp('(; )', 'g');
+     var cookies = document.cookie.split(regSepCookie);
+
+     for(var i = 0; i < cookies.length; i++){
+       var regInfo = new RegExp('=', 'g');
+       var infos = cookies[i].split(regInfo);
+       if(infos[0] == name){
+         return unescape(infos[1]);
+       }
+     }
+     return null;
+   }
+  
+</script>

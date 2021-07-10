@@ -1,0 +1,428 @@
+<style media="screen">
+  .charity-bg[data=dog]{
+    background-image: url('https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ 'charity-desktop.jpg' | file_img_url: '2048x' | format: 'pjpg' }}');
+  }
+  .charity-bg[data=tree]{
+    background-image: url('https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ 'charity-tree.png' | file_img_url: '2048x' | format: 'pjpg' }}');
+  }
+  .donate-cart-container{
+    bottom: -150px;
+  }
+  .donate-cart-container svg{
+    height: 80px;
+  }
+  .donate-card.active svg{
+    height: 100px;
+  }
+  .donate-card{
+    -webkit-box-shadow: 3px 2px 6px rgba(33,33,33,0.5);
+    box-shadow: 3px 2px 6px rgba(33,33,33,0.5);
+    border-radius: 10px;
+  }
+  .donate-card.active{
+    transform: translateY(-7px) scale(1.1);
+  }
+  .dog-container{
+    background-color: #E2B696;
+    transform-origin: left;
+  }
+  .tree-container{
+    background-color: #838A2E;
+    transform-origin: right;
+  }
+  #select_tree,#select_dog{
+    display: none;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+  }
+  .active #select_tree, .active #select_dog{
+    display: block;
+  }
+  #select_tree{
+    transform-origin: 16% 22%;
+    animation-duration: 4s;
+  }
+  #select_dog{
+    transform-origin: 50% 10%;
+    animation-duration: 2s;
+  }
+  .donate-cart-container a:hover, .donate-cart-container a:focus{
+    color: white;
+  }
+  a.tree-container:hover #select_tree{
+    display: block;
+    animation-name: tree-animation;
+  }
+  a.dog-container:hover #select_dog{
+    display: block;
+    animation-name: dog-animation;
+  }
+  .slider-container{
+    width: 200%;
+    transition: all 0.4s;
+  }
+  .donate-dog-section{
+    background-color: rgba(252,228,222,0.1);
+  }
+  .donate-dog-section .same-height{
+    border: solid 2px #F38188;
+  }
+  .donate-tree-section{
+    background-color: rgba(183,194,150,0.1);
+  }
+  .donate-tree-section .same-height{
+    border: solid 2px #4C914B;
+  }
+  .rotate-icon div{
+    margin-top: 80%;
+  }
+  .donation-list{
+    height: 4em;
+    overflow: hidden;
+  }
+  @media (max-width: 769px){
+    .charity-bg{
+      background-image: url('https://cdn.no-toxic.com/image/fetch/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/https:{{ 'charity-mobile.jpg' | file_img_url: '2048x' | format: 'pjpg' }}');
+    }
+    .donate-number{
+      font-size: 48px;
+    }
+    .rotate-icon{
+      transform: rotate(90deg);
+      margin-left: 10%;
+    }
+    .rotate-icon div{
+      margin-top: 0%;
+      margin-bottom: 60%;
+    }
+  }
+  @keyframes tree-animation {
+    from {transform: rotate(0deg);}
+    to {transform: rotate(360deg);}
+  }
+  @keyframes dog-animation {
+    0 {transform: rotate(0deg);}
+    6.25%   {transform: rotate(10deg);}
+    12.5%   {transform: rotate(0deg);}
+    18.25%  {transform: rotate(-10deg);}
+    25%     {transform: rotate(0deg);}
+    31.25%  {transform: rotate(10deg);}
+    37.5%   {transform: rotate(0deg);}
+    43.25%  {transform: rotate(-10deg);}
+    50%     {transform: rotate(0deg);}
+    100%    {transform: rotate(0deg);}
+  }
+</style>
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{% assign variable = value %}
+{% assign tpspliter = '"pageurl":"' | append: shop.domain %}
+{%- assign pageUrl = contentForQuerystring | split: tpspliter | last | split:'"' | first |
+   replace:'\/','/'
+-%}
+{%- if pageUrl == '/pages/philanthropy/tree' -%}
+  {% assign isTree = true %}
+{%- else -%}
+  {% assign isTree = false %}
+{%- endif -%}
+<div class="charity-bg bg-img text-center p-b-xlg" data="{% if isTree == false %}dog{% else %}tree{% endif %}" id="charity-content">
+  <div class="wrapper p-v-xs pos-rlt m-b-xlg">
+    <h1 class="hed_title_text text-white large--m-t-xlg1 medium-down--m-t-lg m-b-lg">How We're Making a Difference</h1>
+    <p class="dek_title_text text-white large--two-thirds margin-auto p-b-xlg m-b-xlg">
+      Our core mission is rooted in improving the lives of humans and animals across the globe. That's why we partner with inspiring and innovative charities, to take action in the name of a healthier, happier global community.
+    </p>
+    <div class="w-full pos-abt donate-cart-container p-t-xlg left-0" >
+      <div class="three-fifths margin-auto small--one-whole small--m-t-xlg">
+        <a href="#charity-content" class="block one-half dog-container donate-card left r text-white pointer p-sm p-l-lg flex {% if isTree == false %}active{% endif %} small--p-xs" data="dog">
+          {%- include 'icon-charity-dog.svg', additionalClass: "one-third", iconColor: "#ffffff" -%}
+          <div class="two-thirds p-t">
+            <p class="page_title_text alt-font dog-number">0</p>
+            <p class="caption_text">Meals donated to shelter dogs</p>
+          </div>
+        </a>
+        <a href="#charity-content" class="block one-half tree-container donate-card left r text-white pointer p-sm p-l-lg flex {% if isTree %}active{% endif %} small--p-xs" data="tree">
+          {%- include 'icon-charity-tree.svg', additionalClass: "one-third", iconColor: "#ffffff" -%}
+          <div class="two-thirds p-t">
+            <p class="page_title_text alt-font tree-number">0</p>
+            <p class="caption_text">Trees donated</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="slider-crop o-f-hid">
+  <p class="text-center m-t p-t-xlg m-b-lg">*Choose where your donation goes at checkout. </p>
+  
+  <p class="text-center m-t p-t-xlg m-b-lg">*Choose where your donation goes at checkout. </p> 
+  <div class="slider-container o-f-hid text-center" style="{% if isTree %}transform:translateX(-50%){% endif %}">
+    <!-- dog section -->
+    <div class="donate-dog-section p-b-xlg one-half left">
+      <div class="wrapper">
+        <h2 class="page_title_text large--p-t-md">What We Give</h2>
+        <p class="m-t callout_text text-u-c m-b-xlg">1 ORDER = 1 BOWL OF DOG FOOD</p>
+        <div class="o-f-hid m-t-lg">
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">Why Dog Food?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">One of our chief missions is to improve the lives of animals across the globe. We chose to provide hearty, nutritious vegan meals to shelter dogs in China — these animals often face abandonment, cruelty, and even death in the dog meat trade.</p>
+            </div>
+          </div>
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth medium-down--m-t-lg">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">Why Vegan Food?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">Dogs can sustain optimal health while reducing inflammation, digestive issues, and the risk of certain cancers with a vitamin-rich vegan diet. Vegan dog food is also cruelty-free, and proven to be far more sustainable for the environment than animal-based food.</p>
+            </div>
+          </div>
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth medium-down--m-t-lg">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">What's the Impact?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">One bowl of vegan dog food can save: 60sq feet of rainforest, 90lb of grain, 2,000 gallons of water, the lives of at least 2 livestock animals, and 1 hungry dog <i class="w-s-no inline">each day</i>.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="page_title_text p-t-lg m-t-lg">How It Works</h2>
+        <div class="flex m-t-lg j-c-center medium-down--f-d-column medium-down--five-sixths push--medium-down--one-twelfth">
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-shop.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">SHOP</span>
+                <br>
+                <span class="caption_text">You purchase your favorite 100% PURE products</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-donate.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">DONATE</span>
+                <br>
+                <span class="caption_text">For every order, we donate one bowl of dog food</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-partner.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">PARTNER</span>
+                <br>
+                <span class="caption_text">We partner with a local factory to produce nutritious vegan dog food</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-give.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">GIVE</span>
+                <br>
+                <span class="caption_text">The food you've donated is delivered, and fed to dogs at local shelters</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- tree section -->
+    <div class="donate-tree-section p-b-xlg one-half left">
+      <div class="wrapper">
+        <h2 class="page_title_text large--p-t-md">What We Give</h2>
+        <p class="m-t callout_text text-u-c m-b-xlg">1 ORDER = 1 Tree</p>
+        <div class="o-f-hid m-t-lg">
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">Why Trees?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">One of our foremost missions is to improve the lives and wellbeing of those within our global community. By supporting the visionary mission of Trees for the Future, we can help to cultivate thriving, healthy communities - one tree at a time.</p>
+            </div>
+          </div>
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth medium-down--m-t-lg">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">Why Trees for the Future?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">This organization is more than just a charity. They work closely with small farms and families to end poverty and hunger within their communities, through empowerment and innovation. Their revitalizing, stabilizing, and planning projects center around the growth of new trees - donated by you!</p>
+            </div>
+          </div>
+          <div class="large--one-third p-h left medium-down--five-sixths push--medium-down--one-twelfth medium-down--m-t-lg">
+            <div class="bbg-white p-h p-t-lg p-b same-height" same-height-id="charity-box">
+              <h3 class="m-t section_title_text">What's the Impact?</h3>
+              <p class="large--m-t-lg medium-down--m-t-md caption_text">The trees donated to these communities have the power to positively impact a family's lives forever. These new growths provide families with sustainable food sources, livestock feed, products to sell, wood for fuel, and a 400% increase in their annual income within 4 years.</p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="page_title_text p-t-lg m-t-lg">How It Works</h2>
+        <div class="flex m-t-lg j-c-center medium-down--f-d-column medium-down--five-sixths push--medium-down--one-twelfth">
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-shop.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">SHOP</span>
+                <br>
+                <span class="caption_text">You purchase your favorite 100% PURE products</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-donate.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">DONATE</span>
+                <br>
+                <span class="caption_text">For every order, we donate the cost of 1 tree to the charity Trees for the Future.</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-partner.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">PARTNER</span>
+                <br>
+                <span class="caption_text">Trees for the Future partners with families and farmers in poverty to plan the growth of beneficial trees for their community</span>
+              </div>
+            </div>
+          </div>
+          <div class="rotate-icon large--one-twelfth medium-down--one-sixth">
+            <div class="large--p-h">
+              {%- include 'icon-step-arrow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+            </div>
+          </div>
+
+          <div class="large--one-sixth ">
+            <div class="p-h o-f-hid">
+              <div class="large--one-whole medium-down--two-fifths medium-down--p-sm left">
+                {%- include 'icon-charity-grow.svg', additionalClass: "w-full", iconColor: "#6D6E70" -%}
+              </div>
+              <div class="large--one-whole medium-down--one-half push--medium-down--one-tenth left">
+                <span class="inline callout_text large--m-t medium-down--m-t-sm m-b-sm">GROW</span>
+                <br>
+                <span class="caption_text">The trees you've donated are planted to help revitalize degraded lands, foster local economies, and feed impoverished families</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="wrapper text-center">
+  <h2 class="page_title_text p-t-lg m-t-lg m-b-md">Our Charitable Partnerships</h2>
+  <p class="caption_text m-b medium-down--five-sixths push--medium-down--one-twelfth">100% PURE is currently working on multiple projects within our global community, through inspiring and innovative partnerships.</p>
+  <p class="caption_s_text medium-down--five-sixths push--medium-down--one-twelfth text-u-c donation-list">LEAPING BUNNY • WAGS AND WALKS • Kitten Rescue • HARVEST HOME ANIMAL SANCTUARY • TREES.ORG • KEEP A CHILD ALIVE • THE MUTT MASQUERADE • CHANGE OF HEART PITBULL RESCUE • BREAST CANCER EMERGENCY FUND • OPPERATION CUPPA JOE • FURRY FRIENDS RESCUE • FARM SANCTUARY • HUMANE SOCIETY SILICON VALLEY • 49ERS ACADEMY • HUMANE SOCIETY OF THE UNITED STATES • PETA • LA’S LOVE & LEASHES • SOI DOG RESCUE • FAMILY GIVING TREE • THE HUMAN LEAGE • UNLEASHED • ASPCA • VEGAN GRAND RAPIDS • MIDWEST RABBIT RESCUE • PRIMATES INCORPORATED • ANIMAL EQUALITY • COOPERS DREAM • HABITAT FOR HUMANITY • RAINFOREST FOUNDATION • DOG HABITAT RESCUE • RED CROSS • SAN FRANCISCO SPCA • GENTLE WORLD • VEGAN GRAND RAPIDS • TAMPABAY CAT ALLIANCE • ALIVE RESCUE • THE HUMANE SOCIETY OF UNITED STATES • MERCY FOR ANIMALS • WORLD WILDLIFE FEDERATION • THE HUMANE LEAGE • FARM ANIMAL RIGHTS MOVEMENT • COMPASSIONATE ACTION FOR ANIMALS • 600 MILLION DOGS • BIG CAT RESCUE • HARPSEALS • ST JUDE • PACIFIC WHALE FOUNDATION • PET RESCUE • Animals & Society Institute • Buttercup • Peak Sanctuary • Cat House on the Kings • sharkstewards • Rocket Dog • Compassion without Borders • ANIMALS ASIA • DUO DUO PROJECT • ANIMALS HOPE AND WELLNESS • NORTH VALLEY ANIMAL DISASTER GROUP • MAD DOG RESCUE • MARIN HUMANE • The American Cancer Society</p>
+  <span class="callout_text inline text-u-l m-t-sm m-b-xlg charity-show-more pointer">MORE 100% PURE PARTNERS ></span>
+</div>
+
+
+<script type="text/javascript">
+  $('.charity-show-more').click(()=>{
+    $('.charity-show-more').addClass('hide');
+    $('.donation-list').css('height','auto');
+  })
+
+  $('.donate-card').click(function(){
+    $('.donate-card').removeClass('active');
+    $(this).addClass('active');
+    $('.slider-container').css('transform',`translateX(-${$(this).index()*50}%)`);
+    $('.charity-bg').attr('data',$(this).attr('data'));
+    history.pushState(null, '', `/pages/philanthropy/${$(this).attr('data')}`);
+  })
+
+  $(document).ready(function() {
+
+    fetch('https://api.allorigins.win/get?url=' + encodeURIComponent('https://toolbox.puritycosmetics.com/services/dogtree/list.php'))
+      .then(response => response.json())
+      .then(result => {
+        
+        let data = result.contents;
+
+        data = JSON.parse(data);
+        data = data.resource;
+                
+        $('.dog-number').html(data[0].QTY); //dog
+        $('.tree-number').html(data[1].QTY); //tree
+
+        })
+      .catch(error => console.log('error', error));
+/*
+    Holly.ajaxBackendData('https://voila.puritypark.com/api/v2/puritycommon/_table/DogTree',(data)=>{
+      $('.dog-number').html(data.resource.find( element => element.Name == "dog").QTY);
+      $('.tree-number').html(data.resource.find( element => element.Name == "tree").QTY);
+    })*/
+  })
+</script>
+{%- if isTree -%}
+  <script type="application/ld+json">
+  {
+      "@context": "http://schema.org",
+      "@type": "WebPage",
+      "name": "purity cosmetics philanthropy program tree section",
+      "description": "Our core mission is rooted in improving the lives of humans and animals across the globe. That's why we partner with inspiring and innovative charities, to take action in the name of a healthier, happier global community.",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Purity Cosmetics"
+      },
+      "license": "https://www.100percentpure.com/pages/philanthropy/tree"
+  }
+  </script>
+{%- else -%}
+  <script type="application/ld+json">
+  {
+      "@context": "http://schema.org",
+      "@type": "WebPage",
+      "name": "purity cosmetics philanthropy program dog section",
+      "description": "Our core mission is rooted in improving the lives of humans and animals across the globe. That's why we partner with inspiring and innovative charities, to take action in the name of a healthier, happier global community.",
+      "publisher": {
+          "@type": "Organization",
+          "name": "Purity Cosmetics"
+      },
+      "license": "https://www.100percentpure.com/pages/philanthropy/dog"
+  }
+  </script>
+{%- endif -%}

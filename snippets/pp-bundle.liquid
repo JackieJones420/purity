@@ -1,0 +1,36 @@
+{% capture right_title %}{{ all_products[x_product[0]].title | escape }}{%- if b_variant.title != "Default Title" -%}: <span class="bundle-variant-title">{{ b_variant.title | escape }}</span>{%- endif -%}{% endcapture %}
+{% assign right_id = b_variant.id %}
+{% assign right_sku = b_variant.sku %}
+{% assign right_description = all_products[x_product[0]].metafields.purity-toolbox.short_description %}
+{% assign right_direction = all_products[x_product[0]].metafields.purity-toolbox.directions_for_use %}
+{% assign right_ingredient = b_variant.metafields.purity-toolbox.product-ingredients | strip_html | trim %}
+{% assign right_url = b_variant.url %}
+{%- include 'product-variants-available-state', currentProduct: all_products[x_product[0]], currentVarient: b_variant -%}
+<div class="m-b-xs">
+  <a href="#bundle-product-{{variant.id}}-{{ listNumber }}" class="purity-pop" pop-width="750px">{{ right_title }}: {{ b_variant.price | money }}</a>
+</div>
+<div id="bundle-product-{{variant.id}}-{{ listNumber }}" class="hide bundle-product" variant-id="{{right_id}}" variant-available={{productVariantsAvailableState}} product-handle="{{x_product[0]}}" product-id="{{all_products[x_product[0]].id}}">
+  {%- include 'product-variants-available-state', currentProduct: product, b_variant -%}
+  <div class="m grid available-state" available="{% if productVariantsAvailableState == 'add' or productVariantsAvailableState == 'alert' or productVariantsAvailableState == 'alertBuffer' %}add{% else %}sold{% endif %}">
+    <div class="grid__item large--four-tenths product-img__container grid__image">
+      <img
+        src="https://cdn.no-toxic.com/e_vectorize:5:20,f_svg/{{ b_variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ b_variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        data-src="https://cdn.no-toxic.com/q_auto:best,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{ b_variant.metafields.purity-toolbox.toolbox-assets.featured[0].version }}/{{ b_variant.metafields.purity-toolbox.toolbox-assets.featured[0].name }}"
+        class="cld-prepare"
+        alt="{{ product.metafields.purity-toolbox.toolbox-assets.featured[0].category | escape }}" />
+    </div>
+    <div class="grid__item large--one-half push--large--one-tenth">
+      <p class="section_title_text title">{{ right_title }}</p>
+      {%- include 'product-form-icon', targetproduct: all_products[x_product[0]] -%}
+      <p class="module_title_text product-money">{{ b_variant.price | money }}</p>
+      {%- if b_variant.compare_at_price > b_variant.price -%}
+        <p class="product-compare-money hide"><span class="content_text">({{ b_variant.compare_at_price | money }} value)</span></p>
+      {%- endif -%}
+      <p class="caption_s_text">{{ right_description }}</p>
+      <p class="caption_text">Direction</p>
+      <p class="caption_s_text">{{ right_direction }}</p>
+    </div>
+  </div>
+  <p class="caption_text m-h m-v-xs">Ingredient List</p>
+  <p class="caption_s_text p-h m-b">{{ right_ingredient }}</p>
+</div>

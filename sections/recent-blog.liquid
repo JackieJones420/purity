@@ -1,0 +1,46 @@
+<section id="BlogModule-{{section.id}}" class="mini-module m-b-xlg wrapper">
+  <a href="/blogs/feed#cover" class="text-center block m-b-lg">
+    <h3 class="section_title_text inline b-b p-h no-margin">From Our Blog</h3>
+  </a>
+  <div class="grid">
+    <div class="init-carousel text-center no-padding">
+      {% for article in blogs.feed.articles limit: 6 %}
+        {% if article.image %}
+          <div class="grid__item large--one-third mini-module-block">
+            <a href="{{ article.url }}">
+              <img
+              src="https://cdn.no-toxic.com/{{ settings.cloudinary_image_version }}/pure_temporary/placeholder2022"
+              data-src="https://cdn.no-toxic.com/image/fetch/q_auto:good,f_auto,fl_lossy,w_auto,c_limit/https:{{ article.image.src | img_url: 'master' }}"
+              data-sizes="auto"
+              class="mainImg no-border cld-prepare image-hover-zoom"
+              alt="Home Page Blog Module: {{ article.title }}" />
+            </a>
+            <div class="caption_s_text p-v-sm p-h-xs no-margin">
+              {{ article.published_at | date: format: 'month_day_year' }}
+            </div>
+            <p class="module_title_text">{{ article.title }}</p>
+            <a href="{{ article.url }}" class="btn m-b-md m-t btn-secondary">
+              <span>Read More</span>
+            </a>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Recent Blog",
+  "class": "index-blog",
+  "settings": [
+  ],
+  "presets": [{
+    "name": "Recent Blog",
+    "category": "Image",
+    "settings": {
+    }
+  }]
+}
+{% endschema %}

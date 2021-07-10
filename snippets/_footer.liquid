@@ -1,0 +1,154 @@
+<section id="Footer">
+  <footer class="site-footer" role="contentinfo">
+    {%- unless template contains 'page.careers' -%}
+    {% if shop.name == '100% PURE' %}
+      <div class="h1 text-center m-b-lg">
+        <a href="/pages/returns-and-exchanges">Our 100%PURE™ Promise</a>
+        {%- if template contains 'index' -%}
+          <h1 class="h1 text-center content_text">Natural & Organic Beauty Products</h1>
+        {%- endif -%}
+      </div>
+    {% endif %}
+    {%- endunless -%}
+
+    <div class="wrapper m-t-xlg">
+      <div class="grid__item">
+        <div class="grid">
+          {% if settings.footer_column_1_title != blank %}
+          <div class="grid__item small--one-half medium--one-third large--one-quarter m-b-md">
+            <h3>{{ settings.footer_column_1_title }}</h3>
+            <ul>
+              {% assign footerCol1 = settings.footer_column_1_title | handleize %}
+              {% for link in linklists.[footerCol1].links %}
+                <li>{{ link.title | link_to: link.url }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+          {% if settings.footer_column_2_title != blank %}
+          <div class="grid__item small--one-half medium--one-third large--one-quarter m-b-md">
+            <h3>{{ settings.footer_column_2_title }}</h3>
+            <ul>
+              {% assign footerCol2 = settings.footer_column_2_title | handleize %}
+              {% for link in linklists.[footerCol2].links %}
+                <li>{{ link.title | link_to: link.url }}</li>
+              {% endfor %}
+              {%- if shop.name == "100% PURE" -%}
+                <li role="menuitem" aria-label="accessibe"><a class="nav-link " href="#" role="link" data-vars-category="footer" data-vars-subcategory="information" data-vars-name="accessibe" data-acsb="trigger">Accessibility</a></li>
+              {%- endif -%}
+            </ul>
+          </div>
+          {% endif %}
+          {% if settings.footer_column_3_title != blank %}
+          <div class="grid__item small--one-whole medium--one-third large--one-quarter m-b-md">
+            <h3>{{ settings.footer_column_3_title }}</h3>
+            <ul>
+              {% assign footerCol3 = settings.footer_column_3_title | handleize %}
+              {% for link in linklists.[footerCol3].links %}
+                <li>{{ link.title | link_to: link.url }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+          <div id="social-icon-block" class="grid__item medium--one-whole large--one-quarter small">
+            <h3>{{ settings.footer_column_4_title }}</h3>
+            {%- if shop.name == '100% PURE' -%}
+              {% include 'email-signup' %}
+            {%- elsif shop.name == '100% PURE® EU' -%}
+              {% include 'eu-email-signup' %}
+            {%- endif -%}
+            {% comment %}
+            FB PAGE PLUGIN
+              1. require fb developer app and snippet found in "_footer-scripts.liquid"
+            {% endcomment %}
+            {% comment %}
+            <div class="fb-page m-b"
+              data-small-header="true"
+              data-href="https://www.facebook.com/100percentpure/"
+              data-width="340"
+              data-hide-cover="false"
+              data-show-facepile="true"
+              data-show-posts="false"></div>
+            {% endcomment %}
+
+            <ul>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://www.instagram.com/100percentpure/"><span class="icon icon-instagram"></span>
+                  <span class="fallback-text">Instagram</span></a>
+                </div>
+              </li>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://www.facebook.com/100percentpure"><span class="icon icon-facebook"></span>
+                  <span class="fallback-text">Facebook</span></a>
+                </div>
+              </li>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://twitter.com/100percentpure"><span class="icon icon-twitter"></span>
+                  <span class="fallback-text">Twitter</span></a>
+                </div>
+              </li>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://www.pinterest.com/100percentpure/"><span class="icon icon-pinterest"></span>
+                  <span class="fallback-text">Pinterest</span></a>
+                </div>
+              </li>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://www.youtube.com/channel/UCuDO-8MnXXrUFX1VkRJPCuA"><span class="icon icon-youtube"></span>
+                  <span class="fallback-text">Youtube</span></a>
+                </div>
+              </li>
+              <li>
+                <div class="icon-fallback-text">
+                  <a target="_blank" href="https://www.tiktok.com/@100percentpure?lang=en&utm_source=website&utm_medium=icon&utm_campaign=homepage"><span class="tik_tok_logo"><img  src="{{ 'tik_tok_logo.png' | asset_img_url: '19x19' }}" /></span>
+                  <span class="fallback-text">Tik Tok</span></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {%- if shop.name == "100% PURE" -%}
+    <div class="text-center m-t">
+      {% include "currency-selector" %}
+    </div>
+    {%- endif -%}
+
+    <div id="site-selection" class="text-center m-t-lg p-v-sm">
+      <ul class="no-margin">
+        <li class="hide"><a target="_blank" href="https://www.100purity.cn/">中国</a></li>
+        <li><a target="_blank" href="https://www.nourishedlife.com.au/">Australia</a></li>
+        <li><a target="_blank" href="https://www.100percentpure.de/">Germany</a></li>
+      </ul>
+    </div>
+    <div class="text-center text-xs p-b-lg m-b-md">
+      <span>
+        <a href="/pages/legal-terms-conditions">Terms & Condition</a>
+      </span>
+      <span>|</span>
+      <span>
+        <a href="/pages/privacy-policy">Privacy Policy</a>
+      </span>
+      <span>|</span>
+      <span>
+        <a href="/pages/cookie-policy">Cookie Policy</a>
+      </span>
+      <span>|</span>
+      <!-- OneTrust Do Not Sell start -->
+      <button id="onetrust-pc-btn-handler" tabindex="0" class="cookie-setting-link text-xs">Do Not Sell My Personal Information</button>
+      <!-- OneTrust Do Not Sell end -->
+      <span>|</span>
+      <span>&copy; {{ "now" | date: "%Y" }} {{ shop.name }}<sup>&reg;</sup></span>
+      <p class="m-v-lg text-sm">
+        If you are using a screen reader and are having problems using this website, please call <a class="thin-u-l" href="tel:18447873100">+1 (844) 787-3100</a> for assistance.
+      </p>
+    </div>
+  </footer>
+</section>

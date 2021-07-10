@@ -1,0 +1,31 @@
+<script type="text/javascript">
+$(document).ready(function() {
+  $(function() {
+    var body = {
+      "params": [{
+        "name": "StoreHostName",
+        "param_type": "IN",
+        "value": "100-pure"
+      }]
+    };
+    $.ajax({
+      url: 'https://voila.puritypark.com/api/v2/netsuitedb/_proc/AverageDayToShip',
+      type: 'POST',
+      headers: {
+        'X-DreamFactory-Api-Key': '4a815c7925a193b651990bdcd428412a1067a8c2c444e9fad95115cf5781acd0'
+      },
+      contentType: "application/json; charset=utf-8",
+      cache: false,
+      data: JSON.stringify(body),
+      success: function(data) {
+        var result = data[0];
+        var avgTime = parseInt(result.AvgShipTimeHours);
+        $('#avg-ship-time').prepend(avgTime + ' - hours');
+      },
+      error: function() {
+        console.log('Error!');
+      }
+    });
+  });
+});
+</script>

@@ -1,0 +1,73 @@
+{% comment %} no buffer message {% endcomment %}
+{%- if product.tags contains "No Buffer" and current_variant.inventory_quantity < 200 and current_variant.inventory_quantity > 0 -%}
+  <div class="brand-primary variant-inventory">
+    <p class="m-t caption_text">Hurry! Less than <span>{{ current_variant.inventory_quantity }}</span> left.</p>
+  </div>
+{%- endif -%}
+
+{% comment %} show special promo message {% endcomment %}
+{%- if product_meta.promo_message != null -%}
+  <div class="brand-primary">
+    <p class="m-t caption_text">{{ product_meta.promo_message }}</p>
+  </div>
+{%- endif -%}
+
+{% comment %} show gwp if product match promo {% endcomment %}
+{% assign showGWP = false %}
+{%- if settings.display_gwp == "product" or settings.display_gwp == "variant" -%}
+  {%- if product.handle == settings.gwp_product_handle_2 -%}
+    {% assign showGWP = true %}
+  {%- endif -%}
+{%- elsif settings.display_gwp == "collection" -%}
+  {% for collection in product.collections %}
+    {%- if collection.handle == settings.gwp_collection_handle_2 -%}
+      {% assign showGWP = true %}
+    {%- endif -%}
+  {% endfor %}
+{%- endif -%}
+{%- if showGWP -%}
+  <div id="display_gwp" class="brand-primary">
+    <p class="m-t caption_text">
+      {%- if settings.display_gwp == "collection" -%}
+        Choose any {{ settings.gwp_title_2 }} FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! Must add selected shade to your cart{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}, and use code <strong class="t-u-c">{{ settings.gwp_coupon_name_2 | trim }}</strong> at checkout{%- endif -%}. While supplies last.
+      {%- elsif settings.display_gwp == "product" -%}
+        {%- if all_products[settings.gwp_product_handle_2].variants.size > 1 -%}
+          Choose any shade for FREE when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! Must add selected shade to your cart{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}, and use code <strong class="t-u-c">{{ settings.gwp_coupon_name_2 | trim }}</strong> at checkout{%- endif -%}. While supplies last.
+        {%- else -%}
+          Unlock FREE gift when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! Must add item to your cart{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}, and use code <strong class="t-u-c">{{ settings.gwp_coupon_name_2 | trim }}</strong> at checkout{%- endif -%}. While supplies last.
+        {%- endif -%}
+      {%- elsif settings.display_gwp == "variant" -%}
+        {% if settings.gwp_variant_id_2 contains ',' %}
+          Choose a FREE {{ settings.gwp_title_2 }}  from select shades when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! Must add selected shade to your cart{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}, and use code <strong class="t-u-c">{{ settings.gwp_coupon_name_2 | trim }}</strong> at checkout{%- endif -%}. While supplies last.
+        {%- else -%}
+          Get FREE {{ settings.gwp_title_2 }} when you spend {{ settings.gwp_threshold_2 | times: 100 | money_with_currency | replace: '.00', '' }} or more! Must add item to your cart{%- if settings.gwp_coupon_name_2 and settings.gwp_coupon_name_2 != "" -%}, and use code <strong class="t-u-c">{{ settings.gwp_coupon_name_2 | trim }}</strong> at checkout{%- endif -%}. While supplies last.
+        {% endif %}
+      {%- endif -%}
+    </p>
+  </div>
+{%- endif -%}
+
+{% comment %} show last call if product has tag Last Call {% endcomment %}
+{%- if product.tags contains "last call" -%}
+<div id="display_lastcall" class="brand-primary">
+  <p class="m-t caption_text">All Last Call sale items are final sale.</p>
+</div>
+{%- endif -%}
+
+{% comment %} show beauty deal if product has collection beauty deal {% endcomment %}
+{%- if settings.beauty_start -%}
+  {%- if product.tags contains "Beauty Deal 10" or product.tags contains "Beauty Deal 5" -%}
+    <div id="display_beauty_deal" class="brand-primary">
+      <p class="m-t caption_text">Must add {{settings.beauty_deal_treshold | money_without_trailing_zeros}}+ of merchandise to cart to unlock Beauty Deals. Limit {{settings.beauty_deal_quantity}} per item.</p>
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{%- if product.type == "Gift Card" -%}
+  <div class="brand-primary">
+    <p class="caption_text">Gift card may not be purchased as part of promotion or discount. Additionally, purchase of gift card does not qualify towards promotions, discounts and free shipping.Valid for 100percentpure.com purchases only; not valid in-stores. Gift card will be emailed to the email address that is entered at checkout.</p>
+  </div>
+  <div class="brand-primary gb-only hide">
+    <p class="m-t caption_text">Currently unavailable for UK customers.</p>
+  </div>
+{%- endif -%}

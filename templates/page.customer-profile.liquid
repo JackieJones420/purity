@@ -1,0 +1,9 @@
+{%- if customer -%}
+  {%- if shop.name == "100% PURE" -%}
+    {%- include 'customer-profile' -%}
+  {%- endif -%}
+{%- else -%}
+  <script>
+    window.location = '/account/login';
+  </script>
+{%- endif -%}

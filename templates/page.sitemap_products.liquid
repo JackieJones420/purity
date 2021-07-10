@@ -1,0 +1,25 @@
+<!-- /templates/page.liquid -->
+<div class="grid">
+
+  <div class="grid__item large--one-whole">
+
+    <h1 class="m-t-md text-center">{{ page.title }}</h1>
+
+
+    {% comment %}
+      Regular page content goes here.
+    {% endcomment %}
+    <div class="rte">
+      {% for collection in collections %}
+      {% if collection.products_count > 0 %}
+      	{% for product in collection.products %}
+      		<p><a href="{{ product.url }}" title="{{ product.title }}">{{ product.title }}</a></p>
+      	{% endfor %} 
+      {% endif %}
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+</div>

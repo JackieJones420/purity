@@ -1,0 +1,23 @@
+{% assign c_product = all_products[handle] %}
+<div class="grid__item large--one-third medium--one-third small--one-third">
+  <div class="checkbox-add-to-cart" data-variant-id="{{ c_product.variants.first.id }}" data-variant-price="{{ c_product.price }}" data-variant-title="{{ c_product.title | escape }}">
+    <div class="m-b">
+      <img
+        data-src="{{ c_product.featured_image.src | img_url: '1024px' | format: 'pjpg' }}"
+        data-sizes="auto"
+        class="lazyload grid__image no-margin"
+        alt="{{ c_product.featured_image.alt | escape }}"
+        data-srcset="{{ c_product.featured_image.src | img_url: '584x' | format: 'pjpg'}} 584w,
+        {{ c_product.featured_image.src | img_url: '215x' | format: 'pjpg'}} 215w,
+        {{ c_product.featured_image.src | img_url: '160x' | format: 'pjpg'}} 160w,
+        {{ c_product.featured_image.src | img_url: '140x' | format: 'pjpg'}} 140w"/>
+    </div>
+
+    <div class="text-center upsell-description m-v-xs">
+      <p class="alt-font l-s text-xxs upsell__price">+ {{ c_product.price | money }}</p>
+      <p class="alt-font l-s text-xxs upsell__confirmation text-u-c">Added!</p>
+      <p class="text-sm upsell__title">{{ c_product.title }}</p>
+      <span class="upsell-checkbox"></span>
+    </div>
+  </div>
+</div>

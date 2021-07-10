@@ -1,0 +1,52 @@
+{% assign default = '1400x' %}
+{% assign size1 = '480x' %}
+{% assign size2 = '765x' %}
+{% assign size3 = '900x' %}
+{% assign size4 = '1000x' %}
+{% assign size5 = '1100x' %}
+{% assign size6 = '1300x' %}
+{% assign size7 = '1500x' %}
+{% assign size8 = '1700x' %}
+{% assign size9 = '1900x' %}
+
+<header class="text-center founders--header">
+  <h1 class="p-t-lg">Susie Wang</h1>
+  <h2 class="p-b">Founder and Chief Creative of 100% PURE®</h2>
+</header>
+<section class="grid founders--section">
+  <div class="grid__item large--one-whole">
+    <img
+      alt="100% PURE Founder Susie Wang"
+      class="lazyload fade-in"
+      data-sizes="100vw"
+      data-src="{{ 'about_us_susie.png' | file_img_url: default, format: 'pjpg' }}"
+      data-srcset="
+      {{ 'about_us_susie.png' | file_img_url: default, format: 'pjpg' }} {{default | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size1, format: 'pjpg' }} {{size1 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size2, format: 'pjpg' }} {{size2 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size3, format: 'pjpg' }} {{size3 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size4, format: 'pjpg' }} {{size4 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size5, format: 'pjpg' }} {{size5 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size6, format: 'pjpg' }} {{size6 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size7, format: 'pjpg' }} {{size7 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size8, format: 'pjpg' }} {{size8 | replace: 'x', 'w'}},
+      {{ 'about_us_susie.png' | file_img_url: size9, format: 'pjpg' }} {{size9 | replace: 'x', 'w'}}"/>
+  </div>
+  <div class="grid__item large--one-whole">
+    <div class="content m-v text-md-lg">
+      <p>When Susie Wang was a freshman at UC Berkeley, she saved up a week’s worth of lunch money to purchase an expensive Vitamin C Serum from a famous department store brand. Soon after opening the bottle, Susie noticed the once white serum had turned a tarnished brown, which meant the Vitamin C had oxidized.</p>
+      <p>During oxidation, the potency of the vitamin is diminished, converting to skin damaging free radicals – the complete opposite of what one would expect from their skincare. Susie then started purchasing other Vitamin C serums and found that all of them had the same issue. Susie committed herself to solving this problem, and quickly figured out a way to stabilize vitamins in order to prevent oxidation. In between her classes, she filed patents for this invention.</p>
+      <p>As soon as these patents were submitted, Susie received a flood of job offers from several of the largest cosmetic companies in the world. She put school on hiatus and began working on product development, formulations, innovation, and technology for three prestigious cosmetic companies.</p>
+      <p class="text-md-lg font-bold">Chemical Spill</p>
+      <p>One day, Susie was in the lab formulating the next big eye cream. She accidentally knocked over one of the chemicals, spilling the formulation onto the lab table. Within minutes, the chemical spill had begun to drastically warp the industrial lab table. Susie asked herself: what kind of effects could this chemical have on delicate human skin, if it could damage such a hard plastic table?  That's when she began her investigating, and soon discovered that there were hundreds of unsafe chemicals being used to formulate conventional cosmetics.</p>
+      <p class="text-md-lg font-bold">No Animal Testing (no, really!)</p>
+      <p>Not only did she discover that there were toxins used to formulate cosmetics, but she was dismayed to find that plenty of companies claimed "no animal testing", which was mostly untrue.</p>
+      <p>The cruelty free claim sometimes means that the final formula wasn't tested on animals, but the individual ingredients were.</p>
+      <p>Each chemical sent to her company’s lab would be accompanied by a detailed report of animal testing, often outlining horrifying results: for example, tumor cells developing when the ingredients were tested on rat skin. Susie was deeply disturbed by these findings, and also by the fact that these companies were still openly claiming “no animal testing.” While it may have been true that the final formula was never tested directly on animals, the individual ingredients were.</p>
+      <p>This was the final push that compelled Susie to leave these very prestigious positions, and she subsequently submitted her resignation to all three companies.</p>
+      <p>After these upsetting experiences, Susie was inspired to start 100% PURE, a line that was exactly that: a truly 100% natural line of skincare made only with the highest quality ingredients and free of the toxic, harsh chemicals. She convinced her two business partners, Ric Kostick (her then boyfriend) and James Wang (her brother) to join her mission in igniting a revolution against toxic chemicals in cosmetics. In May of 2005, 100% PURE launched in Bath & Body Works. Today the company has over 500 products, approximately 200 employees, 12 namesake retail stores (and growing), and operates out of an 8 acre, solar powered headquarters in San Jose, California called ‘Purity Park’.</p>
+      <p>Another one of Susie’s proud accomplishments is the discovery and use of fruit pigments® in cosmetics. Susie discovered fruit pigments® one day while picking berries from her garden. She saw how beautifully the vibrant colors stained her fingertips, and now, 100% PURE uses only fruit and other healthy plant pigments to color their lipsticks, foundations, blushes, mascaras, eye shadows and all others color cosmetics. Not only are fruit pigments® natural, they’re also packed full of vitamins and antioxidants to offer naturally occurring, nutritional benefits for the skin.</p>
+      <p>While still leading 100% PURE in Creative Direction and Product Development, Susie most recently partnered with her favorite retailer in 2017, Anthropologie. Together, they developed “<a class="thin-u-l" href="https://www.puristry.com/" target="_blank">Puristry</a>”; a certified organic skin care line sold exclusively at Anthropologie and on <a class="thin-u-l" href="https://www.puristry.com/" target="_blank">Puristry.com</a>.</p>
+    </div>
+  </div>
+</section>

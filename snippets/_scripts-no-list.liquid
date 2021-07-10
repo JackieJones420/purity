@@ -1,0 +1,87 @@
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+/* Toggle active alphabet letter */
+$(".alphabet li").click(function() {
+  var letterClicked = $(this).text();
+
+  if ($(this).hasClass("is-active")) {
+    $(this).removeClass("is-active");
+    filterUsers(true, letterClicked);
+  } else {
+    if (!$(this).hasClass("is-disabled")) {
+      filterUsers(false, letterClicked);
+      $(this)
+        .siblings()
+        .removeClass("is-active");
+      $(this).addClass("is-active");
+    }
+  }
+});
+
+/* Toggle names beginning with chosen letter */
+function filterUsers(reset, letter) {
+  if (reset === false) {
+    $(".directory li").show();
+    console.log('letter: ', letter)
+    $(".directory li").each(function() {
+      var testStr = $(this)
+      .text()
+      .slice(0, 1);
+      if (letter != testStr) {
+        $(this).hide();
+      }
+    });
+  }
+
+  if (reset === true) {
+    $(".directory li").each(function() {
+      $(this).show();
+    });
+  }
+}
+
+/* Instantiate dragging/dropping */
+$(function() {
+  $(".sortable").sortable({
+    revert: false,
+    connectWith: ".draggable",
+    placeholder: "ui-draggable-placeholder",
+    forcePlaceholderSize: true,
+    stop: function(event, ui) {
+      sortList();
+    }
+  });
+  $(".draggable").sortable({
+    revert: false,
+    connectWith: ".sortable",
+    placeholder: "ui-draggable-placeholder",
+    forcePlaceholderSize: true,
+    stop: function(event, ui) {
+      sortList();
+    }
+  });
+});
+
+/* Reorder names alphabetically */
+function sortList() {
+  $(".directory").each(function() {
+    var directoryList = $(this);
+    var listItems = $("li", directoryList).get();
+    listItems.sort(function(a, b) {
+      var compA = $(a)
+      .text()
+      .toUpperCase();
+      var compB = $(b)
+      .text()
+      .toUpperCase();
+      return compA < compB ? -1 : 1;
+    });
+    $.each(listItems, function(i, item) {
+      directoryList.append(item);
+    });
+  });
+}
+
+</script>
