@@ -806,6 +806,20 @@ Holly = {
       setTimeout(()=>{$('.snize-ac-results').css('display','none');},500);
       Holly.removeOverlay();
     });
+
+    $('input[type="search"]').on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        $('form').removeClass('opened');
+        $('#search-bar .input-group-field').css('width', 0);
+        $('#search-bar form').css({
+          'width': 'auto',
+          'z-index': 0
+        });
+        setTimeout(()=>{$('.snize-ac-results').css('display','none');},500);
+        Holly.removeOverlay();
+      }
+  });
+  
   },
   /*
   **------------------------------------------------------------------------**
