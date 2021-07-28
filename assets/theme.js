@@ -151,7 +151,8 @@ Holly = {
       } else {
         var productInfo = {
           "quantity": quantity,
-          "id": request
+          "id": request,
+          "selling_plan": $("#selling_plan").val()
         }
       }
       Holly.addItemById(
