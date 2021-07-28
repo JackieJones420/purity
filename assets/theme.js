@@ -2130,5 +2130,24 @@ $( document ).ready(function() {
    $('.swatch.o-f-hid').find('label').click();
  
   }
- 
+  
  });
+
+ $(window).load(function() {
+   setTimeout(() => {
+    console.log("line 2141", $("input[name^=selling_plan]").closest('.rc-option--active'), $("input[name^=selling_plan]").closest('.rc-option--active').find('input[type="radio"]'))
+    var ele = $("input[name^=selling_plan]").closest('.rc-radio')
+    ele.click(function() {
+      console.log($(this))
+      if($(this).hasClass("rc-option--active")) {
+        var inner_ele = $(this).find('input[type="radio"]')
+        console.log(inner_ele, inner_ele.val())
+        // if(inner_ele.val() == "subsave") {
+          var subprice = inner_ele.next().find('span:last-child').text()
+          console.log(inner_ele.next().find('span:last-child').text().split("$")[1], subprice)
+          $('span.original_price').text(subprice)
+        // }
+      }
+    })
+   }, 1500);
+ })
