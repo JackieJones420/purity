@@ -2158,5 +2158,6 @@ $( document ).ready(function() {
     })
     var widget_ele = $(".rc-container-wrapper")
     widget_ele.insertAfter(".product--price-block")
-   }, 1500);
+    $(".rc_popup").hide()
+   }, 2000);
  })
