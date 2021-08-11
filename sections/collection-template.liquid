@@ -488,6 +488,41 @@
 {%- if collection.metafields.purity-toolbox.banner_img_url -%}
   {% capture desktop_image %}/Collection-Banner/{{ collection.metafields.purity-toolbox.banner_img_url }}{% endcapture %}
 {%- endif -%}
+
+{%- if collection.metafields.purity-toolbox.banner_img_url_mother != blank -%}
+<style>
+.collection-banner__inner.banner-img__center {
+    background-position: center;
+    background-image: url('https://cdn.shopify.com/s/files/1/0648/1955/collections/moms-choice_533x.jpg?v=1626889610') !important;
+    background-size: auto !important;
+    zoom: 170%;
+}
+.page_title_text{
+  display:none;
+}
+
+.small--show {
+    display: none !important;
+}
+
+@media only screen and (max-width: 480px){
+    .small--hide {
+        display: block !important;
+    }
+
+    .collection-banner__inner.banner-img__center {
+    background-position: center;
+    background-image: url('https://cdn.shopify.com/s/files/1/0648/1955/collections/moms-choice_533x.jpg?v=1626889610') !important;
+    background-size: cover !important;
+    zoom: 0%;
+}
+}
+
+
+</style> 
+{%- endif -%}
+
+
 {%- if collection.metafields.collection_media.mobile_mini_banner -%}
   {% capture mobile_image %}/Collection-Banner/{{ collection.metafields.collection_media.mobile_mini_banner }}{% endcapture %}
 {%- endif -%}
@@ -647,9 +682,9 @@
                   <div class=""></div>
                   <div class="second-thing grid__item large--one-half medium--one-whole small--one-whole">
                     {%- if collection_ad.link == "" -%}
-                      <div class="same-height" same-height-id="products" style="background-image: url('https://cdn.no-toxic.com/q_auto:good,f_auto,fl_lossy,w_auto,c_limit/{{settings.cloudinary_image_version}}/pure_temporary/collection_ads/{{ collection_ad.url }}');background-size: contain;background-repeat: no-repeat;background-position:bottom center;"></div>
+                      <div class="same-height" same-height-id="products" style="background-image: url('https://cdn.no-toxic.com/q_auto:good,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/collection_ads/{{ collection_ad.url }}');background-size: contain;background-repeat: no-repeat;background-position:bottom center;"></div>
                     {%- else -%}
-                      <a href="{{collection_ad.link}}" class="block same-height" same-height-id="products" style="background-image: url('https://cdn.no-toxic.com/q_auto:good,f_auto,fl_lossy,w_auto,c_limit/{{settings.cloudinary_image_version}}/pure_temporary/collection_ads/{{ collection_ad.url }}');background-size: contain;background-repeat: no-repeat;background-position:bottom center;"></a>
+                      <a href="{{collection_ad.link}}" class="block same-height" same-height-id="products" style="background-image: url('https://cdn.no-toxic.com/q_auto:good,f_auto,fl_lossy,w_auto,c_limit,dpr_auto/{{settings.cloudinary_image_version}}/pure_temporary/collection_ads/{{ collection_ad.url }}');background-size: contain;background-repeat: no-repeat;background-position:bottom center;"></a>
                     {%- endif -%}
                   </div>
                   {%- endif -%}
@@ -674,6 +709,15 @@
 </div>
 
 
+{%if collection.metafields.purity-toolbox.subscribe-and-save != blank %} 
+<style>
+.btn{
+
+  display:none;
+}
+</style>
+
+{%endif%}
 
 
 

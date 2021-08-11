@@ -126,6 +126,7 @@ Holly = {
 
     // If we still have requests in the queue, let's process the next one.
     if (variantIdList.length) {
+      console.log("yes-here");
       var request = variantIdList.shift()
       // if subscriptions change
       var $productId = $('.multiple-add-to-cart').attr('data-product-id')
@@ -149,9 +150,26 @@ Holly = {
           "properties[subscription_id]": subscription_id
         }
       } else {
-        var productInfo = {
-          "quantity": quantity,
-          "id": request
+        console.log("yes-there");
+       
+        
+        if(typeof $('.rc_widget__option__input--onetime:checked').val() !== 'undefined'){
+          
+          console.log("yes-there-1");
+          var productInfo = {
+            "quantity": quantity,
+            "id": request,
+          }
+        }
+
+        else {
+          console.log("yes-there-2");
+          
+          var productInfo = {
+            "quantity": quantity,
+            "id": request,
+            "selling_plan": $("#selling_plan").val()
+          }
         }
       }
       Holly.addItemById(
@@ -806,6 +824,20 @@ Holly = {
       setTimeout(()=>{$('.snize-ac-results').css('display','none');},500);
       Holly.removeOverlay();
     });
+
+    $('input[type="search"]').on('keyup', function (e) {
+      if (e.key === 'Enter' || e.keyCode === 13) {
+        $('form').removeClass('opened');
+        $('#search-bar .input-group-field').css('width', 0);
+        $('#search-bar form').css({
+          'width': 'auto',
+          'z-index': 0
+        });
+        setTimeout(()=>{$('.snize-ac-results').css('display','none');},500);
+        Holly.removeOverlay();
+      }
+  });
+
   },
   /*
   **------------------------------------------------------------------------**
@@ -2117,3 +2149,25 @@ $( document ).ready(function() {
   }
  
  });
+
+$(window).load(function() {
+   setTimeout(() => {
+    // console.log("line 2141", $("input[name^=selling_plan]").closest('.rc-option--active'), $("input[name^=selling_plan]").closest('.rc-option--active').find('input[type="radio"]'))
+    var ele = $("input[name^=selling_plan]").closest('.rc-radio')
+    ele.click(function() {
+      // console.log($(this))
+      if($(this).hasClass("rc-option--active")) {
+        var inner_ele = $(this).find('input[type="radio"]')
+        // console.log(inner_ele, inner_ele.val())
+        // if(inner_ele.val() == "subsave") {
+          var subprice = inner_ele.next().find('span:last-child').text()
+          // console.log(inner_ele.next().find('span:last-child').text().split("$")[1], subprice)
+          $('span.original_price').text(subprice)
+        // }
+      }
+    })
+    var widget_ele = $(".rc-container-wrapper")
+    widget_ele.insertAfter(".product--price-block")
+    $(".rc_popup").hide()
+   }, 2000);
+ })

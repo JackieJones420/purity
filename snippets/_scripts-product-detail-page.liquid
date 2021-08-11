@@ -338,7 +338,10 @@ var selectCallback = function (variant, selector) {
           'data-variant-price': variant.price,
           'data-variant-title': variant.title
         }).removeAttr('disabled').html('Add To Tote').removeClass('disabled');
-        $('.mobile-add-btn').removeClass('p-v-xs bg-light text-black-lt').addClass('p-v btn-secondary');
+ if($(".love-it-take-it").length == 0) {
+          $( '<a href="/pages/returns-and-exchanges" class="love-it-take-it" style="text-decoration: underline;">Love it or your money back.</a>' ).insertAfter($multipleAddToCart);
+        }       
+$('.mobile-add-btn').removeClass('p-v-xs bg-light text-black-lt').addClass('p-v btn-secondary');
         break;
       case 'email':
         changeBIS();
