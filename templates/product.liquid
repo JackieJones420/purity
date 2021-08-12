@@ -12,6 +12,14 @@
   Get first variant, or deep linked one
   {% endcomment %}
   {% assign current_variant = product.selected_or_first_available_variant %}
+  {%- for variant in product.variants -%}
+  {%- include 'product-variants-available-state', currentProduct: product, currentVarient: variant -%}
+  {% if productVariantsAvailableState contains 'email' or productVariantsAvailableState contains 'discontinued' or productVariantsAvailableState contains 'out' %}
+  {% else %}
+  {% assign firstInventoryId = variant.id %}
+  {% break %}
+  {% endif %}
+  {%- endfor -%}
 
   {% include 'breadcrumb', additionClasses:"medium-down--hide" %}
 
@@ -278,3 +286,13 @@
 </script>
 
 
+<script>
+  jQuery(document).ready(function(){
+    var firstInventoryId  = {{ firstInventoryId  | json }}
+    console.log(firstInventoryId)
+    setTimeout(() => {
+      $('.swatch-element[variant-id="' + firstInventoryId + '"] input[type="radio"]').trigger("change")
+    }, 500);
+    
+  })
+</script>

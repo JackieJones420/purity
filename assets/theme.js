@@ -131,11 +131,11 @@ Holly = {
       // if subscriptions change
       var $productId = $('.multiple-add-to-cart').attr('data-product-id')
       var $originalVariantId = $('.multiple-add-to-cart').attr('data-variant-id')
-      var $subscriptionEl = $('#recurring_purchase_' + $productId)
+      var $compare_at_price = $('.multiple-add-to-cart').attr('data-variant-compare-price')
+      var $price = $('.multiple-add-to-cart').attr('data-variant-price')
       // if user click on subscriptions option
       // if orginal product.variant.id == to request
-      if ($subscriptionEl.hasClass('active') == true && request == $originalVariantId) {
-        console.log("yes");
+      if ($subscriptionEl.hasClass('active') == true && request == $originalVariantId) {        
         var shipping_interval_unit_type = document.getElementById('shipping_interval_unit_type_' + $productId).value;
         var shipping_interval_frequency = document.getElementById('shipping_interval_frequency_' + $productId).value;
         var subscription_id = document.getElementById('subscription_id_' + $productId).value;
@@ -151,8 +151,6 @@ Holly = {
         }
       } else {
         console.log("yes-there");
-       
-        
         if(typeof $('.rc_widget__option__input--onetime:checked').val() !== 'undefined'){
           
           console.log("yes-there-1");
@@ -837,7 +835,6 @@ Holly = {
         Holly.removeOverlay();
       }
   });
-
   },
   /*
   **------------------------------------------------------------------------**
@@ -2147,7 +2144,7 @@ $( document ).ready(function() {
    $('.swatch.o-f-hid').find('label').click();
  
   }
- 
+  
  });
 
 $(window).load(function() {
