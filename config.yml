@@ -1,10 +1,8 @@
-live:
+development:
   password: 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
   theme_id: "120401231950"
   store: https://100-pure.myshopify.com
-
-
-development:
+live:
   password: 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
-  theme_id: "120415551566"
+  theme_id: "120401231950"
   store: https://100-pure.myshopify.com

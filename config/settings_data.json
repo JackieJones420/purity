@@ -919,6 +919,25 @@
       "1588135472841": {
         "type": "slideshow",
         "blocks": {
+          "d7ee21ba-92ea-4cb7-acee-2cc3ef7a7e36": {
+            "type": "image",
+            "settings": {
+              "image": "shopify:\/\/shop_images\/Last-Call-Hero.gif",
+              "mobile_image": "shopify:\/\/shop_images\/Last-Call-Mobile.gif",
+              "pretext": "",
+              "title": "",
+              "subtitle": "",
+              "price_subtitle": "",
+              "disclaimer": "",
+              "text_position": "center",
+              "text_white": false,
+              "button1": "",
+              "button1_link": "https:\/\/100percentpure.com\/collections\/last-call",
+              "btn_color": "",
+              "button2": "",
+              "button2_link": ""
+            }
+          },
           "39b3e166-d557-4656-a627-5d0d5085dc15": {
             "type": "image",
             "settings": {
@@ -975,32 +994,13 @@
               "button2": "",
               "button2_link": ""
             }
-          },
-          "d7ee21ba-92ea-4cb7-acee-2cc3ef7a7e36": {
-            "type": "image",
-            "settings": {
-              "image": "shopify:\/\/shop_images\/Strawberry_Lemonade_hero_1.jpg",
-              "mobile_image": "shopify:\/\/shop_images\/Strawberry_Lemonade_mobile_1.jpg",
-              "pretext": "",
-              "title": "",
-              "subtitle": "",
-              "price_subtitle": "",
-              "disclaimer": "",
-              "text_position": "center",
-              "text_white": false,
-              "button1": "",
-              "button1_link": "https:\/\/www.100percentpure.com\/collections\/new",
-              "btn_color": "",
-              "button2": "",
-              "button2_link": ""
-            }
           }
         },
         "block_order": [
+          "d7ee21ba-92ea-4cb7-acee-2cc3ef7a7e36",
           "39b3e166-d557-4656-a627-5d0d5085dc15",
           "19f2fef9-987e-4490-8bf0-695a30faa8ca",
-          "5f570ba5-96f0-45bb-97db-13fbc7d4d791",
-          "d7ee21ba-92ea-4cb7-acee-2cc3ef7a7e36"
+          "5f570ba5-96f0-45bb-97db-13fbc7d4d791"
         ],
         "settings": {
           "full_screen": true
@@ -1156,6 +1156,20 @@
               "content": "Valid online only. Available in US and CA. Free US Standard Shipping only. Final sale. No returns or exchanges. While supplies last. No rain-checks. No reservations. Not applicable towards previous purchases. Valid through 8\/31\/2021 11:59 PM PST."
             }
           },
+          "243c5416-4e65-45a9-bb96-522e5e04547d": {
+            "type": "disclaimer",
+            "settings": {
+              "title": "Last Call Sale",
+              "content": "While supplies last. Discount is automatically applied in cart. Offer valid on select products only. Available in US, CA, and EU. No returns or exchanges. No rain-checks. No reservations. Not applicable towards previous purchases. Supplies vary per store."
+            }
+          },
+          "adc0aa24-c864-4706-afdd-83ff2675cb69": {
+            "type": "disclaimer",
+            "settings": {
+              "title": "Subscribe & Save",
+              "content": "Subscribe and save program valid on select products only. Must add product to cart as an auto-replenish subscription product. Available for US customers only. Free US Domestic Standard Shipping only. While supplies last. If a product is unavailable during the subscription period, the subscription charge will pause until the product is available. Individual products cannot be combined with other discounts, including Purist Perks or Purist Pro. Offer not valid on previous purchases. No reservations. No rain-checks. Subscription can be cancelled at any time."
+            }
+          },
           "75c6e0f4-3336-4a2f-bbf3-e0b33fc0c993": {
             "type": "disclaimer",
             "disabled": true,
@@ -1166,6 +1180,7 @@
           },
           "7c9875b4-394f-41db-bfad-3ac9a7e22690": {
             "type": "disclaimer",
+            "disabled": true,
             "settings": {
               "title": "In-Stores Only: Marula & Rosehip Oil Launch Store Event",
               "content": "Offer valid in-stores only. With purchase of any of the new Rosehip or Marula Oil products, receive a 20% discount on full priced products. Supplies vary per store. Offer cannot be combined with any other discount code, including  Purist Pro. Offer not valid on gift sets and gift cards. Offer not valid on previous purchases. While supplies last. No reservations. No rain-checks. Offer valid through 8\/5\/2021 to 8\/8\/2021."
@@ -1201,33 +1216,19 @@
               "title": "Denver Grand Opening Promotion",
               "content": "Offer valid at Denver location only. Buy 2 items, get 15% off. Buy 3 items, get 20% off. Offer valid on full-priced merchandise, gift sets and last call. Offer not valid on gift cards. Offer cannot be combined with any other discount code including Purist Perks, Purist Pro. While supplies last. Offer not valid on previous purchases. No reservations. No rain-checks."
             }
-          },
-          "243c5416-4e65-45a9-bb96-522e5e04547d": {
-            "type": "disclaimer",
-            "settings": {
-              "title": "Last Call Sale",
-              "content": "While supplies last. Discount is automatically applied in cart. Offer valid on select products only. Available in US, CA, and EU. No returns or exchanges. No rain-checks. No reservations. Not applicable towards previous purchases. Supplies vary per store."
-            }
-          },
-          "adc0aa24-c864-4706-afdd-83ff2675cb69": {
-            "type": "disclaimer",
-            "settings": {
-              "title": "Subscribe & Save",
-              "content": "Subscribe and save program valid on select products only. Must add product to cart as an auto-replenish subscription product. Available for US customers only. Free US Domestic Standard Shipping only. While supplies last. If a product is unavailable during the subscription period, the subscription charge will pause until the product is available. Individual products cannot be combined with other discounts, including Purist Perks or Purist Pro. Offer not valid on previous purchases. No reservations. No rain-checks. Subscription can be cancelled at any time."
-            }
           }
         },
         "block_order": [
           "1d2f25a8-d6cb-434c-9905-d1cb8f48064e",
           "7d78fed0-2bd6-4ce0-abd9-5c6f4c971297",
+          "243c5416-4e65-45a9-bb96-522e5e04547d",
+          "adc0aa24-c864-4706-afdd-83ff2675cb69",
           "75c6e0f4-3336-4a2f-bbf3-e0b33fc0c993",
           "7c9875b4-394f-41db-bfad-3ac9a7e22690",
           "39b9c900-7c9f-4ef9-8741-fd99797e424a",
           "f06fc58f-da30-4a1b-80f0-55e59fa0e52f",
           "a7a84fc5-02b9-47b5-b204-1563372b3169",
-          "eb2e2a62-d9f1-4239-ab33-047131936d5d",
-          "243c5416-4e65-45a9-bb96-522e5e04547d",
-          "adc0aa24-c864-4706-afdd-83ff2675cb69"
+          "eb2e2a62-d9f1-4239-ab33-047131936d5d"
         ],
         "settings": {}
       },
